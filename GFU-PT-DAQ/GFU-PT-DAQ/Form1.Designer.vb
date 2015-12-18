@@ -24,163 +24,162 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Label2 = New System.Windows.Forms.Label()
+        Me.ch0 = New System.Windows.Forms.Label()
+        Me.lbl0 = New System.Windows.Forms.Label()
         Me.Timer2 = New System.Windows.Forms.Timer(Me.components)
-        Me.Label3 = New System.Windows.Forms.Label()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.Label10 = New System.Windows.Forms.Label()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
+        Me.lbl2 = New System.Windows.Forms.Label()
+        Me.ch1 = New System.Windows.Forms.Label()
+        Me.lbl1 = New System.Windows.Forms.Label()
+        Me.ch2 = New System.Windows.Forms.Label()
+        Me.lbl3 = New System.Windows.Forms.Label()
+        Me.ch3 = New System.Windows.Forms.Label()
+        Me.lbl4 = New System.Windows.Forms.Label()
+        Me.ch4 = New System.Windows.Forms.Label()
+        Me.lbl5 = New System.Windows.Forms.Label()
+        Me.ch5 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.SuspendLayout()
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(119, 12)
+        Me.Button1.Location = New System.Drawing.Point(112, 186)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(75, 23)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Start"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'Label1
+        'ch0
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(18, 63)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(130, 17)
-        Me.Label1.TabIndex = 1
-        Me.Label1.Text = "Channel0 RightArm"
+        Me.ch0.AutoSize = True
+        Me.ch0.Location = New System.Drawing.Point(18, 63)
+        Me.ch0.Name = "ch0"
+        Me.ch0.Size = New System.Drawing.Size(130, 17)
+        Me.ch0.TabIndex = 1
+        Me.ch0.Text = "Channel0 RightArm"
         '
-        'Label2
+        'lbl0
         '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(178, 63)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(102, 17)
-        Me.Label2.TabIndex = 2
-        Me.Label2.Text = "Display Value0"
+        Me.lbl0.AutoSize = True
+        Me.lbl0.Location = New System.Drawing.Point(178, 63)
+        Me.lbl0.Name = "lbl0"
+        Me.lbl0.Size = New System.Drawing.Size(102, 17)
+        Me.lbl0.TabIndex = 2
+        Me.lbl0.Text = "Display Value0"
         '
         'Timer2
         '
         '
-        'Label3
+        'lbl2
         '
-        Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(178, 97)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(102, 17)
-        Me.Label3.TabIndex = 4
-        Me.Label3.Text = "Display Value2"
+        Me.lbl2.AutoSize = True
+        Me.lbl2.Location = New System.Drawing.Point(178, 97)
+        Me.lbl2.Name = "lbl2"
+        Me.lbl2.Size = New System.Drawing.Size(102, 17)
+        Me.lbl2.TabIndex = 4
+        Me.lbl2.Text = "Display Value2"
         '
-        'Label4
+        'ch1
         '
-        Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(18, 80)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(121, 17)
-        Me.Label4.TabIndex = 3
-        Me.Label4.Text = "Channel1 LeftArm"
+        Me.ch1.AutoSize = True
+        Me.ch1.Location = New System.Drawing.Point(18, 80)
+        Me.ch1.Name = "ch1"
+        Me.ch1.Size = New System.Drawing.Size(121, 17)
+        Me.ch1.TabIndex = 3
+        Me.ch1.Text = "Channel1 LeftArm"
         '
-        'Label5
+        'lbl1
         '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(178, 80)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(102, 17)
-        Me.Label5.TabIndex = 6
-        Me.Label5.Text = "Display Value1"
+        Me.lbl1.AutoSize = True
+        Me.lbl1.Location = New System.Drawing.Point(178, 80)
+        Me.lbl1.Name = "lbl1"
+        Me.lbl1.Size = New System.Drawing.Size(102, 17)
+        Me.lbl1.TabIndex = 6
+        Me.lbl1.Text = "Display Value1"
         '
-        'Label6
+        'ch2
         '
-        Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(18, 97)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(129, 17)
-        Me.Label6.TabIndex = 5
-        Me.Label6.Text = "Channel2 RightLeg"
+        Me.ch2.AutoSize = True
+        Me.ch2.Location = New System.Drawing.Point(18, 97)
+        Me.ch2.Name = "ch2"
+        Me.ch2.Size = New System.Drawing.Size(129, 17)
+        Me.ch2.TabIndex = 5
+        Me.ch2.Text = "Channel2 RightLeg"
         '
-        'Label7
+        'lbl3
         '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(178, 114)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(102, 17)
-        Me.Label7.TabIndex = 8
-        Me.Label7.Text = "Display Value3"
+        Me.lbl3.AutoSize = True
+        Me.lbl3.Location = New System.Drawing.Point(178, 114)
+        Me.lbl3.Name = "lbl3"
+        Me.lbl3.Size = New System.Drawing.Size(102, 17)
+        Me.lbl3.TabIndex = 8
+        Me.lbl3.Text = "Display Value3"
         '
-        'Label8
+        'ch3
         '
-        Me.Label8.AutoSize = True
-        Me.Label8.Location = New System.Drawing.Point(18, 114)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(120, 17)
-        Me.Label8.TabIndex = 7
-        Me.Label8.Text = "Channel3 LeftLeg"
+        Me.ch3.AutoSize = True
+        Me.ch3.Location = New System.Drawing.Point(18, 114)
+        Me.ch3.Name = "ch3"
+        Me.ch3.Size = New System.Drawing.Size(120, 17)
+        Me.ch3.TabIndex = 7
+        Me.ch3.Text = "Channel3 LeftLeg"
         '
-        'Label9
+        'lbl4
         '
-        Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(178, 131)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(102, 17)
-        Me.Label9.TabIndex = 10
-        Me.Label9.Text = "Display Value4"
+        Me.lbl4.AutoSize = True
+        Me.lbl4.Location = New System.Drawing.Point(178, 131)
+        Me.lbl4.Name = "lbl4"
+        Me.lbl4.Size = New System.Drawing.Size(102, 17)
+        Me.lbl4.TabIndex = 10
+        Me.lbl4.Text = "Display Value4"
         '
-        'Label10
+        'ch4
         '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(18, 131)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(120, 17)
-        Me.Label10.TabIndex = 9
-        Me.Label10.Text = "Channel4 Ground"
+        Me.ch4.AutoSize = True
+        Me.ch4.Location = New System.Drawing.Point(18, 131)
+        Me.ch4.Name = "ch4"
+        Me.ch4.Size = New System.Drawing.Size(120, 17)
+        Me.ch4.TabIndex = 9
+        Me.ch4.Text = "Channel4 Ground"
         '
-        'Label11
+        'lbl5
         '
-        Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(178, 148)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(102, 17)
-        Me.Label11.TabIndex = 12
-        Me.Label11.Text = "Display Value5"
+        Me.lbl5.AutoSize = True
+        Me.lbl5.Location = New System.Drawing.Point(178, 148)
+        Me.lbl5.Name = "lbl5"
+        Me.lbl5.Size = New System.Drawing.Size(102, 17)
+        Me.lbl5.TabIndex = 12
+        Me.lbl5.Text = "Display Value5"
         '
-        'Label12
+        'ch5
         '
-        Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(18, 148)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(101, 17)
-        Me.Label12.TabIndex = 11
-        Me.Label12.Text = "Channel5 Seat"
+        Me.ch5.AutoSize = True
+        Me.ch5.Location = New System.Drawing.Point(18, 148)
+        Me.ch5.Name = "ch5"
+        Me.ch5.Size = New System.Drawing.Size(101, 17)
+        Me.ch5.TabIndex = 11
+        Me.ch5.Text = "Channel5 Seat"
         '
         'Timer1
         '
-        Me.Timer1.Interval = 1000
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(315, 255)
-        Me.Controls.Add(Me.Label11)
-        Me.Controls.Add(Me.Label12)
-        Me.Controls.Add(Me.Label9)
-        Me.Controls.Add(Me.Label10)
-        Me.Controls.Add(Me.Label7)
-        Me.Controls.Add(Me.Label8)
-        Me.Controls.Add(Me.Label5)
-        Me.Controls.Add(Me.Label6)
-        Me.Controls.Add(Me.Label3)
-        Me.Controls.Add(Me.Label4)
-        Me.Controls.Add(Me.Label2)
-        Me.Controls.Add(Me.Label1)
+        Me.Controls.Add(Me.lbl5)
+        Me.Controls.Add(Me.ch5)
+        Me.Controls.Add(Me.lbl4)
+        Me.Controls.Add(Me.ch4)
+        Me.Controls.Add(Me.lbl3)
+        Me.Controls.Add(Me.ch3)
+        Me.Controls.Add(Me.lbl1)
+        Me.Controls.Add(Me.ch2)
+        Me.Controls.Add(Me.lbl2)
+        Me.Controls.Add(Me.ch1)
+        Me.Controls.Add(Me.lbl0)
+        Me.Controls.Add(Me.ch0)
         Me.Controls.Add(Me.Button1)
         Me.Name = "Form1"
         Me.Text = "Form1"
@@ -189,19 +188,19 @@ Partial Class Form1
 
     End Sub
     Friend WithEvents Button1 As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents ch0 As System.Windows.Forms.Label
+    Friend WithEvents lbl0 As System.Windows.Forms.Label
     Friend WithEvents Timer2 As System.Windows.Forms.Timer
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Label4 As System.Windows.Forms.Label
-    Friend WithEvents Label5 As System.Windows.Forms.Label
-    Friend WithEvents Label6 As System.Windows.Forms.Label
-    Friend WithEvents Label7 As System.Windows.Forms.Label
-    Friend WithEvents Label8 As System.Windows.Forms.Label
-    Friend WithEvents Label9 As System.Windows.Forms.Label
-    Friend WithEvents Label10 As System.Windows.Forms.Label
-    Friend WithEvents Label11 As System.Windows.Forms.Label
-    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents lbl2 As System.Windows.Forms.Label
+    Friend WithEvents ch1 As System.Windows.Forms.Label
+    Friend WithEvents lbl1 As System.Windows.Forms.Label
+    Friend WithEvents ch2 As System.Windows.Forms.Label
+    Friend WithEvents lbl3 As System.Windows.Forms.Label
+    Friend WithEvents ch3 As System.Windows.Forms.Label
+    Friend WithEvents lbl4 As System.Windows.Forms.Label
+    Friend WithEvents ch4 As System.Windows.Forms.Label
+    Friend WithEvents lbl5 As System.Windows.Forms.Label
+    Friend WithEvents ch5 As System.Windows.Forms.Label
     Friend WithEvents Timer1 As System.Windows.Forms.Timer
 
 End Class

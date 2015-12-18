@@ -7,3 +7,4 @@ C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\bin\Debug\GFU-P
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.exe
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.xml
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.pdb
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU_PT_DAQ.Form2.resources
