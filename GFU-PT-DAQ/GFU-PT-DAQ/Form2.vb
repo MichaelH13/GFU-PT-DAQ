@@ -2,8 +2,25 @@
 
 Public Class Form2
 
+    Public frmState As Integer
+    Public xStart As Double
+    Public xEnd As Double
+    Public yStart As Double
+    Public yEnd As Double
+
+    Public Enum FORM_STATE As Integer
+        RUN_TEST = 0
+        DECIDE_AUTO_POINTS = 1
+        PICK_START_POINT = 2
+        PICK_END_POINT = 3
+        NEW_TEST = 4
+        SAVE_TEST = 5
+    End Enum
+
     Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        frmState = FORM_STATE.NEW_TEST
         reloadChart()
+        Me.pgbTestStatus.Visible = False
     End Sub
 
     Dim myDAQ As New MccDaq.MccBoard(0)
@@ -29,15 +46,23 @@ Public Class Form2
     Dim timeCounter As Integer
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
-        Timer1.Start()
-        timeCounter = 0
-        Timer2.Start()
-        list0.Clear()
-        list1.Clear()
-        list2.Clear()
-        list3.Clear()
-        list4.Clear()
-        list5.Clear()
+        If (frmState = FORM_STATE.NEW_TEST) Then
+            frmState = FORM_STATE.RUN_TEST
+            Me.pgbTestStatus.Visible = True
+            Timer1.Start()
+            timeCounter = 0
+            Timer2.Start()
+            list0.Clear()
+            list1.Clear()
+            list2.Clear()
+            list3.Clear()
+            list4.Clear()
+            list5.Clear()
+            Me.pgbTestStatus.Value = 0
+            Me.pgbTestStatus.Minimum = 0
+            Me.pgbTestStatus.Maximum = 100
+            Me.pgbTestStatus.Visible = True
+        End If
     End Sub
 
     Private Sub Timer1_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles Timer1.Tick
@@ -61,6 +86,13 @@ Public Class Form2
         Else
             listTimes.Add(timeCounter * 100)
             timeCounter = timeCounter + 1
+            Me.pgbTestStatus.Value = timeCounter * 10
+
+            'Hide the progress bar and see if the user wants to select their own points.
+            If (Me.pgbTestStatus.Value = 100) Then
+                Me.pgbTestStatus.Visible = False
+                frmState = FORM_STATE.DECIDE_AUTO_POINTS
+            End If
         End If
     End Sub
 
@@ -160,4 +192,54 @@ Public Class Form2
 
     End Sub
 
+    Private Sub Chart1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Chart1.Click
+        If (frmState = FORM_STATE.RUN_TEST) Then frmState = FORM_STATE.PICK_START_POINT
+        If (frmState = FORM_STATE.PICK_START_POINT) Then
+            If (MsgBox("Are you sure the point X=" & Me.xCoord.Text & " Y=" & Me.yCoord.Text & " is your desired start point?", vbYesNo, getAppTitle()) = vbYes) Then
+                frmState = FORM_STATE.PICK_END_POINT
+                xStart = CDbl(Me.xCoord.Text)
+                yStart = CDbl(Me.yCoord.Text)
+            End If
+        ElseIf (frmState = FORM_STATE.PICK_END_POINT) Then
+            If (MsgBox("Are you sure the point X=" & Me.xCoord.Text & " Y=" & Me.yCoord.Text & " is your desired end point?", vbYesNo, getAppTitle()) = vbYes) Then
+                frmState = FORM_STATE.SAVE_TEST
+                xEnd = CDbl(Me.xCoord.Text)
+                yEnd = CDbl(Me.yCoord.Text)
+                MsgBox("Final Points: " & vbNewLine & "Start: X=" & xStart & " Y=" & yStart & vbNewLine & "End: X=" & xEnd & " Y=" & yEnd)
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Chart1_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Chart1.MouseMove
+        If (frmState = FORM_STATE.DECIDE_AUTO_POINTS) Then
+            If (MsgBox("Would you like to select your own points?", vbYesNo, getAppTitle()) = vbYes) Then
+                frmState = FORM_STATE.PICK_START_POINT
+            Else
+                frmState = FORM_STATE.SAVE_TEST
+            End If
+        End If
+
+        'Only trigger event if we are picking points, otherwise ignore, and reset values on our textboxes and what not.
+        If (frmState = FORM_STATE.PICK_END_POINT Or frmState = FORM_STATE.PICK_START_POINT) Then
+            Dim result As HitTestResult = Chart1.HitTest(e.X, e.Y)
+            Dim xchartcoord As Integer
+            Dim ychartcoord As Integer
+
+            If result.PointIndex > 0 Then
+                Dim dp As DataPoint = Chart1.Series(0).Points(result.PointIndex)
+                ToolTip1.SetToolTip(Chart1, "X:" & dp.XValue & " Y:" & dp.YValues(0))
+                Me.xCoord.Text = dp.XValue
+                Me.yCoord.Text = dp.YValues(0)
+                xchartcoord = dp.XValue
+                ychartcoord = dp.YValues(0)
+            End If
+        End If
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        If (frmState = FORM_STATE.SAVE_TEST) Then
+            frmState = FORM_STATE.NEW_TEST
+        End If
+    End Sub
 End Class
