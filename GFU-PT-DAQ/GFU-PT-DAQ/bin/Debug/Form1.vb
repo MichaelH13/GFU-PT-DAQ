@@ -38,10 +38,10 @@
             'Dim f2 As New Form2
             'f2.Show()
             Dim strArray As String()
-            ReDim strArray(list0.Count)
+            ReDim strArray(listRightArm.Count)
 
-            For i As Integer = 0 To list0.Count - 1 Step 1
-                strArray(i) = list0(i).ToString
+            For i As Integer = 0 To listRightArm.Count - 1 Step 1
+                strArray(i) = listRightArm(i).ToString
             Next
 
             Dim FileName As String = "C:\DAQ\test_run.txt"
@@ -56,32 +56,32 @@
 
         myDAQ.AIn(0, MccDaq.Range.Bip10Volts, dataValueC0)
         myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC0, engUnitC0)
-        list0.Add(engUnitC0)
+        listRightArm.Add(engUnitC0)
         lbl0.Text = engUnitC0
 
         myDAQ.AIn(1, MccDaq.Range.Bip10Volts, dataValueC1)
         myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC1, engUnitC1)
-        list1.Add(engUnitC1)
+        listLeftArm.Add(engUnitC1)
         lbl1.Text = engUnitC1
 
         myDAQ.AIn(2, MccDaq.Range.Bip10Volts, dataValueC2)
         myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC2, engUnitC2)
-        list2.Add(engUnitC2)
+        listRightLeg.Add(engUnitC2)
         lbl2.Text = engUnitC2
 
         myDAQ.AIn(3, MccDaq.Range.Bip10Volts, dataValueC3)
         myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC3, engUnitC3)
-        list3.Add(engUnitC3)
+        listLeftLeg.Add(engUnitC3)
         lbl3.Text = engUnitC3
 
         myDAQ.AIn(4, MccDaq.Range.Bip10Volts, dataValueC4)
         myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC4, engUnitC4)
-        list4.Add(engUnitC4)
+        listGround.Add(engUnitC4)
         lbl4.Text = engUnitC4
 
         myDAQ.AIn(5, MccDaq.Range.Bip10Volts, dataValueC5)
         myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC5, engUnitC5)
-        list5.Add(engUnitC5)
+        listSeat.Add(engUnitC5)
         lbl5.Text = engUnitC5
     End Sub
 
