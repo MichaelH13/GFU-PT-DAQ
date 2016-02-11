@@ -74,7 +74,7 @@ Public Class STS_Code
         Dim sampleCalcOffset As Integer = samplesPerDeriv / 2
 
         For s = 100 To 9000
-            ' @TODO Why is this multiplied by 0.001?
+            ' sVertical Ground Reaction Force.
             vGRFDeriv(s) = Math.Abs((vGRFBilatArray(s + sampleCalcOffset) - vGRFBilatArray(s - sampleCalcOffset)) / (samplesPerDeriv * 0.001))
 
 
@@ -106,7 +106,6 @@ Public Class STS_Code
         footRef = footAverageWeight - (footAverageWeight * footStdDiv)
 
         'Find the start of the trial ref
-        s = 0
         For s = sampleStartPoint To maxSTSSTartPoint
             If vGRFBilatArray(s) <= footRef Then
                 ' If we have found a point in the array that falls below 
@@ -310,7 +309,7 @@ Public Class STS_Code
         seatSum = (seatSum / (sampleEndPoint / sampleStartPoint))
 
         ' Get seat off from the seat sensor
-        seatRef = SeatArray(9259) + (7 * seatSum) ' @TODO Why on earth...?
+        seatRef = SeatArray(9259) + (7 * seatSum) ' @TODO SEAT REF, may change later.
 
         For s = 1 To totalSamplesInTest
             If SeatArray(totalSamplesInTest - s) >= seatRef Then
@@ -325,7 +324,7 @@ Public Class STS_Code
 
         ' Here's seat off(start of rising phase)
         seatoffFrame = totalSamplesInTest - seatoffFrame
-        seatOff = seatoffFrame / 1000 ' @TODO Why on earth...?
+        seatOff = seatoffFrame / 1000 ' Divide by sampling rate.
         getSeatOffFrame = seatoffFrame
     End Function
 
@@ -563,7 +562,7 @@ Public Class STS_Code
             'Calculate area for rising phase
             RFArea = 0
             LFArea = 0
-            For i = seatoffFrame To EndSTSFrame
+            For i = seatoffFrame To EndSTSFrame ' @TODO divide by the interval.
                 RFArea = RFArray(i) * 0.001 + RFArea
                 LFArea = LFArray(i) * 0.001 + RFArea
             Next
@@ -689,6 +688,7 @@ Public Class STS_Code
                     LADeriv(i) = Math.Abs((LAArray_v(i + 40) - LAArray_v(i - 40)) / (80 * 0.001))
                 Next
 
+                ' Arm peak
                 'find 1st 0 point of derivative
                 RAPeakFOrce = 0
                 For i = RAon To RAon
@@ -795,7 +795,7 @@ Public Class STS_Code
 
     End Sub
 
-    Private Sub ManFindSTS_Times()
+    Private Sub ManualFindSTS_Times()
         'this program is being designed to analyze files from the portable STS device
         'The program reads in data from a *.csv file, collected at 1000 hz for 10 seconds
         'The program will not work for different data collection parameters
