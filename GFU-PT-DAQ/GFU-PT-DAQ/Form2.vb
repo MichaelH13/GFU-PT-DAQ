@@ -2,20 +2,30 @@
 
 Public Class Form2
 
-    Public frmState As Integer
+    Public Enum FORM_STATE As Integer
+        RUN_TEST
+        DECIDE_AUTO_POINTS
+        PICK_START_FRAME
+        NEW_TEST
+        SAVE_TEST
+    End Enum
+
+    Public Enum POINTS_STATE As Integer
+        SELECT_NONE
+        SELECT_START_FRAME
+        SELECT_END_FRAME
+        SELECT_FIRST_MINIMA
+        SELECT_BILATERAL_PEAK
+        SELECT_SECOND_MINIMA
+        SELECT_SEAT_OFF
+    End Enum
+
+    Public frmState As Integer = FORM_STATE.NEW_TEST
+    Public pointsState As Integer = POINTS_STATE.SELECT_NONE
     Public xStart As Double
     Public xEnd As Double
     Public yStart As Double
     Public yEnd As Double
-
-    Public Enum FORM_STATE As Integer
-        RUN_TEST = 0
-        DECIDE_AUTO_POINTS = 1
-        PICK_START_POINT = 2
-        PICK_END_POINT = 3
-        NEW_TEST = 4
-        SAVE_TEST = 5
-    End Enum
 
     Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         frmState = FORM_STATE.NEW_TEST
@@ -24,6 +34,7 @@ Public Class Form2
     End Sub
 
     Dim myDAQ As New MccDaq.MccBoard(0)
+    Dim voltageRange As MccDaq.Range = MccDaq.Range.Bip10Volts
 
     Dim dataValueC0 As System.Int16
     Dim engUnitC0 As Single
@@ -46,7 +57,7 @@ Public Class Form2
     Dim samplingRate As Double = getSamplingRate()
     Dim secondsPerTest As Double = getSecondsPerTest()
     Dim timeCounter As Double
-    Dim totalSamples As Double = samplingRate * secondsPerTest
+    Dim totalSamples As Double = getTotalSamplesInTest()
 
     Private Sub clkSamplingRate_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles clkSamplingRate.Tick
         If (timeCounter >= totalSamples) Then
@@ -82,54 +93,54 @@ Public Class Form2
         ' If we are doing a calibration, then simply take whatever values we get.
         ' Otherwise use the established offsets that we have previously obtained.
         If (calibrateDevice) Then
-            myDAQ.AIn(0, MccDaq.Range.Bip10Volts, dataValueC0)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC0, engUnitC0)
+            myDAQ.AIn(0, voltageRange, dataValueC0)
+            myDAQ.ToEngUnits(voltageRange, dataValueC0, engUnitC0)
             listRightArm.Add(engUnitC0)
 
-            myDAQ.AIn(1, MccDaq.Range.Bip10Volts, dataValueC1)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC1, engUnitC1)
+            myDAQ.AIn(1, voltageRange, dataValueC1)
+            myDAQ.ToEngUnits(voltageRange, dataValueC1, engUnitC1)
             listLeftArm.Add(engUnitC1)
 
-            myDAQ.AIn(2, MccDaq.Range.Bip10Volts, dataValueC2)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC2, engUnitC2)
+            myDAQ.AIn(2, voltageRange, dataValueC2)
+            myDAQ.ToEngUnits(voltageRange, dataValueC2, engUnitC2)
             listRightLeg.Add(engUnitC2)
 
-            myDAQ.AIn(3, MccDaq.Range.Bip10Volts, dataValueC3)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC3, engUnitC3)
+            myDAQ.AIn(3, voltageRange, dataValueC3)
+            myDAQ.ToEngUnits(voltageRange, dataValueC3, engUnitC3)
             listLeftLeg.Add(engUnitC3)
 
-            myDAQ.AIn(4, MccDaq.Range.Bip10Volts, dataValueC4)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC4, engUnitC4)
+            myDAQ.AIn(4, voltageRange, dataValueC4)
+            myDAQ.ToEngUnits(voltageRange, dataValueC4, engUnitC4)
             listGround.Add(engUnitC4)
 
-            myDAQ.AIn(5, MccDaq.Range.Bip10Volts, dataValueC5)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC5, engUnitC5)
+            myDAQ.AIn(5, voltageRange, dataValueC5)
+            myDAQ.ToEngUnits(voltageRange, dataValueC5, engUnitC5)
             listSeat.Add(engUnitC5)
 
             listBilateral.Add(listRightLeg(timeCounter - 1) + listLeftLeg(timeCounter - 1))
         Else
-            myDAQ.AIn(0, MccDaq.Range.Bip10Volts, dataValueC0)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC0, engUnitC0)
+            myDAQ.AIn(0, voltageRange, dataValueC0)
+            myDAQ.ToEngUnits(voltageRange, dataValueC0, engUnitC0)
             listRightArm.Add(engUnitC0 - rightArmOffset)
 
-            myDAQ.AIn(1, MccDaq.Range.Bip10Volts, dataValueC1)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC1, engUnitC1)
+            myDAQ.AIn(1, voltageRange, dataValueC1)
+            myDAQ.ToEngUnits(voltageRange, dataValueC1, engUnitC1)
             listLeftArm.Add(engUnitC1 - leftArmOffset)
 
-            myDAQ.AIn(2, MccDaq.Range.Bip10Volts, dataValueC2)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC2, engUnitC2)
+            myDAQ.AIn(2, voltageRange, dataValueC2)
+            myDAQ.ToEngUnits(voltageRange, dataValueC2, engUnitC2)
             listRightLeg.Add(engUnitC2 - rightLegOffset)
 
-            myDAQ.AIn(3, MccDaq.Range.Bip10Volts, dataValueC3)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC3, engUnitC3)
+            myDAQ.AIn(3, voltageRange, dataValueC3)
+            myDAQ.ToEngUnits(voltageRange, dataValueC3, engUnitC3)
             listLeftLeg.Add(engUnitC3 - leftLegOffset)
 
-            myDAQ.AIn(4, MccDaq.Range.Bip10Volts, dataValueC4)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC4, engUnitC4)
+            myDAQ.AIn(4, voltageRange, dataValueC4)
+            myDAQ.ToEngUnits(voltageRange, dataValueC4, engUnitC4)
             listGround.Add(engUnitC4 - groundOffset)
 
-            myDAQ.AIn(5, MccDaq.Range.Bip10Volts, dataValueC5)
-            myDAQ.ToEngUnits(MccDaq.Range.Bip10Volts, dataValueC5, engUnitC5)
+            myDAQ.AIn(5, voltageRange, dataValueC5)
+            myDAQ.ToEngUnits(voltageRange, dataValueC5, engUnitC5)
             listSeat.Add(engUnitC5 - seatOffset)
 
             listBilateral.Add(listRightLeg(timeCounter - 1) + listLeftLeg(timeCounter - 1))
@@ -141,15 +152,6 @@ Public Class Form2
         Dim lists As New ArrayList 'list of data points we got from the DAQ.
         Dim sList As New ArrayList 'list of series we are going to plot.
 
-        ' Put our lists of points in a list (of lists).
-        lists.Add(listRightArm)
-        lists.Add(listLeftArm)
-        lists.Add(listRightLeg)
-        lists.Add(listLeftLeg)
-        lists.Add(listGround)
-        lists.Add(listSeat)
-        lists.Add(listBilateral)
-
         ' Declare our series to add to our graph.
         Dim seriesRightArm As New Series
         Dim seriesLeftArm As New Series
@@ -158,6 +160,15 @@ Public Class Form2
         Dim seriesGround As New Series
         Dim seriesSeat As New Series
         Dim seriesBilateral As New Series
+
+        ' Put our lists of points in a list (of lists).
+        lists.Add(listRightArm)
+        lists.Add(listLeftArm)
+        lists.Add(listRightLeg)
+        lists.Add(listLeftLeg)
+        lists.Add(listGround)
+        lists.Add(listSeat)
+        lists.Add(listBilateral)
 
         ' Set the name appropriately for each series.
         seriesRightArm.Name = "Right Arm"
@@ -188,7 +199,7 @@ Public Class Form2
         colors.Add(Color.Pink)          ' Left Leg
         colors.Add(Color.Green)         ' Ground
         colors.Add(Color.Black)         ' Seat
-        colors.Add(Color.DarkMagenta)   ' Bilateral (Right Leg + Left Leg)
+        colors.Add(Color.DarkMagenta)   ' Leg Bilateral (Right Leg + Left Leg)
 
         ' Iterate over each one of our lists.
         For lst As Integer = 0 To sList.Count - 1 Step 1
@@ -214,38 +225,38 @@ Public Class Form2
     End Sub
 
     Private Sub Chart1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Chart1.Click
-        If (frmState = FORM_STATE.RUN_TEST) Then frmState = FORM_STATE.PICK_START_POINT
-        If (frmState = FORM_STATE.PICK_START_POINT) Then
-            If (MsgBox("Are you sure the point X=" & Me.xCoord.Text & " Y=" & Me.yCoord.Text & " is your desired start point?", vbYesNo, getAppTitle()) = vbYes) Then
-                frmState = FORM_STATE.PICK_END_POINT
+        If (frmState = FORM_STATE.RUN_TEST) Then frmState = FORM_STATE.PICK_START_FRAME
+        If (frmState = FORM_STATE.PICK_START_FRAME) Then
+
+            While (Not confirmPoint("Start of Test"))
                 xStart = CDbl(Me.xCoord.Text)
                 yStart = CDbl(Me.yCoord.Text)
-            End If
-        ElseIf (frmState = FORM_STATE.PICK_END_POINT) Then
-            If (MsgBox("Are you sure the point X=" & Me.xCoord.Text & " Y=" & Me.yCoord.Text & " is your desired end point?", vbYesNo, getAppTitle()) = vbYes) Then
-                frmState = FORM_STATE.SAVE_TEST
-                xEnd = CDbl(Me.xCoord.Text)
-                yEnd = CDbl(Me.yCoord.Text)
-                MsgBox("Final Points: " & vbNewLine & "Start: X=" & xStart & " Y=" & yStart & vbNewLine & "End: X=" & xEnd & " Y=" & yEnd)
-            End If
+            End While
+
+            frmState = FORM_STATE.SAVE_TEST
         End If
 
     End Sub
 
+    Private Function confirmPoint(ByVal pointName As String) As Boolean
+        confirmPoint = MsgBox("Are you sure the point X=" & Me.xCoord.Text & " Y=" & Me.yCoord.Text & " is your desired " & pointName & " point?", vbYesNo, getAppTitle()) = vbYes
+    End Function
+
     Private Sub Chart1_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Chart1.MouseMove
+        Dim result As HitTestResult = Chart1.HitTest(e.X, e.Y)
+        Dim xchartcoord As Integer
+        Dim ychartcoord As Integer
+
         If (frmState = FORM_STATE.DECIDE_AUTO_POINTS) Then
             If (MsgBox("Would you like to select your own points?", vbYesNo, getAppTitle()) = vbYes) Then
-                frmState = FORM_STATE.PICK_START_POINT
+                frmState = POINTS_STATE.SELECT_START_FRAME
             Else
                 frmState = FORM_STATE.SAVE_TEST
             End If
         End If
 
         'Only trigger event if we are picking points, otherwise ignore, and reset values on our textboxes and what not.
-        If (frmState = FORM_STATE.PICK_END_POINT Or frmState = FORM_STATE.PICK_START_POINT) Then
-            Dim result As HitTestResult = Chart1.HitTest(e.X, e.Y)
-            Dim xchartcoord As Integer
-            Dim ychartcoord As Integer
+        If (frmState >= FORM_STATE.PICK_START_FRAME And frmState < FORM_STATE.SAVE_TEST) Then
 
             If result.PointIndex > 0 Then
                 Dim dp As DataPoint = Chart1.Series(0).Points(result.PointIndex)

@@ -31,6 +31,10 @@
         Return 1 'take N seconds to sample the data.
     End Function
 
+    Public Function getTotalSamplesInTest() As Integer
+        getTotalSamplesInTest = getSecondsPerTest() * getSamplingRate()
+    End Function
+
     Public Function getDataPoints() As ArrayList
         Dim listDataPoints As New ArrayList
         listDataPoints.Add(listTimes)
