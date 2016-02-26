@@ -70,35 +70,36 @@
 
     Public Sub main()
         ' Number of tests to run, probably used for various purposes.
-        Dim testCount As Integer = INVALID
+        'Dim testCount As Integer = INVALID
 
-        totalTests = getTestCount()
+        'totalTests = getTestCount()
 
-        For testCount = 0 To totalTests
-            runTest()
-            takeDerivativesOfvGRF()
-            startSTSFrame = getStartSTSFrame()
-            endSTSFrame = getEndSTSFrame(startSTSFrame)
-            firstPeakFrame = getFirstPeakFrame(startSTSFrame)
-            secondPeakFrame = getSecondPeakFrame(startSTSFrame)
-            thirdPeakFrame = getThirdPeakFrame(startSTSFrame)
-            seatOffFrame = getSeatOffFrame() '<------------- @TODO Probably isn't correct, fix later.
+        'For testCount = 0 To totalTests
+        '    runTest()
+        takeDerivativesOfvGRF()
+        startSTSFrame = getStartSTSFrame()
+        endSTSFrame = getEndSTSFrame(startSTSFrame)
+        firstPeakFrame = getFirstPeakFrame(startSTSFrame)
+        secondPeakFrame = getSecondPeakFrame(startSTSFrame)
+        thirdPeakFrame = getThirdPeakFrame(startSTSFrame)
+        seatOffFrame = getSeatOffFrame() '<------------- @TODO Probably isn't correct, fix later.
 
-            If (Not validData(startSTSFrame, endSTSFrame, seatOffFrame, secondPeakFrame)) Then
-                MsgBox("Data invalid, go to manual pickoff.", vbApplicationModal + vbOKOnly + vbInformation, getAppTitle())
-            End If
+        If (Not validData(startSTSFrame, endSTSFrame, seatOffFrame, secondPeakFrame)) Then
+            MsgBox("Data invalid, go to manual pickoff.", vbApplicationModal + vbOKOnly + vbInformation, getAppTitle())
+            clearProgramVariables()
+        End If
 
-            'Now clip the data and set the time to percent STS for plotting
-            lengthSTS = endSTSFrame - startSTSFrame
+        'Now clip the data and set the time to percent STS for plotting
+        lengthSTS = endSTSFrame - startSTSFrame
 
-            convertDataFromVoltagesToWeight()
-            calculateLegDerivatives(firstPeakFrame, endSTSFrame)
-            rightLegPeakFrame = getRightLegPeakFrame(firstPeakFrame, thirdPeakFrame)
-            leftLegPeakFrame = getLeftLegPeakFrame(firstPeakFrame, thirdPeakFrame)
-            leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
-            rightLegAvgForce = getRightLegAvgForce(seatOffFrame, endSTSFrame)
+        calculateLegDerivatives(firstPeakFrame, endSTSFrame)
+        convertDataFromVoltagesToWeight()
+        rightLegPeakFrame = getRightLegPeakFrame(firstPeakFrame, thirdPeakFrame)
+        leftLegPeakFrame = getLeftLegPeakFrame(firstPeakFrame, thirdPeakFrame)
+        rightLegAvgForce = getRightLegAvgForce(seatOffFrame, endSTSFrame)
+        leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
 
-        Next testCount
+        'Next testCount
     End Sub
 
     Public Sub clearProgramVariables()
@@ -134,6 +135,7 @@
         seatOffFrame = INVALID
         lengthSTS = INVALID
     End Sub
+
     ' Run STS, figure out how to call the form to get the data arrays later.
     Public Sub runTest()
         ' Do some test stuff...
@@ -169,17 +171,20 @@
         Dim footRefSum As Double = 0.0
         Dim footRef As Double
         Dim footAverageWeight As Double
-        Dim footStdDiv As Double
         Dim sampleStartPoint As Integer = 100
         Dim sampleEndPoint As Integer = 300
         Dim maxSTSStartPoint As Integer = 90000
         Dim startSTSFrame As Integer = 0
 
+        ' NEEDS TO BE SET APPROPRIATELY
+        Dim footStdDiv As Double = 0.1
+
+        ' Get the sum of all points between the start and end reference points.
         For i = sampleStartPoint To sampleEndPoint
-            footRefSum = vGRFBilatArray(i) + footRefSum
+            footRefSum = footRefSum + vGRFBilatArray(i)
         Next
 
-        ' Get average foot weight.
+        ' Get average foot weight by dividing our sum by the # of points.
         footAverageWeight = (footRefSum / (sampleEndPoint - sampleStartPoint))
         footRef = footAverageWeight - (footAverageWeight * footStdDiv)
 
@@ -193,8 +198,7 @@
             End If
         Next
 
-        ' @TODO Why is this divided by 1000?
-        getStartSTSFrame = (startSTSFrame / 1000)
+        getStartSTSFrame = startSTSFrame
     End Function
 
     ' Find the END of the STS movement
@@ -421,33 +425,31 @@
         validData = True
     End Function
 
-    Private Sub convertDataFromVoltagesToWeight()
+    Public Sub convertDataFromVoltagesToWeight()
         Dim a As Integer = 0
 
         ' Multiply data by regressions to convert voltage to force
-        For a = 1 To 10000
+        For a = 0 To 10000
 
             ' Use the voltage data to find peaks
             ' @TODO These arrays are likely not necessary...
             RFArray_v(a) = RFArray(a)
             LFArray_v(a) = LFArray(a)
             RAArray_v(a) = RAArray(a)
-            LAArray_v(a) = RAArray(a)
+            LAArray_v(a) = LAArray(a)
 
             ' Convert the data to calculate stuff 
-            RFArray(a) = (176.11 * RFArray(a)) + 10.42
-            LFArray(a) = (180.77 * LFArray(a)) - 9.21
-            RAArray(a) = (113.27 * RAArray(a)) + 112.2
-            LAArray(a) = (234.71 * LAArray(a)) - 18.6
+            RFArray(a) = (176.11 * RFArray(a))
+            LFArray(a) = (180.77 * LFArray(a))
+            RAArray(a) = (113.27 * RAArray(a))
+            LAArray(a) = (234.71 * LAArray(a))
+
             ArmsBilatArray(a) = RAArray(a) + LAArray(a)
             vGRFBilatArray(a) = RFArray(a) + LFArray(a)
         Next
     End Sub
 
     Public Sub calculateLegDerivatives(ByVal firstPeakFrame As Integer, ByVal endSTSFrame As Integer)
-        ' Find first peak
-        ' First take derivative
-        ' @TODO Why is this done AFTER the VOLTAGES are converted to FORCES?
         For i = firstPeakFrame To endSTSFrame
             RFDeriv(i) = Math.Abs((RFArray_v(i + 40) - RFArray_v(i - 40)) / (80 * 0.001))
             LFDeriv(i) = Math.Abs((LFArray_v(i + 40) - LFArray_v(i - 40)) / (80 * 0.001))

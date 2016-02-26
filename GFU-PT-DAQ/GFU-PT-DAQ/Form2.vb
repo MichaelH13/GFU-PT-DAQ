@@ -3,34 +3,34 @@
 Public Class Form2
 
     Public Enum FORM_STATE As Integer
+        NEW_TEST
         RUN_TEST
         DECIDE_AUTO_POINTS
-        PICK_START_FRAME
-        NEW_TEST
-        SAVE_TEST
-    End Enum
-
-    Public Enum POINTS_STATE As Integer
-        SELECT_NONE
         SELECT_START_FRAME
         SELECT_END_FRAME
         SELECT_FIRST_MINIMA
         SELECT_BILATERAL_PEAK
         SELECT_SECOND_MINIMA
         SELECT_SEAT_OFF
+        SHOW_POINTS
+        SAVE_TEST
     End Enum
 
     Public frmState As Integer = FORM_STATE.NEW_TEST
-    Public pointsState As Integer = POINTS_STATE.SELECT_NONE
     Public xStart As Double
     Public xEnd As Double
     Public yStart As Double
     Public yEnd As Double
 
+    Public xchartcoord As Integer
+    Public ychartcoord As Integer
+
     Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         frmState = FORM_STATE.NEW_TEST
         reloadChart()
+        samplingRate = Me.clkSamplingRate.Interval
         Me.pgbTestStatus.Visible = False
+        totalSamples = getTotalSamplesInTest()
     End Sub
 
     Dim myDAQ As New MccDaq.MccBoard(0)
@@ -54,10 +54,8 @@ Public Class Form2
     Dim dataValueC5 As System.Int16
     Dim engUnitC5 As Single
 
-    Dim samplingRate As Double = getSamplingRate()
-    Dim secondsPerTest As Double = getSecondsPerTest()
     Dim timeCounter As Double
-    Dim totalSamples As Double = getTotalSamplesInTest()
+    Dim totalSamples As Double
 
     Private Sub clkSamplingRate_Tick(ByVal sender As Object, ByVal e As System.EventArgs) Handles clkSamplingRate.Tick
         If (timeCounter >= totalSamples) Then
@@ -80,9 +78,8 @@ Public Class Form2
             listTimes.Add(timeCounter)
             timeCounter += 1
             Me.pgbTestStatus.Value = CInt((timeCounter / totalSamples) * 100.0)
-
             ' Hide the progress bar and see if the user wants to select their own points.
-            If (Me.pgbTestStatus.Value >= totalSamples) Then
+            If (timeCounter >= totalSamples) Then
                 Me.pgbTestStatus.Visible = False
                 If Not calibrateDevice Then frmState = FORM_STATE.DECIDE_AUTO_POINTS Else frmState = FORM_STATE.NEW_TEST
             End If
@@ -225,16 +222,48 @@ Public Class Form2
     End Sub
 
     Private Sub Chart1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Chart1.Click
-        If (frmState = FORM_STATE.RUN_TEST) Then frmState = FORM_STATE.PICK_START_FRAME
-        If (frmState = FORM_STATE.PICK_START_FRAME) Then
 
-            While (Not confirmPoint("Start of Test"))
-                xStart = CDbl(Me.xCoord.Text)
-                yStart = CDbl(Me.yCoord.Text)
-            End While
+        ' Now confirm the selection with the user.
+        Select Case (frmState)
+            Case FORM_STATE.SELECT_START_FRAME
+                If (confirmPoint("Start of Test")) Then
+                    startSTSFrame = xchartcoord
+                    frmState = FORM_STATE.SELECT_END_FRAME
+                End If
 
-            frmState = FORM_STATE.SAVE_TEST
-        End If
+            Case FORM_STATE.SELECT_END_FRAME
+                If (confirmPoint("End of Test")) Then
+                    endSTSFrame = xchartcoord
+                    frmState = FORM_STATE.SELECT_FIRST_MINIMA
+                End If
+
+            Case FORM_STATE.SELECT_FIRST_MINIMA
+                If (confirmPoint("First Minima")) Then
+                    firstPeakFrame = xchartcoord
+                    frmState = FORM_STATE.SELECT_BILATERAL_PEAK
+                End If
+
+            Case FORM_STATE.SELECT_BILATERAL_PEAK
+                If (confirmPoint("Bilateral Peak")) Then
+                    secondPeakFrame = xchartcoord
+                    frmState = FORM_STATE.SELECT_SECOND_MINIMA
+                End If
+
+            Case FORM_STATE.SELECT_SECOND_MINIMA
+                If (confirmPoint("Second Minima")) Then
+                    thirdPeakFrame = xchartcoord
+                    frmState = FORM_STATE.SELECT_SEAT_OFF
+                End If
+
+            Case FORM_STATE.SELECT_SEAT_OFF
+                If (confirmPoint("Seat Off")) Then
+                    seatOffFrame = xchartcoord
+                    frmState = FORM_STATE.SHOW_POINTS
+                End If
+
+            Case Else
+                MsgBox(getDefaultErrorFormatting("Click-state"), vbOKOnly + vbExclamation, getAppTitle())
+        End Select
 
     End Sub
 
@@ -244,28 +273,61 @@ Public Class Form2
 
     Private Sub Chart1_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Chart1.MouseMove
         Dim result As HitTestResult = Chart1.HitTest(e.X, e.Y)
-        Dim xchartcoord As Integer
-        Dim ychartcoord As Integer
 
         If (frmState = FORM_STATE.DECIDE_AUTO_POINTS) Then
             If (MsgBox("Would you like to select your own points?", vbYesNo, getAppTitle()) = vbYes) Then
-                frmState = POINTS_STATE.SELECT_START_FRAME
+                frmState = FORM_STATE.SELECT_START_FRAME
             Else
                 frmState = FORM_STATE.SAVE_TEST
             End If
         End If
 
         'Only trigger event if we are picking points, otherwise ignore, and reset values on our textboxes and what not.
-        If (frmState >= FORM_STATE.PICK_START_FRAME And frmState < FORM_STATE.SAVE_TEST) Then
+        If (frmState >= FORM_STATE.SELECT_START_FRAME And frmState <= FORM_STATE.SAVE_TEST) Then
 
+            ' If the click was successful, then figure out where it was.
             If result.PointIndex > 0 Then
-                Dim dp As DataPoint = Chart1.Series(0).Points(result.PointIndex)
+
+                Dim dp As DataPoint = Chart1.Series(6).Points(result.PointIndex)
                 ToolTip1.SetToolTip(Chart1, "X:" & dp.XValue & " Y:" & dp.YValues(0))
                 Me.xCoord.Text = dp.XValue
                 Me.yCoord.Text = dp.YValues(0)
                 xchartcoord = dp.XValue
                 ychartcoord = dp.YValues(0)
+
+                ' Now confirm the selection with the user.
+                Select Case (frmState)
+                    Case FORM_STATE.SELECT_START_FRAME
+                    Case FORM_STATE.SELECT_END_FRAME
+                    Case FORM_STATE.SELECT_FIRST_MINIMA
+                    Case FORM_STATE.SELECT_BILATERAL_PEAK
+                    Case FORM_STATE.SELECT_SECOND_MINIMA
+                    Case FORM_STATE.SELECT_SEAT_OFF
+                    Case FORM_STATE.SHOW_POINTS
+
+                        'Now clip the data and set the time to percent STS for plotting
+                        lengthSTS = endSTSFrame - startSTSFrame
+
+                        takeDerivativesOfvGRF()
+                        calculateLegDerivatives(firstPeakFrame, endSTSFrame)
+                        convertDataFromVoltagesToWeight()
+
+                        rightLegPeakFrame = getRightLegPeakFrame(firstPeakFrame, thirdPeakFrame)
+                        MsgBox("Right Leg Peak Frame: " & rightLegPeakFrame, vbInformation + vbSystemModal, getAppTitle())
+                        leftLegPeakFrame = getLeftLegPeakFrame(firstPeakFrame, thirdPeakFrame)
+                        MsgBox("Left Leg Peak Frame: " & leftLegPeakFrame, vbInformation + vbSystemModal, getAppTitle())
+                        rightLegAvgForce = getRightLegAvgForce(seatOffFrame, endSTSFrame)
+                        MsgBox("Right Leg Avg Force: " & rightLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
+                        leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
+                        MsgBox("Left Leg Avg Force: " & leftLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
+                        frmState = FORM_STATE.SAVE_TEST
+                End Select
+                'Else
+                '    MsgBox(getDefaultErrorFormatting("selecting point on chart"), vbExclamation + vbSystemModal, getAppTitle())
             End If
+
+
+
         End If
     End Sub
 
@@ -354,4 +416,8 @@ Public Class Form2
 
         Return sum / list.Count
     End Function
+
+    Private Sub btnCancelTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelTest.Click
+        frmState = FORM_STATE.NEW_TEST
+    End Sub
 End Class

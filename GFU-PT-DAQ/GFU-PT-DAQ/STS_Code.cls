@@ -117,7 +117,6 @@ Public Class STS_Code
             Dim ArmsIndicator = 0
             Dim RAPeakForceFrame = 0
             Dim LAPeakForceFrame = 0
-            Dim samplesPerSecond As Integer = getSamplingRate()
 
             ' This section grabs the peak data from the trials
             ' we start with the same process as for the bilateral data which is used to detect the global events
