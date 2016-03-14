@@ -16,6 +16,7 @@ Public Class Form2
         SAVE_TEST
     End Enum
 
+    Public arrays As Short()()
     Public frmState As Integer = FORM_STATE.NEW_TEST
     Public xStart As Double
     Public xEnd As Double
@@ -28,7 +29,7 @@ Public Class Form2
     Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         frmState = FORM_STATE.NEW_TEST
         reloadChart()
-        samplingRate = Me.clkSamplingRate.Interval
+        samplingRate = 1000 / Me.clkSamplingRate.Interval
         Me.pgbTestStatus.Visible = False
         totalSamples = getTotalSamplesInTest()
     End Sub
@@ -61,6 +62,11 @@ Public Class Form2
         If (timeCounter >= totalSamples) Then
             clkSamplingRate.Stop()
             clkSamplingRate.Dispose()
+
+            For i = 1 To listLeftLeg.Count
+                listBilateral.Add(listRightLeg(i - 1) + listLeftLeg(i - 1))
+            Next
+
             reloadChart()
 
             ' Update the calibration values if we are doing a calibration run.
@@ -86,7 +92,23 @@ Public Class Form2
         End If
     End Sub
 
+    Public Sub getVoltages(ByRef theBoard As MccDaq.MccBoard, ByVal channel As Integer, ByRef voltages As Short(), ByVal time As Integer, ByVal voltagesToGet As Integer)
+        Dim voltageRange As MccDaq.Range = MccDaq.Range.Bip10Volts
+
+        Dim dataValue As System.Int16
+        Dim engUnit As Single
+
+        For i = 0 To voltagesToGet
+            theBoard.AIn(channel, voltageRange, dataValue)
+            voltages(i) = engUnit
+        Next i
+
+    End Sub
+
+
     Private Sub getSample()
+
+
         ' If we are doing a calibration, then simply take whatever values we get.
         ' Otherwise use the established offsets that we have previously obtained.
         If (calibrateDevice) Then
@@ -113,8 +135,6 @@ Public Class Form2
             myDAQ.AIn(5, voltageRange, dataValueC5)
             myDAQ.ToEngUnits(voltageRange, dataValueC5, engUnitC5)
             listSeat.Add(engUnitC5)
-
-            listBilateral.Add(listRightLeg(timeCounter - 1) + listLeftLeg(timeCounter - 1))
         Else
             myDAQ.AIn(0, voltageRange, dataValueC0)
             myDAQ.ToEngUnits(voltageRange, dataValueC0, engUnitC0)
@@ -139,8 +159,6 @@ Public Class Form2
             myDAQ.AIn(5, voltageRange, dataValueC5)
             myDAQ.ToEngUnits(voltageRange, dataValueC5, engUnitC5)
             listSeat.Add(engUnitC5 - seatOffset)
-
-            listBilateral.Add(listRightLeg(timeCounter - 1) + listLeftLeg(timeCounter - 1))
         End If
     End Sub
 
@@ -321,6 +339,16 @@ Public Class Form2
                         leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
                         MsgBox("Left Leg Avg Force: " & leftLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
                         frmState = FORM_STATE.SAVE_TEST
+
+                        ''Dim FileName As String = "C:\DAQ\test_run.txt"
+                        ''Dim listsToWriteToFile As ArrayList = New ArrayList
+
+                        ''listsToWriteToFile.Add("Right Leg Peak Frame: " & rightLegPeakFrame)
+                        ''listsToWriteToFile.Add("Left Leg Peak Frame: " & leftLegPeakFrame)
+                        ''listsToWriteToFile.Add("Right Leg Avg Force: " & rightLegAvgForce)
+                        ''listsToWriteToFile.Add("Left Leg Avg Force: " & leftLegAvgForce)
+
+                        ''IO.File.WriteAllLines(FileName, listsToWriteToFile)
                 End Select
                 'Else
                 '    MsgBox(getDefaultErrorFormatting("selecting point on chart"), vbExclamation + vbSystemModal, getAppTitle())
@@ -382,12 +410,28 @@ Public Class Form2
 
     Private Sub btnRunTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunTest.Click
         If (frmState = FORM_STATE.NEW_TEST) Then
-            timeCounter = 1                         ' Initialize our timeCounter.
-            clearLists()                            ' Clear our list of datapoints so we don't get inaccurate data.
-            initProgressBar()                       ' Initialize our progress bar (i.e. set min/max values and make it visible).
-            clkSamplingRate.Start()                 ' Finally, start our sampling timer.
+            Dim theTickSize As MccDaq.CounterTickSize = MccDaq.CounterTickSize.Tick20pt83ns
+            Dim ptr As IntPtr = MccDaq.MccService.WinBufAlloc32Ex(10000)
+
+            ' Set up the Daq to scan the channels appropriately.
+            For i = 1 To 6
+                myDAQ.CConfigScan(i, MccDaq.CounterMode.StopAtMax, MccDaq.CounterDebounceTime.DebounceNone, MccDaq.CounterDebounceMode.TriggerAfterStable, MccDaq.CounterEdgeDetection.RisingEdge, theTickSize, vbNull)
+            Next i
+
+            timeCounter = 1
+            initProgressBar()                       ' Initialize our progress bar (i.e. set min/max values and make it visible
+            clkSamplingRate.Start()
         End If
     End Sub
+
+    'Private Sub btnRunTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunTest.Click
+    '    If (frmState = FORM_STATE.NEW_TEST) Then
+    '        timeCounter = 1                         ' Initialize our timeCounter.
+    '        clearLists()                            ' Clear our list of datapoints so we don't get inaccurate data.
+    '        initProgressBar()                       ' Initialize our progress bar (i.e. set min/max values and make it visible).
+    '        clkSamplingRate.Start()                 ' Finally, start our sampling timer.
+    '    End If
+    'End Sub
 
     Private Sub clearLists()
         listTimes.Clear()

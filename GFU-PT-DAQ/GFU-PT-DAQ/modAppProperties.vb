@@ -9,7 +9,8 @@
     Public listSeat As New ArrayList
     Public listBilateral As New ArrayList
 
-    Public samplingRate As Integer
+
+    Public samplingRate As Double
 
     Public rightArmOffset As Double
     Public leftArmOffset As Double
