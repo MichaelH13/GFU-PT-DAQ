@@ -1,4 +1,6 @@
 ﻿Imports System.Windows.Forms.DataVisualization.Charting
+Imports System.Runtime.InteropServices
+Imports System.IO
 
 Public Class Form2
 
@@ -193,6 +195,11 @@ Public Class Form2
         seriesGround.Name = "Ground"
         seriesSeat.Name = "Seat"
         seriesBilateral.Name = "Bilateral"
+
+        listTimes = New ArrayList
+        For i = 1 To 10001
+            listTimes.Add(i)
+        Next
 
         ' Add each series to our list of series.
         sList.Add(seriesRightArm)
@@ -411,18 +418,54 @@ Public Class Form2
     Private Sub btnRunTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunTest.Click
         If (frmState = FORM_STATE.NEW_TEST) Then
             Dim theTickSize As MccDaq.CounterTickSize = MccDaq.CounterTickSize.Tick20pt83ns
-            Dim ptr As IntPtr = MccDaq.MccService.WinBufAlloc32Ex(10000)
+            Dim ptr As IntPtr = MccDaq.MccService.WinBufAlloc32Ex(60000)
+            Dim sampleRate As Integer = 1000
 
-            ' Set up the Daq to scan the channels appropriately.
-            For i = 1 To 6
-                myDAQ.CConfigScan(i, MccDaq.CounterMode.StopAtMax, MccDaq.CounterDebounceTime.DebounceNone, MccDaq.CounterDebounceMode.TriggerAfterStable, MccDaq.CounterEdgeDetection.RisingEdge, theTickSize, vbNull)
+
+            'MsgBox("Config err: " & myDAQ.CConfigScan(0, MccDaq.CounterMode.StopAtMax, MccDaq.CounterDebounceTime.DebounceNone, MccDaq.CounterDebounceMode.TriggerAfterStable, MccDaq.CounterEdgeDetection.RisingEdge, theTickSize, vbNull).Message)
+
+
+            MsgBox("Err info: " & myDAQ.FileAInScan(0, 5, 60000, 1000, voltageRange, "test.txt", MccDaq.ScanOptions.Default).Message)
+            'MsgBox("Err info: " & myDAQ.AInScan(0, 5, 10000, 10, voltageRange, ptr, MccDaq.ScanOptions.Default).Message)
+
+            ' Consider: MccDaq.ScanOptions.BurstIO, MccDaq.ScanOptions.BurstMode
+            'MsgBox("Err info: " & myDAQ.CInScan(0, 5, getTotalSamplesInTest(), sampleRate, ptr, MccDaq.ScanOptions.Default).Message)
+            ' myDAQ.AInScan(0, 5, 60000, sampleRate, voltageRange, ptr, MccDaq.ScanOptions.Default)
+
+            Dim fStream As New FileStream("test.txt", FileMode.Open, FileAccess.Read)
+
+            Dim br As New BinaryReader(fStream)
+
+            ' Throw away first bit of crap
+            Dim data As Byte() = br.ReadBytes(54)
+            Dim value As Int16
+
+            For i = 0 To 60000
+                value = br.ReadInt16()
+                If (i Mod 6 = 0) Then
+                    listRightArm.Add(value)
+                ElseIf (i Mod 6 = 1) Then
+                    listLeftArm.Add(value)
+                ElseIf (i Mod 6 = 2) Then
+                    listRightLeg.Add(value)
+                ElseIf (i Mod 6 = 3) Then
+                    listLeftLeg.Add(value)
+                ElseIf (i Mod 6 = 4) Then
+                    listGround.Add(value)
+                ElseIf (i Mod 6 = 5) Then
+                    listSeat.Add(value)
+                End If
             Next i
 
-            timeCounter = 1
-            initProgressBar()                       ' Initialize our progress bar (i.e. set min/max values and make it visible
-            clkSamplingRate.Start()
+            reloadChart()
+            clearLists()
+            MsgBox("Done")
+            'timeCounter = 1
+            'initProgressBar()                       ' Initialize our progress bar (i.e. set min/max values and make it visible)
+            'clkSamplingRate.Start()
         End If
     End Sub
+
 
     'Private Sub btnRunTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunTest.Click
     '    If (frmState = FORM_STATE.NEW_TEST) Then
