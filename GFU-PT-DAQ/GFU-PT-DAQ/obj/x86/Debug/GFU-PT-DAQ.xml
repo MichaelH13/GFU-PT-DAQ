@@ -19,6 +19,24 @@ GFU-PT-DAQ
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
+</member><member name="M:GFU_PT_DAQ.Form2.drawChart">
+	<summary>
+ Sub that is to be called to draw the chart when the data is updated.
+ </summary>
+	<remarks>
+ All series are derived from the lists of data points (Legs, arms, seat), 
+ except for the listTimes list, which is created based on the 
+ length of the aforementioned lists.
+ </remarks>
+</member><member name="M:GFU_PT_DAQ.Form2.Chart1_Click(System.Object,System.EventArgs)">
+	<summary>
+ Sub that is triggered by a click event on the chart.
+ Used to input program variables to calculate various slopes and forces.
+ </summary>
+	<remarks>
+ @input xchartcoord
+ This variable is set in the selection function "Chart1_MouseMove"
+ </remarks>
 </member>
 </members>
 </doc>

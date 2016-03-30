@@ -12,24 +12,23 @@
 
     Public samplingRate As Double
 
+    ' NOTE: no bilateralOffset because we have already offset the legs appropriately.
     Public rightArmOffset As Double
     Public leftArmOffset As Double
     Public rightLegOffset As Double
     Public leftLegOffset As Double
     Public groundOffset As Double
     Public seatOffset As Double
-    ' NOTE no bilateralOffset because we offset the legs appropriately.
 
     Public calibrateDevice As Boolean
 
     Public Sub mapLists()
-        TimeArray = Array.ConvertAll(listTimes.ToArray, Function(s) Single.Parse(s))
-        RFArray = Array.ConvertAll(listRightLeg.ToArray, Function(s) Single.Parse(s))
-        LFArray = Array.ConvertAll(listLeftLeg.ToArray, Function(s) Single.Parse(s))
-        RAArray = Array.ConvertAll(listRightArm.ToArray, Function(s) Single.Parse(s))
-        LAArray = Array.ConvertAll(listLeftArm.ToArray, Function(s) Single.Parse(s))
-        SeatArray = Array.ConvertAll(listSeat.ToArray, Function(s) Single.Parse(s))
-
+        TimeArray = Array.ConvertAll(listTimes.ToArray, Function(s) Double.Parse(s))
+        RFArray = Array.ConvertAll(listRightLeg.ToArray, Function(s) Double.Parse(s))
+        LFArray = Array.ConvertAll(listLeftLeg.ToArray, Function(s) Double.Parse(s))
+        RAArray = Array.ConvertAll(listRightArm.ToArray, Function(s) Double.Parse(s))
+        LAArray = Array.ConvertAll(listLeftArm.ToArray, Function(s) Double.Parse(s))
+        SeatArray = Array.ConvertAll(listSeat.ToArray, Function(s) Double.Parse(s))
     End Sub
 
     Public Function getAppTitle() As String
@@ -65,6 +64,4 @@
 
         Return listDataPoints
     End Function
-
-
 End Module
