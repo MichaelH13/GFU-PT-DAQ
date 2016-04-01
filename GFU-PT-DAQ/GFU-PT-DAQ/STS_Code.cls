@@ -32,12 +32,10 @@ Public Class STS_Code
     Dim LFDeriv(0 To 10000) As Single
     Dim RADeriv(0 To 10000) As Single
     Dim LADeriv(0 To 10000) As Single
-    Dim PerSTS(0 To 10000) As Single
     Dim RFArray_v(0 To 10000) As Single
     Dim LFArray_v(0 To 10000) As Single
     Dim RAArray_v(0 To 10000) As Single
     Dim LAArray_v(0 To 10000) As Single
-    Dim Start50 As Integer
     Dim Finish50 As Integer
     Dim FirstPeak As Single
     Dim SecondPeak As Single
@@ -371,7 +369,6 @@ Public Class STS_Code
         Dim SeatArray(0 To 10000) As Single
         Dim vGRFBilatArray(0 To 10000) As Single
         Dim ArmsBilatArray(0 To 10000) As Single
-        Dim PerSTS(0 To 10000) As Single
         Dim s = 0
         Dim count = 0
         Dim seatoffFrame = 0

@@ -28,7 +28,7 @@ GFU-PT-DAQ
  except for the listTimes list, which is created based on the 
  length of the aforementioned lists.
  </remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.Chart1_Click(System.Object,System.EventArgs)">
+</member><member name="M:GFU_PT_DAQ.Form2.STSChart_Click(System.Object,System.EventArgs)">
 	<summary>
  Sub that is triggered by a click event on the chart.
  Used to input program variables to calculate various slopes and forces.

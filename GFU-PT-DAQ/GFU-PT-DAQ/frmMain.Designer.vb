@@ -23,10 +23,10 @@ Partial Class Form2
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
-        Me.Chart1 = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Me.STSChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.btnRunTest = New System.Windows.Forms.Button()
         Me.clkSamplingRate = New System.Windows.Forms.Timer(Me.components)
         Me.btnSave = New System.Windows.Forms.Button()
@@ -36,25 +36,26 @@ Partial Class Form2
         Me.pgbTestStatus = New System.Windows.Forms.ProgressBar()
         Me.btnCalibrateDevice = New System.Windows.Forms.Button()
         Me.btnCancelTest = New System.Windows.Forms.Button()
-        Me.btnCalibrateWeight = New System.Windows.Forms.Button()
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.btnResetPickoff = New System.Windows.Forms.Button()
+        Me.frmSaveTest = New System.Windows.Forms.SaveFileDialog()
+        CType(Me.STSChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
-        'Chart1
+        'STSChart
         '
-        ChartArea3.Name = "ChartArea1"
-        Me.Chart1.ChartAreas.Add(ChartArea3)
-        Legend3.Name = "Legend1"
-        Me.Chart1.Legends.Add(Legend3)
-        Me.Chart1.Location = New System.Drawing.Point(1, -1)
-        Me.Chart1.Name = "Chart1"
-        Series3.ChartArea = "ChartArea1"
-        Series3.Legend = "Legend1"
-        Series3.Name = "Series1"
-        Me.Chart1.Series.Add(Series3)
-        Me.Chart1.Size = New System.Drawing.Size(1070, 555)
-        Me.Chart1.TabIndex = 1
-        Me.Chart1.Text = "Chart1"
+        ChartArea1.Name = "ChartArea1"
+        Me.STSChart.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.STSChart.Legends.Add(Legend1)
+        Me.STSChart.Location = New System.Drawing.Point(1, -1)
+        Me.STSChart.Name = "STSChart"
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.STSChart.Series.Add(Series1)
+        Me.STSChart.Size = New System.Drawing.Size(1070, 555)
+        Me.STSChart.TabIndex = 1
+        Me.STSChart.Text = "Chart1"
         '
         'btnRunTest
         '
@@ -118,24 +119,24 @@ Partial Class Form2
         Me.btnCancelTest.Name = "btnCancelTest"
         Me.btnCancelTest.Size = New System.Drawing.Size(136, 34)
         Me.btnCancelTest.TabIndex = 8
-        Me.btnCancelTest.Text = "Cancel Test"
+        Me.btnCancelTest.Text = "Cancel"
         Me.btnCancelTest.UseVisualStyleBackColor = True
         '
-        'btnCalibrateWeight
+        'btnResetPickoff
         '
-        Me.btnCalibrateWeight.Location = New System.Drawing.Point(218, 669)
-        Me.btnCalibrateWeight.Name = "btnCalibrateWeight"
-        Me.btnCalibrateWeight.Size = New System.Drawing.Size(136, 34)
-        Me.btnCalibrateWeight.TabIndex = 9
-        Me.btnCalibrateWeight.Text = "Calibrate Weights"
-        Me.btnCalibrateWeight.UseVisualStyleBackColor = True
+        Me.btnResetPickoff.Location = New System.Drawing.Point(654, 669)
+        Me.btnResetPickoff.Name = "btnResetPickoff"
+        Me.btnResetPickoff.Size = New System.Drawing.Size(136, 34)
+        Me.btnResetPickoff.TabIndex = 9
+        Me.btnResetPickoff.Text = "Reset Pickoff"
+        Me.btnResetPickoff.UseVisualStyleBackColor = True
         '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1071, 739)
-        Me.Controls.Add(Me.btnCalibrateWeight)
+        Me.Controls.Add(Me.btnResetPickoff)
         Me.Controls.Add(Me.btnCancelTest)
         Me.Controls.Add(Me.btnCalibrateDevice)
         Me.Controls.Add(Me.pgbTestStatus)
@@ -143,16 +144,16 @@ Partial Class Form2
         Me.Controls.Add(Me.xCoord)
         Me.Controls.Add(Me.btnSave)
         Me.Controls.Add(Me.btnRunTest)
-        Me.Controls.Add(Me.Chart1)
+        Me.Controls.Add(Me.STSChart)
         Me.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Name = "Form2"
         Me.Text = "Sit-To-Stand 5000"
-        CType(Me.Chart1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.STSChart, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
-    Friend WithEvents Chart1 As System.Windows.Forms.DataVisualization.Charting.Chart
+    Friend WithEvents STSChart As System.Windows.Forms.DataVisualization.Charting.Chart
     Friend WithEvents btnRunTest As System.Windows.Forms.Button
     Friend WithEvents clkSamplingRate As System.Windows.Forms.Timer
     Friend WithEvents btnSave As System.Windows.Forms.Button
@@ -162,5 +163,6 @@ Partial Class Form2
     Friend WithEvents pgbTestStatus As System.Windows.Forms.ProgressBar
     Friend WithEvents btnCalibrateDevice As System.Windows.Forms.Button
     Friend WithEvents btnCancelTest As System.Windows.Forms.Button
-    Friend WithEvents btnCalibrateWeight As System.Windows.Forms.Button
+    Friend WithEvents btnResetPickoff As System.Windows.Forms.Button
+    Friend WithEvents frmSaveTest As System.Windows.Forms.SaveFileDialog
 End Class

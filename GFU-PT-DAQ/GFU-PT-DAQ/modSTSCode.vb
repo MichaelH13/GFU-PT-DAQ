@@ -6,27 +6,50 @@
     Public startSTSFrame As Integer = INVALID
     Public endSTSFrame As Integer = INVALID
 
-    ' Selected/Calculated Peak variables.
-    Public firstMinima As Integer = INVALID
-    Public bilateralPeak As Integer = INVALID
-    Public secondMinima As Integer = INVALID
+    ' Bilateral variables.
+    Public bilateralFirstMinimaFrame As Integer = INVALID
+    Public bilateralPeakFrame As Integer = INVALID
+    Public bilateralSecondMinimaFrame As Integer = INVALID
 
-    ' Calculated Peak variables
-    Public rightLegPeakFrame As Integer = INVALID
+    ' Left leg variables.
+    Public leftLegFirstMinimaFrame As Integer = INVALID
     Public leftLegPeakFrame As Integer = INVALID
+    Public leftLegSecondMinimaFrame As Integer = INVALID
+
+    ' Right leg variables.
+    Public rightLegFirstMinimaFrame As Integer = INVALID
+    Public rightLegPeakFrame As Integer = INVALID
+    Public rightLegSecondMinimaFrame As Integer = INVALID
+
+    ' Left arm variables.
+    Public leftArmStartFrame As Integer = INVALID
+    Public leftArmPeakFrame As Integer = INVALID
+    Public leftArmEndFrame As Integer = INVALID
+
+    ' Right arm variables.
+    Public rightArmStartFrame As Integer = INVALID
+    Public rightArmPeakFrame As Integer = INVALID
+    Public rightArmEndFrame As Integer = INVALID
+
+    ' Seat off variable.
+    Public seatOffFrame As Integer = INVALID
 
     ' Average Forces
     Public leftLegAvgForce As Integer = INVALID
     Public rightLegAvgForce As Integer = INVALID
 
-    Public seatOffFrame As Integer = INVALID
     Public lengthSTS As Integer = INVALID
 
     Public TimeArray(0 To 10000) As Double
+
+    ' Right, Left Leg arrays.
     Public RFArray(0 To 10000) As Double
     Public LFArray(0 To 10000) As Double
+
+    ' Right, Left Arm arrays.
     Public RAArray(0 To 10000) As Double
     Public LAArray(0 To 10000) As Double
+
     Public SeatArray(0 To 10000) As Double
     Public vGRFBilatArray(0 To 10000) As Double ' RFArray + LFArray
     Public ArmsBilatArray(0 To 10000) As Double ' RAArray + LAArray
@@ -34,29 +57,24 @@
     Public vGRFDeriv(0 To 10000) As Double
     Public ArmsvGRFsum(0 To 10000) As Double
     Public ArmsvGRFDeriv(0 To 10000) As Double
+
+    ' Derivative arrays.
     Public RFDeriv(0 To 10000) As Double
     Public LFDeriv(0 To 10000) As Double
     Public RADeriv(0 To 10000) As Double
     Public LADeriv(0 To 10000) As Double
-    Public PerSTS(0 To 10000) As Double
-    Public RFArray_v(0 To 10000) As Double
-    Public LFArray_v(0 To 10000) As Double
-    Public RAArray_v(0 To 10000) As Double
-    Public LAArray_v(0 To 10000) As Double
 
-    Public Start50 As Integer = INVALID
-    Public Finish50 As Integer = INVALID
-    Public FirstPeak As Single = INVALID
-    Public SecondPeak As Single = INVALID
-    Public ThridPeak As Single = INVALID
-    Public LFPeakForce As Single = INVALID
-    Public RFPeakForce As Single = INVALID
-    Public RAPeakFOrce As Single = INVALID
-    Public LAPeakForce As Single = INVALID
-    Public RDeltaTime25_50 As Single = INVALID
-    Public LDeltaTime25_50 As Single = INVALID
-    Public RDeltaForce As Single = INVALID
-    Public LDeltaForce As Single = INVALID
+    Public FirstPeak As Double = INVALID
+    Public SecondPeak As Double = INVALID
+    Public ThirdPeak As Double = INVALID
+    Public LFPeakForce As Double = INVALID
+    Public RFPeakForce As Double = INVALID
+    Public RAPeakFOrce As Double = INVALID
+    Public LAPeakForce As Double = INVALID
+    Public RDeltaTime25_50 As Double = INVALID
+    Public LDeltaTime25_50 As Double = INVALID
+    Public RDeltaForce As Double = INVALID
+    Public LDeltaForce As Double = INVALID
 
     Public RAArea As Double = INVALID
     Public LAArea As Double = INVALID
@@ -74,12 +92,12 @@
         takeDerivativesOfvGRF()
         startSTSFrame = getStartSTSFrame()
         endSTSFrame = getEndSTSFrame(startSTSFrame)
-        firstMinima = getFirstPeakFrame(startSTSFrame)
-        bilateralPeak = getSecondPeakFrame(startSTSFrame)
-        secondMinima = getThirdPeakFrame(startSTSFrame)
+        bilateralFirstMinimaFrame = getFirstPeakFrame(startSTSFrame)
+        bilateralPeakFrame = getSecondPeakFrame(startSTSFrame)
+        bilateralSecondMinimaFrame = getThirdPeakFrame(startSTSFrame)
         seatOffFrame = getSeatOffFrame() '<------------- @TODO Probably isn't correct, fix later.
 
-        If (Not validData(startSTSFrame, endSTSFrame, seatOffFrame, bilateralPeak)) Then
+        If (Not validData(startSTSFrame, endSTSFrame, seatOffFrame, bilateralPeakFrame)) Then
             MsgBox("Data invalid, go to manual pickoff.", vbApplicationModal + vbOKOnly + vbInformation, getAppTitle())
             clearProgramVariables()
         End If
@@ -87,10 +105,10 @@
         'Now clip the data and set the time to percent STS for plotting
         lengthSTS = endSTSFrame - startSTSFrame
 
-        calculateLegDerivatives(firstMinima, endSTSFrame)
+        calculateLegDerivatives(bilateralFirstMinimaFrame, endSTSFrame)
         convertDataFromVoltagesToWeight()
-        rightLegPeakFrame = getRightLegPeakFrame(firstMinima, secondMinima)
-        leftLegPeakFrame = getLeftLegPeakFrame(firstMinima, secondMinima)
+        rightLegPeakFrame = getRightLegPeakFrame(bilateralFirstMinimaFrame, bilateralSecondMinimaFrame)
+        leftLegPeakFrame = getLeftLegPeakFrame(bilateralFirstMinimaFrame, bilateralSecondMinimaFrame)
         rightLegAvgForce = getRightLegAvgForce(seatOffFrame, endSTSFrame)
         leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
 
@@ -98,11 +116,9 @@
     End Sub
 
     Public Sub clearProgramVariables()
-        Start50 = INVALID
-        Finish50 = INVALID
         FirstPeak = INVALID
         SecondPeak = INVALID
-        ThridPeak = INVALID
+        ThirdPeak = INVALID
         LFPeakForce = INVALID
         RFPeakForce = INVALID
         RAPeakFOrce = INVALID
@@ -115,9 +131,9 @@
         endSTSFrame = INVALID
 
         ' Selected/Calculated Peak variables.
-        firstMinima = INVALID
-        bilateralPeak = INVALID
-        secondMinima = INVALID
+        bilateralFirstMinimaFrame = INVALID
+        bilateralPeakFrame = INVALID
+        bilateralSecondMinimaFrame = INVALID
 
         ' Calculated Peak variables
         rightLegPeakFrame = INVALID
@@ -129,11 +145,6 @@
 
         seatOffFrame = INVALID
         lengthSTS = INVALID
-    End Sub
-
-    ' Run STS, figure out how to call the form to get the data arrays later.
-    Public Sub runTest()
-        ' Do some test stuff...
     End Sub
 
     ' Get the number of STS tests to run.
@@ -150,11 +161,13 @@
 
         For s = 100 To 9000
             ' Vertical Ground Reaction Force.
-            vGRFDeriv(s) = Math.Abs((vGRFBilatArray(s + sampleCalcOffset) - vGRFBilatArray(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0)))
+            'vGRFDeriv(s) = Math.Abs((vGRFBilatArray(s + sampleCalcOffset) - vGRFBilatArray(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0)))
+            vGRFDeriv(s) = (vGRFBilatArray(s + sampleCalcOffset) - vGRFBilatArray(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0))
 
 
             ArmsvGRFsum(s) = (RAArray(s) + LAArray(s))
-            ArmsvGRFDeriv(s) = Math.Abs((ArmsvGRFsum(s + sampleCalcOffset) - ArmsvGRFsum(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0)))
+            'ArmsvGRFDeriv(s) = Math.Abs((ArmsvGRFsum(s + sampleCalcOffset) - ArmsvGRFsum(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0)))
+            ArmsvGRFDeriv(s) = (ArmsvGRFsum(s + sampleCalcOffset) - ArmsvGRFsum(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0))
         Next
     End Sub
 
@@ -408,12 +421,12 @@
     Public Function validData(ByVal startSTSframe As Integer, ByVal endSTSFrame As Integer, ByVal seatoffFrame As Integer, ByVal secondPeakFrame As Integer) As Boolean
         Dim endSTS As Double = 0
         endSTS = (endSTSFrame / 1000)
-        MsgBox("The start frame is " & startSTSframe)
+        'MsgBox("The start frame is " & startSTSframe)
         'MsgBox ("The first minima is " & FirstPeakFrame)
-        MsgBox("The seat off point is " & seatoffFrame)
-        MsgBox("The peak force after seat off is " & secondPeakFrame)
+        'MsgBox("The seat off point is " & seatoffFrame)
+        'MsgBox("The peak force after seat off is " & secondPeakFrame)
         'MsgBox ("The next minima after the peak is " & ThirdPeakFrame)
-        MsgBox("The end of the rising phase is " & endSTSFrame)
+        'MsgBox("The end of the rising phase is " & endSTSFrame)
 
         ' @TODO Eventually we'll signal invalid data, but for now
         ' we'll just return true every time.
@@ -421,26 +434,26 @@
     End Function
 
     Public Sub convertDataFromVoltagesToWeight()
-        Dim a As Integer = 0
-
         ' Multiply data by regressions to convert voltage to force
-        For a = 0 To 10000 - 1
+        For i = 0 To 10000 - 1
 
             ' Convert the data to calculate stuff 
-            RFArray(a) = (176.11 * RFArray(a))
-            LFArray(a) = (180.77 * LFArray(a))
-            RAArray(a) = (113.27 * RAArray(a))
-            LAArray(a) = (234.71 * LAArray(a))
+            RFArray(i) = (176.11 * RFArray(i))
+            LFArray(i) = (180.77 * LFArray(i))
+            RAArray(i) = (113.27 * RAArray(i))
+            LAArray(i) = (234.71 * LAArray(i))
 
-            ArmsBilatArray(a) = RAArray(a) + LAArray(a)
-            vGRFBilatArray(a) = RFArray(a) + LFArray(a)
+            ArmsBilatArray(i) = RAArray(i) + LAArray(i)
+            vGRFBilatArray(i) = RFArray(i) + LFArray(i)
         Next
     End Sub
 
     Public Sub calculateLegDerivatives(ByVal firstPeakFrame As Integer, ByVal endSTSFrame As Integer)
         For i = firstPeakFrame To endSTSFrame
-            RFDeriv(i) = Math.Abs((RFArray_v(i + 40) - RFArray_v(i - 40)) / (80 * (1.0 / 10000.0)))
-            LFDeriv(i) = Math.Abs((LFArray_v(i + 40) - LFArray_v(i - 40)) / (80 * (1.0 / 10000.0)))
+            'RFDeriv(i) = Math.Abs((RFArray_v(i + 40) - RFArray_v(i - 40)) / (80 * (1.0 / 10000.0)))
+            'LFDeriv(i) = Math.Abs((LFArray_v(i + 40) - LFArray_v(i - 40)) / (80 * (1.0 / 10000.0)))
+            RFDeriv(i) = (RFArray(i + 40) - RFArray(i - 40)) / (80 * (1.0 / 10000.0))
+            LFDeriv(i) = (LFArray(i + 40) - LFArray(i - 40)) / (80 * (1.0 / 10000.0))
         Next
     End Sub
 
@@ -476,53 +489,53 @@
 
     End Function
 
-    ' Calculate average Force for the Left Leg.
+    ' Calculate Average Force for the Left Leg.
     Public Function getLeftLegAvgForce(ByVal seatOffFrame As Integer, ByVal endSTSFrame As Integer) As Double
 
-        ' First sum the forces.
         Dim LFTotal As Double = 0
 
+        ' First sum the forces.
         For i = seatOffFrame To endSTSFrame
-            LFTotal = LFTotal + LFArray(i)
+            LFTotal += listLeftLeg(i)
         Next
 
         ' Then average them.
-        getLeftLegAvgForce = LFTotal / (endSTSFrame - seatOffFrame)
+        getLeftLegAvgForce = LFTotal / CDbl((endSTSFrame - seatOffFrame))
     End Function
 
-    ' Calculate average Force for the Right Leg.
+    ' Calculate Average Force for the Right Leg.
     Public Function getRightLegAvgForce(ByVal seatOffFrame As Integer, ByVal endSTSFrame As Integer) As Double
 
-        ' First sum the forces.
         Dim RFTotal As Double = 0
 
+        ' First sum the forces.
         For i = seatOffFrame To endSTSFrame
-            RFTotal = RFTotal + RFArray(i)
+            RFTotal += listRightLeg(i)
         Next
 
         ' Then average them.
-        getRightLegAvgForce = RFTotal / (endSTSFrame - seatOffFrame)
+        getRightLegAvgForce = RFTotal / CDbl((endSTSFrame - seatOffFrame))
     End Function
 
-    Public Function getRFArea() As Integer
+    Public Function getRFArea() As Double
 
         'Calculate area for rising phase.
         RFArea = 0
 
         For i = seatOffFrame To endSTSFrame
-            RFArea = RFArea + (RFArray(i) / (endSTSFrame - seatOffFrame))
+            RFArea += (RFArray(i) / (endSTSFrame - seatOffFrame))
         Next
 
-        getRFArea = LFArea
+        getRFArea = RFArea
     End Function
 
-    Public Function getLFArea() As Integer
+    Public Function getLFArea() As Double
 
         'Calculate area for rising phase.
         LFArea = 0
 
         For i = seatOffFrame To endSTSFrame
-            LFArea = RFArea + (LFArray(i) / (endSTSFrame - seatOffFrame))
+            LFArea += (LFArray(i) / (endSTSFrame - seatOffFrame))
         Next
 
         getLFArea = LFArea
