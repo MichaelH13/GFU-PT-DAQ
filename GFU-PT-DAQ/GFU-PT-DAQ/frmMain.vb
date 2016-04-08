@@ -86,7 +86,7 @@ Public Class Form2
         listOfDataPoints.Add(listLeftLeg)
         listOfDataPoints.Add(listGround)
         listOfDataPoints.Add(listSeat)
-        listOfDataPoints.Add(listBilateral)
+        listOfDataPoints.Add(listBilateralLegs)
 
         ' Set the name appropriately for each series.
         seriesRightArm.Name = "Right Arm"
@@ -328,14 +328,29 @@ Public Class Form2
                         lengthSTS = endSTSFrame - startSTSFrame
 
                         takeDerivativesOfvGRF()
-                        calculateLegDerivatives(bilateralFirstMinimaFrame, endSTSFrame)
+                        calculateLegDerivatives(startSTSFrame, endSTSFrame)
                         'convertDataFromVoltagesToWeight()
 
                         MsgBox("Left Leg Peak Frame: " & leftLegPeakFrame, vbInformation + vbSystemModal, getAppTitle())
+
                         rightLegAvgForce = getRightLegAvgForce(seatOffFrame, endSTSFrame)
                         MsgBox("Right Leg Avg Force: " & rightLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
+
                         leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
                         MsgBox("Left Leg Avg Force: " & leftLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
+
+                        MsgBox("getBilateral25To50Slope(): " & getBilateral25To50Slope(), vbInformation + vbSystemModal, getAppTitle())
+
+                        MsgBox("getBilateralSlope(): " & getBilateralSlope(), vbInformation + vbSystemModal, getAppTitle())
+
+                        MsgBox("getRightArmArea(): " & getRightArmArea(), vbInformation + vbSystemModal, getAppTitle())
+
+                        MsgBox("getLeftArmArea(): " & getLeftArmArea(), vbInformation + vbSystemModal, getAppTitle())
+
+                        MsgBox("getBilateralAreaSeatOffToEnd(): " & getBilateralAreaSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
+
+                        MsgBox("getBilateralAverageSeatOffToEnd(): " & getBilateralAverageSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
+
                         frmState = FORM_STATE.SAVE_TEST
                 End Select
             End If
@@ -460,7 +475,7 @@ Public Class Form2
                     If (applyOffsets) Then listGround.Add(value - groundOffset) Else listGround.Add(value)
 
                     ' Add Bilateral
-                    listBilateral.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
+                    listBilateralLegs.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
                 End If
             Next i
         Catch e As Exception
@@ -468,6 +483,8 @@ Public Class Form2
             fStream.Close()
             br.Close()
         End Try
+
+        If (totalPoints = 10000) Then convertDataFromVoltagesToWeight()
     End Sub
 
     Private Sub clearLists()
@@ -478,7 +495,7 @@ Public Class Form2
         listLeftLeg.Clear()
         listGround.Clear()
         listSeat.Clear()
-        listBilateral.Clear()
+        listBilateralLegs.Clear()
     End Sub
 
     Private Sub initProgressBar()

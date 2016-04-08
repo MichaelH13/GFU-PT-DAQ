@@ -7,8 +7,7 @@
     Public listLeftLeg As New ArrayList
     Public listGround As New ArrayList
     Public listSeat As New ArrayList
-    Public listBilateral As New ArrayList
-
+    Public listBilateralLegs As New ArrayList
 
     Public samplingRate As Double
 
@@ -60,7 +59,7 @@
         listDataPoints.Add(listLeftLeg)
         listDataPoints.Add(listGround)
         listDataPoints.Add(listSeat)
-        listDataPoints.Add(listBilateral)
+        listDataPoints.Add(listBilateralLegs)
 
         Return listDataPoints
     End Function

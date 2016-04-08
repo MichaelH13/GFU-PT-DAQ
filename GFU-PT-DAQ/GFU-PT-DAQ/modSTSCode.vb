@@ -59,8 +59,9 @@
     Public ArmsvGRFDeriv(0 To 10000) As Double
 
     ' Derivative arrays.
-    Public RFDeriv(0 To 10000) As Double
-    Public LFDeriv(0 To 10000) As Double
+    Public arrayRightLegDerivative(0 To 10000) As Double
+    Public arrayLeftLegDerivative(0 To 10000) As Double
+    Public arrayBilateralLegsDerivative(0 To 10000) As Double
     Public RADeriv(0 To 10000) As Double
     Public LADeriv(0 To 10000) As Double
 
@@ -92,9 +93,9 @@
         takeDerivativesOfvGRF()
         startSTSFrame = getStartSTSFrame()
         endSTSFrame = getEndSTSFrame(startSTSFrame)
-        bilateralFirstMinimaFrame = getFirstPeakFrame(startSTSFrame)
-        bilateralPeakFrame = getSecondPeakFrame(startSTSFrame)
-        bilateralSecondMinimaFrame = getThirdPeakFrame(startSTSFrame)
+        bilateralFirstMinimaFrame = getBilateralFirstMinimaFrame(startSTSFrame)
+        bilateralPeakFrame = getBilateralPeakFrame(startSTSFrame)
+        bilateralSecondMinimaFrame = getBilateralSecondMinimaFrame(startSTSFrame)
         seatOffFrame = getSeatOffFrame() '<------------- @TODO Probably isn't correct, fix later.
 
         If (Not validData(startSTSFrame, endSTSFrame, seatOffFrame, bilateralPeakFrame)) Then
@@ -105,7 +106,7 @@
         'Now clip the data and set the time to percent STS for plotting
         lengthSTS = endSTSFrame - startSTSFrame
 
-        calculateLegDerivatives(bilateralFirstMinimaFrame, endSTSFrame)
+        calculateLegDerivatives(startSTSFrame, endSTSFrame)
         convertDataFromVoltagesToWeight()
         rightLegPeakFrame = getRightLegPeakFrame(bilateralFirstMinimaFrame, bilateralSecondMinimaFrame)
         leftLegPeakFrame = getLeftLegPeakFrame(bilateralFirstMinimaFrame, bilateralSecondMinimaFrame)
@@ -276,7 +277,7 @@
     End Function
 
     ' Find the First Peak Frame.
-    Public Function getFirstPeakFrame(ByVal startSTSFrame As Integer) As Integer
+    Public Function getBilateralFirstMinimaFrame(ByVal startSTSFrame As Integer) As Integer
         Dim count As Integer = 0
         Dim s As Integer = 0
         Dim firstPeakFrame As Integer = 0
@@ -295,11 +296,11 @@
             End If
         Next
 
-        getFirstPeakFrame = firstPeakFrame
+        getBilateralFirstMinimaFrame = firstPeakFrame
     End Function
 
     ' Find the Second Peak Frame.
-    Public Function getSecondPeakFrame(ByVal startSTSFrame As Integer) As Integer
+    Public Function getBilateralPeakFrame(ByVal startSTSFrame As Integer) As Integer
         Dim count As Integer = 0
         Dim s As Integer = 0
         Dim firstPeakFrame As Integer = 0
@@ -330,11 +331,11 @@
             End If
         Next
 
-        getSecondPeakFrame = secondPeakFrame
+        getBilateralPeakFrame = secondPeakFrame
     End Function
 
     ' Find the Third Peak Frame.
-    Public Function getThirdPeakFrame(ByVal startSTSFrame As Integer) As Integer
+    Public Function getBilateralSecondMinimaFrame(ByVal startSTSFrame As Integer) As Integer
         Dim count As Integer = 0
         Dim s As Integer = 0
         Dim firstPeakFrame As Integer = 0
@@ -377,7 +378,7 @@
             End If
         Next
 
-        getThirdPeakFrame = thirdPeakFrame
+        getBilateralSecondMinimaFrame = thirdPeakFrame
     End Function
 
     Public Function getSeatOffFrame() As Integer
@@ -433,27 +434,44 @@
         validData = True
     End Function
 
+    ''' <summary>
+    ''' Conversions from Dr. Houck.
+    ''' Right Wii Plate y=0.0544(signal) +3.3621
+    ''' Left Wii Plate y=0.0574(signal)-0.2194
+    ''' Right Arm  y = 0.1878(signal)+56.123
+    ''' Left Arm  y = 0.2222(signal)+32.94
+    ''' </summary>
+    ''' <remarks></remarks>
     Public Sub convertDataFromVoltagesToWeight()
         ' Multiply data by regressions to convert voltage to force
         For i = 0 To 10000 - 1
 
-            ' Convert the data to calculate stuff 
-            RFArray(i) = (176.11 * RFArray(i))
-            LFArray(i) = (180.77 * LFArray(i))
-            RAArray(i) = (113.27 * RAArray(i))
-            LAArray(i) = (234.71 * LAArray(i))
+            ' Convert the legs data
+            listRightLeg(i) = (0.0544 * listRightLeg(i)) + 3.3621
+            listLeftLeg(i) = (0.0574 * listLeftLeg(i)) - 0.2194
 
-            ArmsBilatArray(i) = RAArray(i) + LAArray(i)
-            vGRFBilatArray(i) = RFArray(i) + LFArray(i)
+            ' Vertical ground reaction force for legs and bilateral.
+            vGRFBilatArray(i) = listLeftLeg(i) + listRightLeg(i)
+            listBilateralLegs(i) = listLeftLeg(i) + listRightLeg(i)
+
+            ' Convert the arms data
+            listRightArm(i) = (0.1878 * listRightArm(i)) + 56.123
+            listLeftArm(i) = (0.2222 * listLeftArm(i)) + 32.94
+            ArmsBilatArray(i) = listLeftArm(i) + listRightArm(i)
         Next
     End Sub
 
-    Public Sub calculateLegDerivatives(ByVal firstPeakFrame As Integer, ByVal endSTSFrame As Integer)
-        For i = firstPeakFrame To endSTSFrame
-            'RFDeriv(i) = Math.Abs((RFArray_v(i + 40) - RFArray_v(i - 40)) / (80 * (1.0 / 10000.0)))
-            'LFDeriv(i) = Math.Abs((LFArray_v(i + 40) - LFArray_v(i - 40)) / (80 * (1.0 / 10000.0)))
-            RFDeriv(i) = (RFArray(i + 40) - RFArray(i - 40)) / (80 * (1.0 / 10000.0))
-            LFDeriv(i) = (LFArray(i + 40) - LFArray(i - 40)) / (80 * (1.0 / 10000.0))
+    ''' <summary>
+    ''' Calculates the leg derivatives for the slope.
+    ''' </summary>
+    ''' <param name="startSTSFrame"></param>
+    ''' <param name="endSTSFrame"></param>
+    ''' <remarks></remarks>
+    Public Sub calculateLegDerivatives(ByVal startSTSFrame As Integer, ByVal endSTSFrame As Integer)
+        For i = startSTSFrame To endSTSFrame
+            arrayRightLegDerivative(i) = ((listRightLeg(i + 40) - listRightLeg(i - 40)) / 80) * (1.0 / 10000.0)
+            arrayLeftLegDerivative(i) = ((listLeftLeg(i + 40) - listLeftLeg(i - 40)) / 80) * (1.0 / 10000.0)
+            arrayBilateralLegsDerivative(i) = ((listBilateralLegs(i + 40) - listBilateralLegs(i - 40)) / 80) * (1.0 / 10000.0)
         Next
     End Sub
 
@@ -465,7 +483,7 @@
         getRightLegPeakFrame = INVALID
 
         For i = (firstPeakFrame + firstPeakFrameOffset) To (thirdPeakFrame + thirdPeakFrameOffset)
-            If RFDeriv(i) < 1 Then ' @TODO: Maybe = 0?
+            If arrayRightLegDerivative(i) < 1 Then ' @TODO: Maybe = 0?
                 getRightLegPeakFrame = i
                 Exit For
             End If
@@ -481,7 +499,7 @@
         getLeftLegPeakFrame = INVALID
 
         For i = (firstMinima + firstMinimaOffset) To (secondMinima + secondMinimaOffset)
-            If LFDeriv(i) < 1 Then ' @TODO: Maybe = 0?
+            If arrayLeftLegDerivative(i) < 1 Then ' @TODO: Maybe = 0?
                 getLeftLegPeakFrame = i
                 Exit For
             End If
@@ -489,7 +507,13 @@
 
     End Function
 
-    ' Calculate Average Force for the Left Leg.
+    ''' <summary>
+    '''  Calculate Average Force for the Left Leg.
+    ''' </summary>
+    ''' <param name="seatOffFrame"></param>
+    ''' <param name="endSTSFrame"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function getLeftLegAvgForce(ByVal seatOffFrame As Integer, ByVal endSTSFrame As Integer) As Double
 
         Dim LFTotal As Double = 0
@@ -503,7 +527,13 @@
         getLeftLegAvgForce = LFTotal / CDbl((endSTSFrame - seatOffFrame))
     End Function
 
-    ' Calculate Average Force for the Right Leg.
+    ''' <summary>
+    ''' Calculate Average Force for the Right Leg.
+    ''' </summary>
+    ''' <param name="seatOffFrame"></param>
+    ''' <param name="endSTSFrame"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Public Function getRightLegAvgForce(ByVal seatOffFrame As Integer, ByVal endSTSFrame As Integer) As Double
 
         Dim RFTotal As Double = 0
@@ -539,5 +569,109 @@
         Next
 
         getLFArea = LFArea
+    End Function
+
+    Public Function getBilateralSlope() As Double
+        getBilateralSlope = getSlopeForList(listBilateralLegs, bilateralFirstMinimaFrame, bilateralPeakFrame)
+    End Function
+
+    Public Function getBilateral25To50Slope() As Double
+        getBilateral25To50Slope = getSlopeForList(listBilateralLegs, bilateralFirstMinimaFrame + (0.25 * (bilateralPeakFrame - bilateralFirstMinimaFrame)), bilateralFirstMinimaFrame + (0.5 * (bilateralPeakFrame - bilateralFirstMinimaFrame)))
+    End Function
+
+    Public Function getRightArmArea() As Double
+        getRightArmArea = getAreaForList(listRightArm, rightArmStartFrame, rightArmEndFrame)
+    End Function
+
+    Public Function getLeftArmArea() As Double
+        getLeftArmArea = getAreaForList(listLeftArm, leftArmStartFrame, leftArmEndFrame)
+    End Function
+
+    Public Function getBilateralAreaSeatOffToEnd() As Double
+        getBilateralAreaSeatOffToEnd = getAreaForList(listBilateralLegs, seatOffFrame, endSTSFrame)
+    End Function
+
+    Public Function getBilateralAverageSeatOffToEnd() As Double
+        getBilateralAverageSeatOffToEnd = getAverageForList(listBilateralLegs, seatOffFrame, endSTSFrame)
+    End Function
+
+    ''' <summary>
+    ''' Gets the area of a range (specified by the fromIndex and the 
+    ''' toIndex) of an array that is passed in the function by reference.
+    ''' </summary>
+    ''' <param name="array"></param>
+    ''' <param name="fromIndex"></param>
+    ''' <param name="toIndex"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function getAreaForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer)
+        Dim area As Double = 0
+
+        For i = fromIndex To toIndex
+            area += array(i) / (toIndex - fromIndex)
+        Next
+
+        getAreaForArray = area
+    End Function
+
+    ''' <summary>
+    ''' Gets the average of a range (specified by the fromIndex and 
+    ''' toIndex) of an array that is passed into the function.
+    ''' </summary>
+    ''' <param name="array"></param>
+    ''' <param name="fromIndex"></param>
+    ''' <param name="toIndex"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function getAverageForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer)
+        Dim sum As Double = 0
+
+        For i = fromIndex To toIndex
+            sum += array(i)
+        Next
+
+        getAverageForArray = sum / (toIndex - fromIndex)
+    End Function
+
+    ''' <summary>
+    ''' Gets the area of a range (specified by the fromIndex and the 
+    ''' toIndex) of a list that is passed in the function by reference.
+    ''' </summary>
+    ''' <param name="list"></param>
+    ''' <param name="fromIndex"></param>
+    ''' <param name="toIndex"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function getAreaForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer)
+        Dim area As Double = 0
+
+        For i = fromIndex To toIndex
+            area += list(i) / (toIndex - fromIndex)
+        Next
+
+        getAreaForList = area
+    End Function
+
+    ''' <summary>
+    ''' Gets the average of a range (specified by the fromIndex and the 
+    ''' toIndex) of a list that is passed in the function by reference.
+    ''' </summary>
+    ''' <param name="list"></param>
+    ''' <param name="fromIndex"></param>
+    ''' <param name="toIndex"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Public Function getAverageForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer)
+        Dim sum As Double = 0
+
+        For i = fromIndex To toIndex
+            sum += list(i)
+        Next
+
+        getAverageForList = sum / (toIndex - fromIndex)
+    End Function
+
+    Public Function getSlopeForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer)
+        getSlopeForList = (list(toIndex) - list(fromIndex)) / (toIndex - fromIndex)
     End Function
 End Module

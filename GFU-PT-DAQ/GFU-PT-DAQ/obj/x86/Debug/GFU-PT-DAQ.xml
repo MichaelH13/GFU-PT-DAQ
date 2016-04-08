@@ -6,7 +6,79 @@ GFU-PT-DAQ
 </name>
 </assembly>
 <members>
-<member name="P:GFU_PT_DAQ.My.Resources.Resources.ResourceManager">
+<member name="M:GFU_PT_DAQ.STSCode.convertDataFromVoltagesToWeight">
+	<summary>
+ Conversions from Dr. Houck.
+ Right Wii Plate y=0.0544(signal) +3.3621
+ Left Wii Plate y=0.0574(signal)-0.2194
+ Right Arm  y = 0.1878(signal)+56.123
+ Left Arm  y = 0.2222(signal)+32.94
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.calculateLegDerivatives(System.Int32,System.Int32)">
+	<summary>
+ Calculates the leg derivatives for the slope.
+ </summary>
+	<param name="startSTSFrame"></param>
+	<param name="endSTSFrame"></param>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.getLeftLegAvgForce(System.Int32,System.Int32)">
+	<summary>
+  Calculate Average Force for the Left Leg.
+ </summary>
+	<param name="seatOffFrame"></param>
+	<param name="endSTSFrame"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.getRightLegAvgForce(System.Int32,System.Int32)">
+	<summary>
+ Calculate Average Force for the Right Leg.
+ </summary>
+	<param name="seatOffFrame"></param>
+	<param name="endSTSFrame"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.getAreaForArray(System.Double[]@,System.Int32,System.Int32)">
+	<summary>
+ Gets the area of a range (specified by the fromIndex and the 
+ toIndex) of an array that is passed in the function by reference.
+ </summary>
+	<param name="array"></param>
+	<param name="fromIndex"></param>
+	<param name="toIndex"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.getAverageForArray(System.Double[]@,System.Int32,System.Int32)">
+	<summary>
+ Gets the average of a range (specified by the fromIndex and 
+ toIndex) of an array that is passed into the function.
+ </summary>
+	<param name="array"></param>
+	<param name="fromIndex"></param>
+	<param name="toIndex"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.getAreaForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
+	<summary>
+ Gets the area of a range (specified by the fromIndex and the 
+ toIndex) of a list that is passed in the function by reference.
+ </summary>
+	<param name="list"></param>
+	<param name="fromIndex"></param>
+	<param name="toIndex"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.getAverageForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
+	<summary>
+ Gets the average of a range (specified by the fromIndex and the 
+ toIndex) of a list that is passed in the function by reference.
+ </summary>
+	<param name="list"></param>
+	<param name="fromIndex"></param>
+	<param name="toIndex"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GFU_PT_DAQ.My.Resources.Resources.ResourceManager">
 	<summary>
   Returns the cached ResourceManager instance used by this class.
 </summary>
