@@ -90,7 +90,6 @@
 
         'For testCount = 0 To totalTests
         '    runTest()
-        takeDerivativesOfvGRF()
         startSTSFrame = getStartSTSFrame()
         endSTSFrame = getEndSTSFrame(startSTSFrame)
         bilateralFirstMinimaFrame = getBilateralFirstMinimaFrame(startSTSFrame)
@@ -110,8 +109,8 @@
         convertDataFromVoltagesToWeight()
         rightLegPeakFrame = getRightLegPeakFrame(bilateralFirstMinimaFrame, bilateralSecondMinimaFrame)
         leftLegPeakFrame = getLeftLegPeakFrame(bilateralFirstMinimaFrame, bilateralSecondMinimaFrame)
-        rightLegAvgForce = getRightLegAvgForce(seatOffFrame, endSTSFrame)
-        leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
+        rightLegAvgForce = getRightLegAvgForce()
+        leftLegAvgForce = getLeftLegAvgForce()
 
         'Next testCount
     End Sub
@@ -152,25 +151,6 @@
     Public Function getTestCount() As Integer
         getTestCount = CInt(InputBox("Number of trials to be processed:"))
     End Function
-
-    ' Take derivatives of vGRF
-    Public Sub takeDerivativesOfvGRF()
-
-        Dim s As Integer
-        Dim samplesPerDeriv As Integer = 80
-        Dim sampleCalcOffset As Integer = samplesPerDeriv / 2
-
-        For s = 100 To 9000
-            ' Vertical Ground Reaction Force.
-            'vGRFDeriv(s) = Math.Abs((vGRFBilatArray(s + sampleCalcOffset) - vGRFBilatArray(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0)))
-            vGRFDeriv(s) = (vGRFBilatArray(s + sampleCalcOffset) - vGRFBilatArray(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0))
-
-
-            ArmsvGRFsum(s) = (RAArray(s) + LAArray(s))
-            'ArmsvGRFDeriv(s) = Math.Abs((ArmsvGRFsum(s + sampleCalcOffset) - ArmsvGRFsum(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0)))
-            ArmsvGRFDeriv(s) = (ArmsvGRFsum(s + sampleCalcOffset) - ArmsvGRFsum(s - sampleCalcOffset)) / (samplesPerDeriv * (1.0 / 10000.0))
-        Next
-    End Sub
 
     ' Find the Start of the STS movement
     Public Function getStartSTSFrame() As Integer
@@ -435,7 +415,7 @@
     End Function
 
     ''' <summary>
-    ''' Conversions from Dr. Houck.
+    ''' Conversions from Dr. Houck from 4/8/2016
     ''' Right Wii Plate y=0.0544(signal) +3.3621
     ''' Left Wii Plate y=0.0574(signal)-0.2194
     ''' Right Arm  y = 0.1878(signal)+56.123
@@ -455,8 +435,8 @@
             listBilateralLegs(i) = listLeftLeg(i) + listRightLeg(i)
 
             ' Convert the arms data
-            listRightArm(i) = (0.1878 * listRightArm(i)) + 56.123
-            listLeftArm(i) = (0.2222 * listLeftArm(i)) + 32.94
+            listRightArm(i) = (0.01878 * listRightArm(i)) + 56.123
+            listLeftArm(i) = (0.02222 * listLeftArm(i)) + 32.94
             ArmsBilatArray(i) = listLeftArm(i) + listRightArm(i)
         Next
     End Sub
@@ -508,122 +488,142 @@
     End Function
 
     ''' <summary>
-    '''  Calculate Average Force for the Left Leg.
+    ''' Gets the average force for the left leg from the the seat off frame 
+    ''' to the end of the test.
     ''' </summary>
-    ''' <param name="seatOffFrame"></param>
-    ''' <param name="endSTSFrame"></param>
-    ''' <returns></returns>
+    ''' <returns>Returns the average force for the left leg from the the seat off frame 
+    ''' to the end of the test as a Double. Units returned are Newtons.</returns>
     ''' <remarks></remarks>
-    Public Function getLeftLegAvgForce(ByVal seatOffFrame As Integer, ByVal endSTSFrame As Integer) As Double
-
-        Dim LFTotal As Double = 0
-
-        ' First sum the forces.
-        For i = seatOffFrame To endSTSFrame
-            LFTotal += listLeftLeg(i)
-        Next
-
-        ' Then average them.
-        getLeftLegAvgForce = LFTotal / CDbl((endSTSFrame - seatOffFrame))
+    Public Function getLeftLegAvgForce() As Double
+        getLeftLegAvgForce = getAverageForList(listLeftLeg, seatOffFrame, endSTSFrame)
     End Function
 
     ''' <summary>
-    ''' Calculate Average Force for the Right Leg.
+    ''' Gets the average force for the right leg from the the seat off frame 
+    ''' to the end of the test.
     ''' </summary>
-    ''' <param name="seatOffFrame"></param>
-    ''' <param name="endSTSFrame"></param>
-    ''' <returns></returns>
+    ''' <returns>Returns the average force for the right leg from the the seat off frame 
+    ''' to the end of the test as a Double. Units returned are Newtons.</returns>
     ''' <remarks></remarks>
-    Public Function getRightLegAvgForce(ByVal seatOffFrame As Integer, ByVal endSTSFrame As Integer) As Double
-
-        Dim RFTotal As Double = 0
-
-        ' First sum the forces.
-        For i = seatOffFrame To endSTSFrame
-            RFTotal += listRightLeg(i)
-        Next
-
-        ' Then average them.
-        getRightLegAvgForce = RFTotal / CDbl((endSTSFrame - seatOffFrame))
+    Public Function getRightLegAvgForce() As Double
+        getRightLegAvgForce = getAverageForList(listRightLeg, seatOffFrame, endSTSFrame)
     End Function
 
-    Public Function getRFArea() As Double
-
-        'Calculate area for rising phase.
-        RFArea = 0
-
-        For i = seatOffFrame To endSTSFrame
-            RFArea += (RFArray(i) / (endSTSFrame - seatOffFrame))
-        Next
-
-        getRFArea = RFArea
-    End Function
-
-    Public Function getLFArea() As Double
-
-        'Calculate area for rising phase.
-        LFArea = 0
-
-        For i = seatOffFrame To endSTSFrame
-            LFArea += (LFArray(i) / (endSTSFrame - seatOffFrame))
-        Next
-
-        getLFArea = LFArea
-    End Function
-
+    ''' <summary>
+    ''' Gets the bilateral legs slope from the first minima 
+    ''' to the bilateral peak.
+    ''' </summary>
+    ''' <returns>Returns the bilateral legs slope from the first minima 
+    ''' to the bilateral peak as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
     Public Function getBilateralSlope() As Double
-        getBilateralSlope = getSlopeForList(listBilateralLegs, bilateralFirstMinimaFrame, bilateralPeakFrame)
-    End Function
-
-    Public Function getBilateral25To50Slope() As Double
-        getBilateral25To50Slope = getSlopeForList(listBilateralLegs, bilateralFirstMinimaFrame + (0.25 * (bilateralPeakFrame - bilateralFirstMinimaFrame)), bilateralFirstMinimaFrame + (0.5 * (bilateralPeakFrame - bilateralFirstMinimaFrame)))
-    End Function
-
-    Public Function getRightArmArea() As Double
-        getRightArmArea = getAreaForList(listRightArm, rightArmStartFrame, rightArmEndFrame)
-    End Function
-
-    Public Function getLeftArmArea() As Double
-        getLeftArmArea = getAreaForList(listLeftArm, leftArmStartFrame, leftArmEndFrame)
-    End Function
-
-    Public Function getBilateralAreaSeatOffToEnd() As Double
-        getBilateralAreaSeatOffToEnd = getAreaForList(listBilateralLegs, seatOffFrame, endSTSFrame)
-    End Function
-
-    Public Function getBilateralAverageSeatOffToEnd() As Double
-        getBilateralAverageSeatOffToEnd = getAverageForList(listBilateralLegs, seatOffFrame, endSTSFrame)
+        getBilateralSlope = getSlopeForList(listBilateralLegs, bilateralFirstMinimaFrame, bilateralPeakFrame) * 1000 ' Multiply by 1000 to convert to seconds.
     End Function
 
     ''' <summary>
-    ''' Gets the area of a range (specified by the fromIndex and the 
-    ''' toIndex) of an array that is passed in the function by reference.
+    ''' Gets the bilateral legs slope from 25% to 50% of the magnitude of the
+    ''' first minima to the bilateral peak.
     ''' </summary>
-    ''' <param name="array"></param>
-    ''' <param name="fromIndex"></param>
-    ''' <param name="toIndex"></param>
-    ''' <returns></returns>
+    ''' <returns>Returns the bilateral legs slope from 25% to 50% of the magnitude of the
+    ''' first minima to the bilateral peak as a Double. Units returned are Newtons/Second.</returns>
     ''' <remarks></remarks>
-    Public Function getAreaForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer)
+    Public Function getBilateral25To50Slope() As Double
+        ' Subtract the bilateral peak from the bilateral first minima to get the rise between the points.
+        Dim bilateralRise As Double = listBilateralLegs(bilateralPeakFrame) - listBilateralLegs(bilateralFirstMinimaFrame)
+        Dim twentyFivePercentValue As Double = (bilateralRise / 4) + listBilateralLegs(bilateralFirstMinimaFrame)
+        Dim fiftyPercentValue As Double = (bilateralRise / 2) + listBilateralLegs(bilateralFirstMinimaFrame)
+        Dim twentyFivePercentFrame As Integer
+        Dim fiftyPercentFrame As Integer
+
+        For i = bilateralFirstMinimaFrame To bilateralPeakFrame
+            If (listBilateralLegs(i) > twentyFivePercentValue) Then
+                twentyFivePercentFrame = i
+                Exit For
+            End If
+        Next
+
+        For i = bilateralFirstMinimaFrame To bilateralPeakFrame
+            If (listBilateralLegs(i) > fiftyPercentValue) Then
+                fiftyPercentFrame = i
+                Exit For
+            End If
+        Next
+
+        getBilateral25To50Slope = getSlopeForList(listBilateralLegs, twentyFivePercentFrame, fiftyPercentFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+    End Function
+
+    ''' <summary>
+    ''' Gets the right arm area from the start of the right arm movement 
+    ''' to the end of the right arm movement.
+    ''' </summary>
+    ''' <returns>Returns the right arm area as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getRightArmArea() As Double
+        getRightArmArea = getAreaForList(listRightArm, rightArmStartFrame, rightArmEndFrame) / 1000 ' Convert to seconds
+    End Function
+
+    ''' <summary>
+    ''' Gets the left arm area from the start of the left arm movement 
+    ''' to the end of the left arm movement.
+    ''' </summary>
+    ''' <returns>Returns the left arm area as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getLeftArmArea() As Double
+        getLeftArmArea = getAreaForList(listLeftArm, leftArmStartFrame, leftArmEndFrame) / 1000 ' Convert to seconds
+    End Function
+
+    ''' <summary>
+    ''' Gets the bilateral legs area from the seat off point to the 
+    ''' end of the test.
+    ''' </summary>
+    ''' <returns>Returns the bilateral legs area from the seat off 
+    ''' point to the end of the test as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getBilateralAreaSeatOffToEnd() As Double
+        getBilateralAreaSeatOffToEnd = getAreaForList(listBilateralLegs, seatOffFrame, endSTSFrame) / 1000 ' Convert to seconds
+    End Function
+
+    ''' <summary>
+    ''' Gets the bilateral legs average value from the seat off point to the 
+    ''' end of the test.
+    ''' </summary>
+    ''' <returns>Returns the bilateral legs average value from the seat off 
+    ''' point to the end of the test as a Double. Units returned are Newtons.</returns>
+    ''' <remarks></remarks>
+    Public Function getBilateralLegsAverageSeatOffToEnd() As Double
+        getBilateralLegsAverageSeatOffToEnd = getAverageForList(listBilateralLegs, seatOffFrame, endSTSFrame)
+    End Function
+
+    ''' <summary>
+    ''' Gets the area of a range (specified by the fromIndex, inclusive, and the 
+    ''' toIndex, exclusive) of an array that is passed in the function by reference.
+    ''' </summary>
+    ''' <param name="array">The array to get the area of the range provided.</param>
+    ''' <param name="fromIndex">The starting index of the range, inclusive.</param>
+    ''' <param name="toIndex">The closing index of the range, exclusive.</param>
+    ''' <returns>The area for the range specified in the array as a Double.</returns>
+    ''' <remarks></remarks>
+    Public Function getAreaForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
         Dim area As Double = 0
 
         For i = fromIndex To toIndex
-            area += array(i) / (toIndex - fromIndex)
+            area += array(i)
         Next
 
         getAreaForArray = area
     End Function
 
     ''' <summary>
-    ''' Gets the average of a range (specified by the fromIndex and 
-    ''' toIndex) of an array that is passed into the function.
+    ''' Gets the average of a range (specified by the fromIndex, inclusive,
+    ''' and the toIndex, exclusive) of an array that is passed in the function 
+    ''' by reference.
     ''' </summary>
-    ''' <param name="array"></param>
-    ''' <param name="fromIndex"></param>
-    ''' <param name="toIndex"></param>
-    ''' <returns></returns>
+    ''' <param name="array">The array to get the average of the range provided.</param>
+    ''' <param name="fromIndex">The starting index of the range, inclusive.</param>
+    ''' <param name="toIndex">The closing index of the range, exclusive.</param>
+    ''' <returns>Returns the average of the range in the list specified as a Double.</returns>
     ''' <remarks></remarks>
-    Public Function getAverageForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer)
+    Public Function getAverageForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
         Dim sum As Double = 0
 
         For i = fromIndex To toIndex
@@ -634,34 +634,35 @@
     End Function
 
     ''' <summary>
-    ''' Gets the area of a range (specified by the fromIndex and the 
-    ''' toIndex) of a list that is passed in the function by reference.
+    ''' Gets the area of a range (specified by the fromIndex, inclusive, and the 
+    ''' toIndex, exclusive) of a list that is passed in the function by reference.
     ''' </summary>
-    ''' <param name="list"></param>
-    ''' <param name="fromIndex"></param>
-    ''' <param name="toIndex"></param>
-    ''' <returns></returns>
+    ''' <param name="list">The list to get the area of the range provided.</param>
+    ''' <param name="fromIndex">The starting index of the range, inclusive.</param>
+    ''' <param name="toIndex">The closing index of the range, exclusive.</param>
+    ''' <returns>The area for the range specified in the list as a Double.</returns>
     ''' <remarks></remarks>
     Public Function getAreaForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer)
         Dim area As Double = 0
 
         For i = fromIndex To toIndex
-            area += list(i) / (toIndex - fromIndex)
+            area += list(i)
         Next
 
         getAreaForList = area
     End Function
 
     ''' <summary>
-    ''' Gets the average of a range (specified by the fromIndex and the 
-    ''' toIndex) of a list that is passed in the function by reference.
+    ''' Gets the average of a range (specified by the fromIndex, inclusive,
+    ''' and the toIndex, exclusive) of a list that is passed in the function 
+    ''' by reference.
     ''' </summary>
-    ''' <param name="list"></param>
-    ''' <param name="fromIndex"></param>
-    ''' <param name="toIndex"></param>
-    ''' <returns></returns>
+    ''' <param name="list">The list to get the average of the range provided.</param>
+    ''' <param name="fromIndex">The starting index of the range, inclusive.</param>
+    ''' <param name="toIndex">The closing index of the range, exclusive.</param>
+    ''' <returns>Returns the average of the range in the list specified as a Double.</returns>
     ''' <remarks></remarks>
-    Public Function getAverageForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer)
+    Public Function getAverageForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
         Dim sum As Double = 0
 
         For i = fromIndex To toIndex
@@ -671,7 +672,27 @@
         getAverageForList = sum / (toIndex - fromIndex)
     End Function
 
-    Public Function getSlopeForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer)
-        getSlopeForList = (list(toIndex) - list(fromIndex)) / (toIndex - fromIndex)
+    ''' <summary>
+    ''' Gets the average of a list that is passed in the function by reference.
+    ''' </summary>
+    ''' <param name="list">The list to get the average value of.</param>
+    ''' <returns>The average value of the listas a Double.</returns>
+    ''' <remarks></remarks>
+    Public Function getAverageForList(ByRef list As ArrayList) As Double
+        getAverageForList = getAverageForList(list, 0, list.Count)
+    End Function
+
+    ''' <summary>
+    ''' Gets the slope of a range (specified by the fromIndex, inclusive, and the 
+    ''' toIndex, exclusive) of a list that is passed in the function by reference.
+    ''' The slope is returned in Newtons/milliseconds.
+    ''' </summary>
+    ''' <param name="list">The list to get the average of the range provided.</param>
+    ''' <param name="fromIndex">The starting index of the range, inclusive.</param>
+    ''' <param name="toIndex">The closing index of the range, exclusive.</param>
+    ''' <returns>Returns the slope (in Newtons/millisecond) of the range requested as a Double.</returns>
+    ''' <remarks></remarks>
+    Public Function getSlopeForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
+        getSlopeForList = ((list(toIndex) - list(fromIndex)) / (toIndex - fromIndex))
     End Function
 End Module

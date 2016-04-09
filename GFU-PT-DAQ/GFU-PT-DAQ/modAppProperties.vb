@@ -61,6 +61,10 @@
         listDataPoints.Add(listSeat)
         listDataPoints.Add(listBilateralLegs)
 
+        For i = 0 To 10000 - 1
+            listDataPoints(0)(i) = i
+        Next
+
         Return listDataPoints
     End Function
 End Module

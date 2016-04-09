@@ -8,7 +8,7 @@ GFU-PT-DAQ
 <members>
 <member name="M:GFU_PT_DAQ.STSCode.convertDataFromVoltagesToWeight">
 	<summary>
- Conversions from Dr. Houck.
+ Conversions from Dr. Houck from 4/8/2016
  Right Wii Plate y=0.0544(signal) +3.3621
  Left Wii Plate y=0.0574(signal)-0.2194
  Right Arm  y = 0.1878(signal)+56.123

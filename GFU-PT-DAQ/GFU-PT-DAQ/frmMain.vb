@@ -71,30 +71,30 @@ Public Class Form2
         Dim colors As New ArrayList
 
         ' Declare our series to add to our chart.
+        Dim seriesSeat As New Series
         Dim seriesRightArm As New Series
         Dim seriesLeftArm As New Series
         Dim seriesRightLeg As New Series
         Dim seriesLeftLeg As New Series
         Dim seriesGround As New Series
-        Dim seriesSeat As New Series
         Dim seriesBilateral As New Series
 
         ' Put our lists of points in a list (of lists).
+        listOfDataPoints.Add(listSeat)
         listOfDataPoints.Add(listRightArm)
         listOfDataPoints.Add(listLeftArm)
         listOfDataPoints.Add(listRightLeg)
         listOfDataPoints.Add(listLeftLeg)
         listOfDataPoints.Add(listGround)
-        listOfDataPoints.Add(listSeat)
         listOfDataPoints.Add(listBilateralLegs)
 
         ' Set the name appropriately for each series.
+        seriesSeat.Name = "Seat"
         seriesRightArm.Name = "Right Arm"
         seriesLeftArm.Name = "Left Arm"
         seriesRightLeg.Name = "Right Leg"
         seriesLeftLeg.Name = "Left Leg"
         seriesGround.Name = "Ground"
-        seriesSeat.Name = "Seat"
         seriesBilateral.Name = "Bilateral"
 
         ' Add in our timing information.
@@ -103,12 +103,12 @@ Public Class Form2
         Next
 
         ' Add each series to our list of series.
+        listOfSeries.Add(seriesSeat)
         listOfSeries.Add(seriesRightArm)
         listOfSeries.Add(seriesLeftArm)
         listOfSeries.Add(seriesRightLeg)
         listOfSeries.Add(seriesLeftLeg)
         listOfSeries.Add(seriesGround)
-        listOfSeries.Add(seriesSeat)
         listOfSeries.Add(seriesBilateral)
 
         ' Clear any previously charted information.
@@ -117,12 +117,12 @@ Public Class Form2
         ' Add each of the colors to our colors list (for displaying on the graph).
         ' NOTE: To change a color for a line, just change the color, 
         ' not the comment or the order in which the colors are added to the list.
+        colors.Add(Color.Black)         ' Seat
         colors.Add(Color.Red)           ' Right Arm
         colors.Add(Color.Blue)          ' Left Arm
         colors.Add(Color.Orange)        ' Right Leg
         colors.Add(Color.Pink)          ' Left Leg
         colors.Add(Color.Green)         ' Ground
-        colors.Add(Color.Black)         ' Seat
         colors.Add(Color.DarkMagenta)   ' Leg Bilateral (Right Leg + Left Leg)
 
         ' Iterate over each one of our lists.
@@ -327,16 +327,15 @@ Public Class Form2
                         'Now clip the data and set the time to percent STS for plotting
                         lengthSTS = endSTSFrame - startSTSFrame
 
-                        takeDerivativesOfvGRF()
                         calculateLegDerivatives(startSTSFrame, endSTSFrame)
                         'convertDataFromVoltagesToWeight()
 
                         MsgBox("Left Leg Peak Frame: " & leftLegPeakFrame, vbInformation + vbSystemModal, getAppTitle())
 
-                        rightLegAvgForce = getRightLegAvgForce(seatOffFrame, endSTSFrame)
+                        rightLegAvgForce = getRightLegAvgForce()
                         MsgBox("Right Leg Avg Force: " & rightLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
 
-                        leftLegAvgForce = getLeftLegAvgForce(seatOffFrame, endSTSFrame)
+                        leftLegAvgForce = getLeftLegAvgForce()
                         MsgBox("Left Leg Avg Force: " & leftLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
 
                         MsgBox("getBilateral25To50Slope(): " & getBilateral25To50Slope(), vbInformation + vbSystemModal, getAppTitle())
@@ -349,7 +348,7 @@ Public Class Form2
 
                         MsgBox("getBilateralAreaSeatOffToEnd(): " & getBilateralAreaSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
 
-                        MsgBox("getBilateralAverageSeatOffToEnd(): " & getBilateralAverageSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
+                        MsgBox("getBilateralAverageSeatOffToEnd(): " & getBilateralLegsAverageSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
 
                         frmState = FORM_STATE.SAVE_TEST
                 End Select
@@ -359,29 +358,43 @@ Public Class Form2
         End If
     End Sub
 
+    ''' <summary>
+    ''' Subroutine to handle when the user clicks the "Calibrate" button.
+    ''' We save off sets for each known channel to be applied when we 
+    ''' read in the values of a new test.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnCalibrateDevice_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCalibrateDevice.Click
 
         ' Only allow user to calibrate the device if we are ready to run a new test.
         If (frmState = FORM_STATE.NEW_TEST) Then
 
-            runScanAndPopulateLists(False, 500, "calibrate.txt")
+            runScanAndPopulateLists(False, 500, 6, "calibrate.txt")
 
-            rightArmOffset = getAvgFor(listRightArm)
-            leftArmOffset = getAvgFor(listLeftArm)
-            rightLegOffset = getAvgFor(listRightLeg)
-            leftLegOffset = getAvgFor(listLeftLeg)
-            seatOffset = getAvgFor(listSeat)
-            groundOffset = getAvgFor(listGround)
+            rightArmOffset = getAverageForList(listRightArm)
+            leftArmOffset = getAverageForList(listLeftArm)
+            rightLegOffset = getAverageForList(listRightLeg)
+            leftLegOffset = getAverageForList(listLeftLeg)
+            seatOffset = getAverageForList(listSeat)
+            groundOffset = getAverageForList(listGround)
 
             drawChart()
             MsgBox("Done")
         End If
     End Sub
 
+    ''' <summary>
+    ''' Subroutine to run a new STS test.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnRunTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRunTest.Click
         If (frmState = FORM_STATE.NEW_TEST) Then
 
-            runScanAndPopulateLists(True, 10000, "test.txt")
+            runScanAndPopulateLists(True, 10000, 6, "test.txt")
 
             drawChart()
 
@@ -389,18 +402,22 @@ Public Class Form2
                 frmState = FORM_STATE.SELECT_START_FRAME
                 selectPoint("Start of Test")
             Else
-                frmState = FORM_STATE.SAVE_TEST
+                frmState = FORM_STATE.NEW_TEST
             End If
         End If
     End Sub
 
+    ''' <summary>
+    ''' Saves the most recent test to a file that the user specifies.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
 
         Dim listDataPoints As ArrayList = getDataPoints()
-        Dim listsToWriteToFile(listDataPoints.Count) As String
+        Dim listsToWriteToFile(listDataPoints(0).Count) As String
         Dim idx As Integer = 0
-
-        ReDim listsToWriteToFile(listDataPoints(0).Count)
 
         ' Iterate over the data points.
         For i As Integer = 0 To listDataPoints(0).Count - 1 Step 1
@@ -414,20 +431,40 @@ Public Class Form2
             idx += 1
         Next
 
+        ' Set the default extension for the file to be saved.
+        frmSaveTest.DefaultExt = "*.csv"
+
         ' Save the Test to file.
         If (frmSaveTest.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
             IO.File.WriteAllLines(frmSaveTest.FileName, listsToWriteToFile)
             MsgBox("Saved file!", vbOKOnly, getAppTitle())
         End If
 
-
         clearLists()
         frmState = FORM_STATE.NEW_TEST
     End Sub
 
-    Private Sub runScanAndPopulateLists(ByVal applyOffsets As Boolean, ByVal totalPoints As Integer, ByVal fileName As String)
+    ''' <summary>
+    ''' Runs a scan using the DAQ and populate the lists of values 
+    ''' for each channel.
+    ''' </summary>
+    ''' <param name="isCalibrated"></param>
+    ''' Should be true if we have calibrated the device already, 
+    ''' false if we are not calibrated yet.
+    ''' 
+    ''' <param name="totalPoints"></param>
+    ''' The total number of data points we need to get for EACH 
+    ''' channel in numberOfChannels.
+    ''' 
+    ''' <param name="numberOfChannels"></param>
+    ''' The total number of channels we are reading in from 
+    ''' (starting at channel 0 and going to channel (numberOfChannels - 1)).
+    ''' 
+    ''' <param name="fileName"></param>
+    ''' The name of the file we need to read the data in from.
+    ''' <remarks></remarks>
+    Private Sub runScanAndPopulateLists(ByVal isCalibrated As Boolean, ByVal totalPoints As Integer, ByVal numberOfChannels As Integer, ByVal fileName As String)
         Dim theTickSize As MccDaq.CounterTickSize = MccDaq.CounterTickSize.Tick20pt83ns
-        Dim numberOfChannels As Integer = 6
         Dim ptr As IntPtr = MccDaq.MccService.WinBufAlloc32Ex(totalPoints * numberOfChannels)
         Dim sampleRate As Integer = 1000
         Dim er As MccDaq.ErrorInfo
@@ -438,11 +475,36 @@ Public Class Form2
         If (er.Value <> MccDaq.ErrorInfo.ErrorCode.NoErrors) Then
             MsgBox(er.Message, vbOKOnly + vbApplicationModal + vbExclamation, getAppTitle())
         Else
-            readInSTSTest(applyOffsets, totalPoints, numberOfChannels, fileName)
+            readInSTSTest(isCalibrated, totalPoints, numberOfChannels, fileName)
         End If
     End Sub
 
-    Private Sub readInSTSTest(ByVal applyOffsets As Boolean, ByVal totalPoints As Integer, ByVal numberOfChannels As Integer, ByVal fileName As String)
+    ''' <summary>
+    ''' 
+    ''' This function reads in raw 16-bit data values as generated from 
+    ''' the <see cref="runScanAndPopulateLists"></see> function. If the 
+    ''' <paramref name="totalPoints"></paramref> is equal to 10000, then 
+    ''' this function will convert the voltages to Newtons as determined
+    ''' by the <see cref="convertDataFromVoltagesToWeight"></see> function.
+    ''' 
+    ''' </summary>
+    ''' <param name="isCalibrated"></param>
+    ''' Should be true if we have calibrated the device already, 
+    ''' false if we are not calibrated yet.
+    ''' 
+    ''' <param name="totalPoints"></param>
+    ''' The total number of data points we need to get for EACH 
+    ''' channel in numberOfChannels.
+    ''' 
+    ''' <param name="numberOfChannels"></param>
+    ''' The total number of channels we are reading in from 
+    ''' (starting at channel 0 and going to channel (numberOfChannels - 1)).
+    ''' 
+    ''' <param name="fileName"></param>
+    ''' The name of the file we need to read the data in from.
+    ''' 
+    ''' <remarks></remarks>
+    Private Function readInSTSTest(ByVal isCalibrated As Boolean, ByVal totalPoints As Integer, ByVal numberOfChannels As Integer, ByVal fileName As String) As Boolean
 
         ' Make sure the lists are clear before we gather data.
         clearLists()
@@ -454,39 +516,87 @@ Public Class Form2
 
         Try
 
-            ' Throw away first bit of crap
+            ' Throw away first bit of crap. This is just the file header that
+            ' the DAQ generates. It contains date information, which we don't
+            ' actually care about.
             br.ReadBytes(60)
 
-            ' Read all values in the data file, putting each one 
-            ' in its appropriate place.
+            '**************************************************************
+            ' Summary of how we determine to run the loop:
+            '**************************************************************
+            ' We multiply the totalPoints by the numberOfChannels to get 
+            ' the total data points in the test. Then we iterate i from
+            ' 1 to the total number of points in the test itself to get
+            ' each sample as described below.
+            '**************************************************************
             For i = 1 To (totalPoints * numberOfChannels)
+
+                ' Read in the next unsigned-16-bit (2 byte) value.
                 value = br.ReadUInt16()
-                If (i Mod 6 = 0) Then ' Seat
-                    If (applyOffsets) Then listSeat.Add(value - seatOffset) Else listSeat.Add(value)
-                ElseIf (i Mod 6 = 1) Then ' Right Arm
-                    If (applyOffsets) Then listRightArm.Add(value - rightArmOffset) Else listRightArm.Add(value)
-                ElseIf (i Mod 6 = 2) Then ' Left Arm
-                    If (applyOffsets) Then listLeftArm.Add(value - leftArmOffset) Else listLeftArm.Add(value)
-                ElseIf (i Mod 6 = 3) Then ' Right Leg
-                    If (applyOffsets) Then listRightLeg.Add(value - rightLegOffset) Else listRightLeg.Add(value)
-                ElseIf (i Mod 6 = 4) Then ' Left Leg
-                    If (applyOffsets) Then listLeftLeg.Add(value - leftLegOffset) Else listLeftLeg.Add(value)
-                ElseIf (i Mod 6 = 5) Then ' Ground
-                    If (applyOffsets) Then listGround.Add(value - groundOffset) Else listGround.Add(value)
+
+                '**************************************************************
+                ' Summary of how the voltages are read in from the file:
+                '**************************************************************
+                ' 1) For each i, we'll have read in a new 2 byte value.
+                ' So, we'll be checking to see what the remainder is
+                ' of the current i divided by numberOfChannels (which is 
+                ' accomplished by using "i Mod numberOfChannels = n").
+                ' 
+                ' 2) The general method of getting each voltage is to check if
+                ' we have calibrated the device, then to add the raw value if
+                ' we have NOT calibrated the device yet 
+                ' (i.e isCalibrated = false) or add the raw value minus the 
+                ' calibration offset (which is just the average offset from 0
+                ' that the channel generates when running a calibration cycle
+                ' where no force is applied to any part of the device).
+                '
+                ' 3) If we encounter an error, we'll be sure to close our file
+                ' and carefully exit, and inform the user that an error occured
+                ' while reading in the file.
+                '
+                ' 4) Final note: if we want to add more channels later, we just 
+                ' have to add another if() statement below to include 
+                ' i Mod numberOfChannels = numberOfChannels - 1
+                ' Such that we add the points to a list that can be manipulated
+                ' by the rest of the program.
+                '**************************************************************
+                If (i Mod numberOfChannels = 0) Then ' Seat
+                    ' NOTE: we are using a division by 8 to scale down relative to the rest of the graph,
+                    ' while still being able to pickoff the seat off point.
+                    If (isCalibrated) Then listSeat.Add((value - seatOffset) / 8) Else listSeat.Add(value)
+                ElseIf (i Mod numberOfChannels = 1) Then ' Right Arm
+                    If (isCalibrated) Then listRightArm.Add(value - rightArmOffset) Else listRightArm.Add(value)
+                ElseIf (i Mod numberOfChannels = 2) Then ' Left Arm
+                    If (isCalibrated) Then listLeftArm.Add(value - leftArmOffset) Else listLeftArm.Add(value)
+                ElseIf (i Mod numberOfChannels = 3) Then ' Right Leg
+                    If (isCalibrated) Then listRightLeg.Add(value - rightLegOffset) Else listRightLeg.Add(value)
+                ElseIf (i Mod numberOfChannels = 4) Then ' Left Leg
+                    If (isCalibrated) Then listLeftLeg.Add(value - leftLegOffset) Else listLeftLeg.Add(value)
+                ElseIf (i Mod numberOfChannels = 5) Then ' Ground
+                    If (isCalibrated) Then listGround.Add(value - groundOffset) Else listGround.Add(value)
 
                     ' Add Bilateral
                     listBilateralLegs.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
                 End If
             Next i
         Catch e As Exception
-            'MsgBox(e.Message, vbApplicationModal + vbExclamation, getAppTitle())
+            ' We encountered some error, so close our IO streams, 
+            ' return false, and exit.
             fStream.Close()
             br.Close()
+            readInSTSTest = False
+            Exit Function
         End Try
 
+        ' If we are doing a 10-second STS test, then convert the voltages to Newtons.
         If (totalPoints = 10000) Then convertDataFromVoltagesToWeight()
-    End Sub
+        readInSTSTest = True
+    End Function
 
+    ''' <summary>
+    ''' Clears all arraylists we use to keep track of our datapoints.
+    ''' </summary>
+    ''' <remarks></remarks>
     Private Sub clearLists()
         listTimes.Clear()
         listRightArm.Clear()
@@ -498,22 +608,17 @@ Public Class Form2
         listBilateralLegs.Clear()
     End Sub
 
-    Private Sub initProgressBar()
-        Me.pgbTestStatus.Value = 0
+    ''' <summary>
+    ''' Function to initialize our progress bar to run a test.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub initializeProgressBar(ByVal totalMilliseconds)
         Me.pgbTestStatus.Minimum = 0
-        Me.pgbTestStatus.Maximum = totalSamples
+        Me.pgbTestStatus.Maximum = totalMilliseconds
+        Me.pgbTestStatus.Value = 0
+        Me.pgbTestStatus.Step = 1
         Me.pgbTestStatus.Visible = True
     End Sub
-
-    Private Function getAvgFor(ByRef list As ArrayList) As Double
-        Dim sum As Double
-
-        For Each item As Double In list
-            sum += item
-        Next
-
-        Return sum / list.Count
-    End Function
 
     Private Sub btnCancelTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelTest.Click
         frmState = FORM_STATE.NEW_TEST
