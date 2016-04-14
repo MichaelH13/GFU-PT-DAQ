@@ -665,7 +665,7 @@
     Public Function getAverageForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
         Dim sum As Double = 0
 
-        For i = fromIndex To toIndex
+        For i = fromIndex To toIndex - 1
             sum += list(i)
         Next
 
@@ -679,7 +679,7 @@
     ''' <returns>The average value of the listas a Double.</returns>
     ''' <remarks></remarks>
     Public Function getAverageForList(ByRef list As ArrayList) As Double
-        getAverageForList = getAverageForList(list, 0, list.Count)
+        getAverageForList = getAverageForList(list, 0, list.Count - 1)
     End Function
 
     ''' <summary>

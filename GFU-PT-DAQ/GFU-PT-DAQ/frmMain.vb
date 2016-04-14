@@ -324,6 +324,8 @@ Public Class Form2
                     Case FORM_STATE.SELECT_SEAT_OFF
                     Case FORM_STATE.SHOW_POINTS
 
+                        'Dim frmViewOutput As New frmViewOutputVariables()
+                        'frmViewOutputVariables.txtLeftLegStartFrame
                         'Now clip the data and set the time to percent STS for plotting
                         lengthSTS = endSTSFrame - startSTSFrame
 
@@ -338,17 +340,64 @@ Public Class Form2
                         leftLegAvgForce = getLeftLegAvgForce()
                         MsgBox("Left Leg Avg Force: " & leftLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
 
-                        MsgBox("getBilateral25To50Slope(): " & getBilateral25To50Slope(), vbInformation + vbSystemModal, getAppTitle())
+                        Dim bilateral25To50Slope As Double = getBilateral25To50Slope()
+                        MsgBox("getBilateral25To50Slope(): " & bilateral25To50Slope, vbInformation + vbSystemModal, getAppTitle())
 
-                        MsgBox("getBilateralSlope(): " & getBilateralSlope(), vbInformation + vbSystemModal, getAppTitle())
+                        Dim bilateralSlope As Double = getBilateralSlope()
+                        MsgBox("getBilateralSlope(): " & bilateralSlope, vbInformation + vbSystemModal, getAppTitle())
 
-                        MsgBox("getRightArmArea(): " & getRightArmArea(), vbInformation + vbSystemModal, getAppTitle())
+                        Dim rightArmArea As Double = getRightArmArea()
+                        MsgBox("getRightArmArea(): " & rightArmArea, vbInformation + vbSystemModal, getAppTitle())
 
-                        MsgBox("getLeftArmArea(): " & getLeftArmArea(), vbInformation + vbSystemModal, getAppTitle())
+                        Dim leftArmArea As Double = getLeftArmArea()
+                        MsgBox("getLeftArmArea(): " & leftArmArea, vbInformation + vbSystemModal, getAppTitle())
 
+                        Dim bilateralAreaSeatOffToEnd As Double = getBilateralAreaSeatOffToEnd()
                         MsgBox("getBilateralAreaSeatOffToEnd(): " & getBilateralAreaSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
 
+                        Dim bilateralLegsAverageSeatOffToEnd As Double = getBilateralLegsAverageSeatOffToEnd()
                         MsgBox("getBilateralAverageSeatOffToEnd(): " & getBilateralLegsAverageSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
+
+
+                        Dim viewOutput As New frmViewOutputVariables
+
+                        ' Write Left Leg Variables out to file.
+                        viewOutput.txtLeftLegFirstMinima.Text = leftLegFirstMinimaFrame
+                        viewOutput.txtLeftLegPeakFrame.Text = leftLegPeakFrame
+                        viewOutput.txtLeftLegSecondMinima.Text = leftLegSecondMinimaFrame
+                        'viewOutput.txtLeftLegAreaSeatOffToEndOfSTS.Text =
+                        viewOutput.txtLeftLegAvgForceSeatOffToEndOfSTS.Text = leftLegAvgForce
+
+                        ' Write Right Leg Variables out to file.
+                        viewOutput.txtRightLegFirstMinima.Text = rightLegFirstMinimaFrame
+                        viewOutput.txtRightLegPeakFrame.Text = rightLegPeakFrame
+                        viewOutput.txtRightLegSecondMinima.Text = rightLegSecondMinimaFrame
+                        'viewOutput.txtRightLegAreaSeatOffToEndOfSTS.Text
+                        viewOutput.txtRightLegAvgForceSeatOffToEndOfSTS.Text = rightLegAvgForce
+
+                        ' Write Left Arm Variables out to file.
+                        viewOutput.txtLeftArmStartFrame.Text = leftArmStartFrame
+                        viewOutput.txtLeftArmPeakFrame.Text = leftArmPeakFrame
+                        viewOutput.txtLeftArmEndFrame.Text = leftArmEndFrame
+                        viewOutput.txtLeftArmArea.Text = leftArmArea
+
+                        ' Write Right Arm Variables out to file.
+                        viewOutput.txtRightArmStartFrame.Text = rightArmStartFrame
+                        viewOutput.txtRightArmPeakFrame.Text = rightArmPeakFrame
+                        viewOutput.txtRightArmEndFrame.Text = rightArmEndFrame
+                        viewOutput.txtRightArmArea.Text = rightArmArea
+
+                        ' Write Bilateral Leg Variables out to file.
+                        viewOutput.txtBilateralLegsStartFrame.Text = startSTSFrame
+                        viewOutput.txtBilateralLegsPeakFrame.Text = bilateralPeakFrame
+                        viewOutput.txtBilateralLegsEndFrame.Text = endSTSFrame
+                        viewOutput.txtBilateralLegsFirstMinima.Text = bilateralFirstMinimaFrame
+                        viewOutput.txtBilateralLegsSecondMinima.Text = bilateralSecondMinimaFrame
+                        viewOutput.txtBilateralLegs25_50Slope.Text = bilateral25To50Slope
+                        viewOutput.txtBilateralLegsSlope.Text = bilateralSlope
+                        viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = bilateralAreaSeatOffToEnd
+                        viewOutput.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Text = bilateralLegsAverageSeatOffToEnd
+                        viewOutput.Show()
 
                         frmState = FORM_STATE.SAVE_TEST
                 End Select
