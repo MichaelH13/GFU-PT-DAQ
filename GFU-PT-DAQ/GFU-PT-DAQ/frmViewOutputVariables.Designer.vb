@@ -117,6 +117,8 @@ Partial Class frmViewOutputVariables
         Me.lblRightLegAreaSeatOffToEndOfSTS = New System.Windows.Forms.Label()
         Me.txtRightLegAvgForceSeatOffToEndOfSTS = New System.Windows.Forms.TextBox()
         Me.lblRightLegAvgForceSeatOffToEndOfSTS = New System.Windows.Forms.Label()
+        Me.txtTotalFramesInTest = New System.Windows.Forms.TextBox()
+        Me.lblTotalFramesInTest = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblLeftLegPeakFrame
@@ -962,11 +964,31 @@ Partial Class frmViewOutputVariables
         Me.lblRightLegAvgForceSeatOffToEndOfSTS.TabIndex = 109
         Me.lblRightLegAvgForceSeatOffToEndOfSTS.Text = "Avg Force Seat Off to End of STS (N)"
         '
+        'txtTotalFramesInTest
+        '
+        Me.txtTotalFramesInTest.Enabled = False
+        Me.txtTotalFramesInTest.Location = New System.Drawing.Point(727, 783)
+        Me.txtTotalFramesInTest.Name = "txtTotalFramesInTest"
+        Me.txtTotalFramesInTest.Size = New System.Drawing.Size(152, 22)
+        Me.txtTotalFramesInTest.TabIndex = 122
+        '
+        'lblTotalFramesInTest
+        '
+        Me.lblTotalFramesInTest.AutoSize = True
+        Me.lblTotalFramesInTest.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblTotalFramesInTest.Location = New System.Drawing.Point(467, 783)
+        Me.lblTotalFramesInTest.Name = "lblTotalFramesInTest"
+        Me.lblTotalFramesInTest.Size = New System.Drawing.Size(164, 20)
+        Me.lblTotalFramesInTest.TabIndex = 121
+        Me.lblTotalFramesInTest.Text = "Total Frames in Test"
+        '
         'frmViewOutputVariables
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(907, 915)
+        Me.Controls.Add(Me.txtTotalFramesInTest)
+        Me.Controls.Add(Me.lblTotalFramesInTest)
         Me.Controls.Add(Me.txtRightLegPeakForce)
         Me.Controls.Add(Me.lblRightLegPeakForce)
         Me.Controls.Add(Me.txtRightLegSeatOffForce)
@@ -1159,4 +1181,6 @@ Partial Class frmViewOutputVariables
     Friend WithEvents lblRightLegAvgForceSeatOffToEndOfSTS As System.Windows.Forms.Label
     Friend WithEvents RectangleShape5 As Microsoft.VisualBasic.PowerPacks.RectangleShape
     Friend WithEvents RectangleShape2 As Microsoft.VisualBasic.PowerPacks.RectangleShape
+    Friend WithEvents txtTotalFramesInTest As System.Windows.Forms.TextBox
+    Friend WithEvents lblTotalFramesInTest As System.Windows.Forms.Label
 End Class

@@ -61,40 +61,68 @@ Module ProgramVariableFunctions
     ''' <returns>Returns the bilateral legs slope from the first minima 
     ''' to the bilateral peak as a Double. Units returned are Newtons/Second.</returns>
     ''' <remarks></remarks>
-    Public Function getBilateralSlope() As Double
-        getBilateralSlope = getSlopeForList(listBilateralLegs, bilateralLegsFirstMinimaFrame, bilateralLegsPeakFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+    Public Function getBilateralLegsSlope() As Double
+        getBilateralLegsSlope = getSlopeForList(listBilateralLegs, bilateralLegsFirstMinimaFrame, bilateralLegsPeakFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+    End Function
+
+    ''' <summary>
+    ''' Gets the left leg slope from the first minima 
+    ''' to the peak.
+    ''' </summary>
+    ''' <returns>
+    ''' Returns the left leg slope from the first minima 
+    ''' to the peak as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getLeftLegSlope() As Double
+        getLeftLegSlope = getSlopeForList(listLeftLeg, leftLegFirstMinimaFrame, leftLegPeakFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+    End Function
+
+    ''' <summary>
+    ''' Gets the right leg slope from the first minima 
+    ''' to the peak.
+    ''' </summary>
+    ''' <returns>
+    ''' Returns the right leg slope from the first minima 
+    ''' to the peak as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getRightLegSlope() As Double
+        getRightLegSlope = getSlopeForList(listRightLeg, rightLegFirstMinimaFrame, rightLegPeakFrame) * 1000 ' Multiply by 1000 to convert to seconds.
     End Function
 
     ''' <summary>
     ''' Gets the bilateral legs slope from 25% to 50% of the magnitude of the
     ''' first minima to the bilateral peak.
     ''' </summary>
-    ''' <returns>Returns the bilateral legs slope from 25% to 50% of the magnitude of the
+    ''' <returns>
+    ''' Returns the bilateral legs slope from 25% to 50% of the magnitude of the
     ''' first minima to the bilateral peak as a Double. Units returned are Newtons/Second.</returns>
     ''' <remarks></remarks>
-    Public Function getBilateral25To50Slope() As Double
-        ' Subtract the bilateral peak from the bilateral first minima to get the rise between the points.
-        Dim bilateralRise As Double = listBilateralLegs(bilateralLegsPeakFrame) - listBilateralLegs(bilateralLegsFirstMinimaFrame)
-        Dim twentyFivePercentValue As Double = (bilateralRise / 4) + listBilateralLegs(bilateralLegsFirstMinimaFrame)
-        Dim fiftyPercentValue As Double = (bilateralRise / 2) + listBilateralLegs(bilateralLegsFirstMinimaFrame)
-        Dim twentyFivePercentFrame As Integer
-        Dim fiftyPercentFrame As Integer
+    Public Function getBilateralLegs25To50Slope() As Double
+        getBilateralLegs25To50Slope = get25_50Slope(listBilateralLegs, bilateralLegsPeakFrame, bilateralLegsFirstMinimaFrame)
+    End Function
 
-        For i = bilateralLegsFirstMinimaFrame To bilateralLegsPeakFrame
-            If (listBilateralLegs(i) > twentyFivePercentValue) Then
-                twentyFivePercentFrame = i
-                Exit For
-            End If
-        Next
+    ''' <summary>
+    ''' Gets the left leg slope from 25% to 50% of the magnitude of the
+    ''' first minima to the peak.
+    ''' </summary>
+    ''' <returns>
+    ''' Returns the left leg slope from 25% to 50% of the magnitude of the
+    ''' first minima to the peak as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getLeftLeg25To50Slope() As Double
+        getLeftLeg25To50Slope = get25_50Slope(listLeftLeg, leftLegPeakFrame, leftLegFirstMinimaFrame)
+    End Function
 
-        For i = bilateralLegsFirstMinimaFrame To bilateralLegsPeakFrame
-            If (listBilateralLegs(i) > fiftyPercentValue) Then
-                fiftyPercentFrame = i
-                Exit For
-            End If
-        Next
-
-        getBilateral25To50Slope = getSlopeForList(listBilateralLegs, twentyFivePercentFrame, fiftyPercentFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+    ''' <summary>
+    ''' Gets the right leg slope from 25% to 50% of the magnitude of the
+    ''' first minima to the peak.
+    ''' </summary>
+    ''' <returns>
+    ''' Returns the right leg slope from 25% to 50% of the magnitude of the
+    ''' first minima to the peak as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getRightLeg25To50Slope() As Double
+        getRightLeg25To50Slope = get25_50Slope(listRightLeg, rightLegPeakFrame, rightLegFirstMinimaFrame)
     End Function
 
     ''' <summary>

@@ -106,6 +106,42 @@ Module HelperFunctions
         getSlopeForList = ((list(toIndex) - list(fromIndex)) / (toIndex - fromIndex))
     End Function
 
+    ''' <summary>
+    ''' Gets the slope from 25% to 50% of the magnitude of the
+    ''' first minima to the peak.
+    ''' </summary>
+    ''' <param name="list">The list to get the slope from.</param>
+    ''' <param name="firstMinimaFrame">The first minima for the data in list.</param>
+    ''' <param name="peakFrame">The peak frame for the data in list.</param>
+    ''' <returns>
+    ''' Returns the slope from 25% to 50% of the magnitude of the
+    ''' first minima to the peak as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function get25_50Slope(ByRef list As ArrayList, ByVal peakFrame As Integer, ByVal firstMinimaFrame As Integer) As Double
+        ' Subtract the bilateral peak from the bilateral first minima to get the rise between the points.
+        Dim rise As Double = list(peakFrame) - list(firstMinimaFrame)
+        Dim twentyFivePercentValue As Double = (rise / 4) + list(firstMinimaFrame)
+        Dim fiftyPercentValue As Double = (rise / 2) + list(firstMinimaFrame)
+        Dim twentyFivePercentFrame As Integer
+        Dim fiftyPercentFrame As Integer
+
+        For i = firstMinimaFrame To peakFrame
+            If (list(i) > twentyFivePercentValue) Then
+                twentyFivePercentFrame = i
+                Exit For
+            End If
+        Next
+
+        For i = firstMinimaFrame To peakFrame
+            If (list(i) > fiftyPercentValue) Then
+                fiftyPercentFrame = i
+                Exit For
+            End If
+        Next
+
+        get25_50Slope = getSlopeForList(list, twentyFivePercentFrame, fiftyPercentFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+    End Function
+
     'Public Sub removeRangeFromLists(ByRef lists As ArrayList, ByVal fromIndex As Integer, ByVal countToRemove As Integer)
     '    For i = 0 To lists.Count
     '        lists(i).RemoveRange(fromIndex, countToRemove)

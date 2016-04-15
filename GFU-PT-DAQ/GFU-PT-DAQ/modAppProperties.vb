@@ -45,7 +45,7 @@ Module modAppProperties
     Public bilateralLegsAverageSeatOffToEnd As Double = INVALID
 
     Public bilateralLegsSeatOffForceValue As Double = INVALID
-    Public bilateralLegsPeakForce As Integer = INVALID
+    Public bilateralLegsPeakForceValue As Integer = INVALID
 
     ' Left leg variables.
     Public leftLegFirstMinimaFrame As Integer = INVALID
@@ -57,7 +57,7 @@ Module modAppProperties
     Public leftLegSlope As Double = INVALID
     Public leftLegAreaSeatOffToEnd As Double = INVALID
     Public leftLegSeatOffForceValue As Double = INVALID
-    Public leftLegPeakForce As Integer = INVALID
+    Public leftLegPeakForceValue As Integer = INVALID
 
     ' Right leg variables.
     Public rightLegFirstMinimaFrame As Integer = INVALID
@@ -69,7 +69,7 @@ Module modAppProperties
     Public rightLegSlope As Double = INVALID
     Public rightLegAreaSeatOffToEnd As Double = INVALID
     Public rightLegSeatOffForceValue As Double = INVALID
-    Public rightLegPeakForce As Integer = INVALID
+    Public rightLegPeakForceValue As Integer = INVALID
 
     ' Left arm variables.
     Public leftArmStartFrame As Integer = INVALID
@@ -78,7 +78,7 @@ Module modAppProperties
     Public leftArmArea As Double = INVALID
 
     Public leftArmSeatOffForceValue As Double = INVALID
-    Public leftArmPeakForce As Integer = INVALID
+    Public leftArmPeakForceValue As Integer = INVALID
 
     ' Right arm variables.
     Public rightArmStartFrame As Integer = INVALID
@@ -87,7 +87,7 @@ Module modAppProperties
     Public rightArmArea As Double = INVALID
 
     Public rightArmSeatOffForceValue As Double = INVALID
-    Public rightArmPeakForce As Integer = INVALID
+    Public rightArmPeakForceValue As Integer = INVALID
 
     ' Seat off variable.
     Public seatOffFrame As Integer = INVALID

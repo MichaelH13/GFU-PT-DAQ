@@ -297,16 +297,38 @@ Public Class frmMain
         '******************************************************
 
         ' Then get averages, areas, and slopes.
-        rightLegAvgForce = getRightLegAvgForce()
-        rightLegAreaSeatOffToEnd = getRightLegAreaSeatOffToEnd()
         leftLegAvgForce = getLeftLegAvgForce()
         leftLegAreaSeatOffToEnd = getLeftLegAreaSeatOffToEnd()
-        bilateralLegs25To50Slope = getBilateral25To50Slope()
-        bilateralLegsSlope = getBilateralSlope()
-        rightArmArea = getRightArmArea()
-        leftArmArea = getLeftArmArea()
+        leftLeg25To50Slope = getLeftLeg25To50Slope()
+        leftLegSlope = getLeftLegSlope()
+        leftLegAreaSeatOffToEnd = getLeftLegAreaSeatOffToEnd()
+        leftLegSeatOffForceValue = listLeftLeg(seatOffFrame)
+        leftLegPeakForceValue = listLeftLeg(leftLegPeakFrame)
+
+        rightLegAvgForce = getRightLegAvgForce()
+        rightLegAreaSeatOffToEnd = getRightLegAreaSeatOffToEnd()
+        rightLeg25To50Slope = getRightLeg25To50Slope()
+        rightLegSlope = getRightLegSlope()
+        rightLegAreaSeatOffToEnd = getRightLegAreaSeatOffToEnd()
+        rightLegSeatOffForceValue = listRightLeg(seatOffFrame)
+        rightLegPeakForceValue = listRightLeg(rightLegPeakFrame)
+
+        bilateralLegs25To50Slope = getBilateralLegs25To50Slope()
+        bilateralLegsSlope = getBilateralLegsSlope()
         bilateralLegsAreaSeatOffToEnd = getBilateralLegsAreaSeatOffToEnd()
         bilateralLegsAverageSeatOffToEnd = getBilateralLegsAverageSeatOffToEnd()
+
+        bilateralLegsSeatOffForceValue = listBilateralLegs(seatOffFrame)
+        bilateralLegsPeakForceValue = listBilateralLegs(bilateralLegsPeakFrame)
+
+        leftArmArea = getLeftArmArea()
+        leftArmSeatOffForceValue = listLeftArm(seatOffFrame)
+        leftArmPeakForceValue = listLeftArm(leftArmPeakFrame)
+
+        rightArmArea = getRightArmArea()
+        rightArmSeatOffForceValue = listRightArm(seatOffFrame)
+        rightArmPeakForceValue = listRightArm(rightArmPeakFrame)
+
 
         Dim viewOutput As New frmViewOutputVariables
 
@@ -314,25 +336,41 @@ Public Class frmMain
         viewOutput.txtLeftLegFirstMinima.Text = leftLegFirstMinimaFrame
         viewOutput.txtLeftLegPeakFrame.Text = leftLegPeakFrame
         viewOutput.txtLeftLegSecondMinima.Text = leftLegSecondMinimaFrame
-        viewOutput.txtLeftLegAvgForceSeatOffToEndOfSTS.Text = leftLegAvgForce
+        viewOutput.txtLeftLegAvgForceSeatOffToEndOfSTS.Text = Math.Round(leftLegAvgForce, 2)
+
+        viewOutput.txtLeftLeg25_50Slope.Text = Math.Round(leftLeg25To50Slope, 2)
+        viewOutput.txtLeftLegSlope.Text = Math.Round(leftLegSlope, 2)
+        viewOutput.txtLeftLegAreaSeatOffToEndOfSTS.Text = Math.Round(leftLegAreaSeatOffToEnd, 2)
+        viewOutput.txtLeftLegSeatOffForce.Text = Math.Round(leftLegSeatOffForceValue, 2)
+        viewOutput.txtLeftLegPeakForce.Text = Math.Round(leftLegPeakForceValue, 2)
 
         ' Write Right Leg Variables out to the viewing form.
         viewOutput.txtRightLegFirstMinima.Text = rightLegFirstMinimaFrame
         viewOutput.txtRightLegPeakFrame.Text = rightLegPeakFrame
         viewOutput.txtRightLegSecondMinima.Text = rightLegSecondMinimaFrame
-        viewOutput.txtRightLegAvgForceSeatOffToEndOfSTS.Text = rightLegAvgForce
+        viewOutput.txtRightLegAvgForceSeatOffToEndOfSTS.Text = Math.Round(rightLegAvgForce, 2)
+
+        viewOutput.txtRightLeg25_50Slope.Text = Math.Round(rightLeg25To50Slope, 2)
+        viewOutput.txtRightLegSlope.Text = Math.Round(rightLegSlope, 2)
+        viewOutput.txtRightLegAreaSeatOffToEndOfSTS.Text = Math.Round(rightLegAreaSeatOffToEnd, 2)
+        viewOutput.txtRightLegSeatOffForce.Text = Math.Round(rightLegSeatOffForceValue, 2)
+        viewOutput.txtRightLegPeakForce.Text = Math.Round(rightLegPeakForceValue, 2)
 
         ' Write Left Arm Variables out to the viewing form.
         viewOutput.txtLeftArmStartFrame.Text = leftArmStartFrame
         viewOutput.txtLeftArmPeakFrame.Text = leftArmPeakFrame
         viewOutput.txtLeftArmEndFrame.Text = leftArmEndFrame
-        viewOutput.txtLeftArmArea.Text = leftArmArea
+        viewOutput.txtLeftArmArea.Text = Math.Round(leftArmArea, 2)
+        viewOutput.txtLeftArmPeakForce.Text = Math.Round(leftArmPeakForceValue, 2)
+        viewOutput.txtLeftArmSeatOffForce.Text = Math.Round(leftArmSeatOffForceValue, 2)
 
         ' Write Right Arm Variables out to the viewing form.
         viewOutput.txtRightArmStartFrame.Text = rightArmStartFrame
         viewOutput.txtRightArmPeakFrame.Text = rightArmPeakFrame
         viewOutput.txtRightArmEndFrame.Text = rightArmEndFrame
-        viewOutput.txtRightArmArea.Text = rightArmArea
+        viewOutput.txtRightArmArea.Text = Math.Round(rightArmArea, 2)
+        viewOutput.txtRightArmPeakForce.Text = Math.Round(rightArmPeakForceValue, 2)
+        viewOutput.txtRightArmSeatOffForce.Text = Math.Round(rightArmSeatOffForceValue, 2)
 
         ' Write Bilateral Leg Variables out to the viewing form.
         viewOutput.txtBilateralLegsStartFrame.Text = startSTSFrame
@@ -340,10 +378,14 @@ Public Class frmMain
         viewOutput.txtBilateralLegsEndFrame.Text = endSTSFrame
         viewOutput.txtBilateralLegsFirstMinima.Text = bilateralLegsFirstMinimaFrame
         viewOutput.txtBilateralLegsSecondMinima.Text = bilateralLegsSecondMinimaFrame
-        viewOutput.txtBilateralLegs25_50Slope.Text = bilateralLegs25To50Slope
-        viewOutput.txtBilateralLegsSlope.Text = bilateralLegsSlope
-        viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = bilateralLegsAreaSeatOffToEnd
-        viewOutput.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Text = bilateralLegsAverageSeatOffToEnd
+        viewOutput.txtBilateralLegs25_50Slope.Text = Math.Round(bilateralLegs25To50Slope, 2)
+        viewOutput.txtBilateralLegsSlope.Text = Math.Round(bilateralLegsSlope, 2)
+        viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = Math.Round(bilateralLegsAreaSeatOffToEnd, 2)
+        viewOutput.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Text = Math.Round(bilateralLegsAverageSeatOffToEnd, 2)
+        viewOutput.txtBilateralLegsSeatOffForce.Text = Math.Round(bilateralLegsSeatOffForceValue, 2)
+        viewOutput.txtBilateralLegsPeakForce.Text = Math.Round(bilateralLegsPeakForceValue, 2)
+
+        viewOutput.txtTotalFramesInTest.Text = (endSTSFrame - startSTSFrame)
 
         ' Finally, show the form to the user.
         viewOutput.Show()
@@ -356,7 +398,7 @@ Public Class frmMain
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function confirmPoint(ByVal pointName As String) As Boolean
-        confirmPoint = MsgBox("Are you sure the point X=" & Me.xCoord.Text & " Y=" & Me.yCoord.Text & " is your desired " & pointName & " point?", vbYesNo + vbApplicationModal, getAppTitle()) = vbYes
+        confirmPoint = MsgBox("Are you sure the point X = " & Me.xCoord.Text & " is your desired " & pointName & " point?", vbYesNo + vbApplicationModal, getAppTitle()) = vbYes
     End Function
 
     ''' <summary>
