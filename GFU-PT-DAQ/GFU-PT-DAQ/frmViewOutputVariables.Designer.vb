@@ -27,10 +27,6 @@ Partial Class frmViewOutputVariables
         Me.txtLeftLegAvgForceSeatOffToEndOfSTS = New System.Windows.Forms.TextBox()
         Me.lblLeftLegAvgForceSeatOffToEndOfSTS = New System.Windows.Forms.Label()
         Me.lblLeftLeg = New System.Windows.Forms.Label()
-        Me.txtLeftLegAreaSeatOffToEndOfSTS = New System.Windows.Forms.TextBox()
-        Me.lblLeftLegAreaSeatOffToEndOfSTS = New System.Windows.Forms.Label()
-        Me.txtRightLegAreaSeatOffToEndOfSTS = New System.Windows.Forms.TextBox()
-        Me.lblRightLegAreaSeatOffToEndOfSTS = New System.Windows.Forms.Label()
         Me.lblRightLeg = New System.Windows.Forms.Label()
         Me.txtRightLegAvgForceSeatOffToEndOfSTS = New System.Windows.Forms.TextBox()
         Me.lblRightLegAvgForceSeatOffToEndOfSTS = New System.Windows.Forms.Label()
@@ -103,6 +99,7 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftLegPeakFrame
         '
+        Me.txtLeftLegPeakFrame.Enabled = False
         Me.txtLeftLegPeakFrame.Location = New System.Drawing.Point(277, 74)
         Me.txtLeftLegPeakFrame.Name = "txtLeftLegPeakFrame"
         Me.txtLeftLegPeakFrame.Size = New System.Drawing.Size(152, 22)
@@ -110,7 +107,8 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftLegAvgForceSeatOffToEndOfSTS
         '
-        Me.txtLeftLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(277, 158)
+        Me.txtLeftLegAvgForceSeatOffToEndOfSTS.Enabled = False
+        Me.txtLeftLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(277, 131)
         Me.txtLeftLegAvgForceSeatOffToEndOfSTS.Name = "txtLeftLegAvgForceSeatOffToEndOfSTS"
         Me.txtLeftLegAvgForceSeatOffToEndOfSTS.Size = New System.Drawing.Size(152, 22)
         Me.txtLeftLegAvgForceSeatOffToEndOfSTS.TabIndex = 13
@@ -119,7 +117,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblLeftLegAvgForceSeatOffToEndOfSTS.AutoSize = True
         Me.lblLeftLegAvgForceSeatOffToEndOfSTS.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLeftLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(17, 161)
+        Me.lblLeftLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(17, 134)
         Me.lblLeftLegAvgForceSeatOffToEndOfSTS.Name = "lblLeftLegAvgForceSeatOffToEndOfSTS"
         Me.lblLeftLegAvgForceSeatOffToEndOfSTS.Size = New System.Drawing.Size(261, 20)
         Me.lblLeftLegAvgForceSeatOffToEndOfSTS.TabIndex = 12
@@ -135,40 +133,6 @@ Partial Class frmViewOutputVariables
         Me.lblLeftLeg.TabIndex = 14
         Me.lblLeftLeg.Text = "Left Leg"
         '
-        'txtLeftLegAreaSeatOffToEndOfSTS
-        '
-        Me.txtLeftLegAreaSeatOffToEndOfSTS.Location = New System.Drawing.Point(277, 130)
-        Me.txtLeftLegAreaSeatOffToEndOfSTS.Name = "txtLeftLegAreaSeatOffToEndOfSTS"
-        Me.txtLeftLegAreaSeatOffToEndOfSTS.Size = New System.Drawing.Size(152, 22)
-        Me.txtLeftLegAreaSeatOffToEndOfSTS.TabIndex = 16
-        '
-        'lblLeftLegAreaSeatOffToEndOfSTS
-        '
-        Me.lblLeftLegAreaSeatOffToEndOfSTS.AutoSize = True
-        Me.lblLeftLegAreaSeatOffToEndOfSTS.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLeftLegAreaSeatOffToEndOfSTS.Location = New System.Drawing.Point(17, 133)
-        Me.lblLeftLegAreaSeatOffToEndOfSTS.Name = "lblLeftLegAreaSeatOffToEndOfSTS"
-        Me.lblLeftLegAreaSeatOffToEndOfSTS.Size = New System.Drawing.Size(220, 20)
-        Me.lblLeftLegAreaSeatOffToEndOfSTS.TabIndex = 15
-        Me.lblLeftLegAreaSeatOffToEndOfSTS.Text = "Area Seat Off to End of STS"
-        '
-        'txtRightLegAreaSeatOffToEndOfSTS
-        '
-        Me.txtRightLegAreaSeatOffToEndOfSTS.Location = New System.Drawing.Point(725, 131)
-        Me.txtRightLegAreaSeatOffToEndOfSTS.Name = "txtRightLegAreaSeatOffToEndOfSTS"
-        Me.txtRightLegAreaSeatOffToEndOfSTS.Size = New System.Drawing.Size(152, 22)
-        Me.txtRightLegAreaSeatOffToEndOfSTS.TabIndex = 27
-        '
-        'lblRightLegAreaSeatOffToEndOfSTS
-        '
-        Me.lblRightLegAreaSeatOffToEndOfSTS.AutoSize = True
-        Me.lblRightLegAreaSeatOffToEndOfSTS.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRightLegAreaSeatOffToEndOfSTS.Location = New System.Drawing.Point(465, 134)
-        Me.lblRightLegAreaSeatOffToEndOfSTS.Name = "lblRightLegAreaSeatOffToEndOfSTS"
-        Me.lblRightLegAreaSeatOffToEndOfSTS.Size = New System.Drawing.Size(220, 20)
-        Me.lblRightLegAreaSeatOffToEndOfSTS.TabIndex = 26
-        Me.lblRightLegAreaSeatOffToEndOfSTS.Text = "Area Seat Off to End of STS"
-        '
         'lblRightLeg
         '
         Me.lblRightLeg.AutoSize = True
@@ -181,7 +145,8 @@ Partial Class frmViewOutputVariables
         '
         'txtRightLegAvgForceSeatOffToEndOfSTS
         '
-        Me.txtRightLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(725, 159)
+        Me.txtRightLegAvgForceSeatOffToEndOfSTS.Enabled = False
+        Me.txtRightLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(725, 132)
         Me.txtRightLegAvgForceSeatOffToEndOfSTS.Name = "txtRightLegAvgForceSeatOffToEndOfSTS"
         Me.txtRightLegAvgForceSeatOffToEndOfSTS.Size = New System.Drawing.Size(152, 22)
         Me.txtRightLegAvgForceSeatOffToEndOfSTS.TabIndex = 24
@@ -190,7 +155,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblRightLegAvgForceSeatOffToEndOfSTS.AutoSize = True
         Me.lblRightLegAvgForceSeatOffToEndOfSTS.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRightLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(465, 162)
+        Me.lblRightLegAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(465, 135)
         Me.lblRightLegAvgForceSeatOffToEndOfSTS.Name = "lblRightLegAvgForceSeatOffToEndOfSTS"
         Me.lblRightLegAvgForceSeatOffToEndOfSTS.Size = New System.Drawing.Size(261, 20)
         Me.lblRightLegAvgForceSeatOffToEndOfSTS.TabIndex = 23
@@ -198,6 +163,7 @@ Partial Class frmViewOutputVariables
         '
         'txtRightLegPeakFrame
         '
+        Me.txtRightLegPeakFrame.Enabled = False
         Me.txtRightLegPeakFrame.Location = New System.Drawing.Point(725, 74)
         Me.txtRightLegPeakFrame.Name = "txtRightLegPeakFrame"
         Me.txtRightLegPeakFrame.Size = New System.Drawing.Size(152, 22)
@@ -215,7 +181,8 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftArmArea
         '
-        Me.txtLeftArmArea.Location = New System.Drawing.Point(276, 340)
+        Me.txtLeftArmArea.Enabled = False
+        Me.txtLeftArmArea.Location = New System.Drawing.Point(275, 316)
         Me.txtLeftArmArea.Name = "txtLeftArmArea"
         Me.txtLeftArmArea.Size = New System.Drawing.Size(152, 22)
         Me.txtLeftArmArea.TabIndex = 38
@@ -224,7 +191,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblLeftArmArea.AutoSize = True
         Me.lblLeftArmArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLeftArmArea.Location = New System.Drawing.Point(16, 343)
+        Me.lblLeftArmArea.Location = New System.Drawing.Point(15, 319)
         Me.lblLeftArmArea.Name = "lblLeftArmArea"
         Me.lblLeftArmArea.Size = New System.Drawing.Size(44, 20)
         Me.lblLeftArmArea.TabIndex = 37
@@ -234,7 +201,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblLeftArm.AutoSize = True
         Me.lblLeftArm.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLeftArm.Location = New System.Drawing.Point(12, 222)
+        Me.lblLeftArm.Location = New System.Drawing.Point(11, 201)
         Me.lblLeftArm.Name = "lblLeftArm"
         Me.lblLeftArm.Size = New System.Drawing.Size(121, 32)
         Me.lblLeftArm.TabIndex = 36
@@ -242,7 +209,8 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftArmEndFrame
         '
-        Me.txtLeftArmEndFrame.Location = New System.Drawing.Point(276, 312)
+        Me.txtLeftArmEndFrame.Enabled = False
+        Me.txtLeftArmEndFrame.Location = New System.Drawing.Point(275, 288)
         Me.txtLeftArmEndFrame.Name = "txtLeftArmEndFrame"
         Me.txtLeftArmEndFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtLeftArmEndFrame.TabIndex = 33
@@ -251,7 +219,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblLeftArmEndFrame.AutoSize = True
         Me.lblLeftArmEndFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLeftArmEndFrame.Location = New System.Drawing.Point(16, 315)
+        Me.lblLeftArmEndFrame.Location = New System.Drawing.Point(15, 291)
         Me.lblLeftArmEndFrame.Name = "lblLeftArmEndFrame"
         Me.lblLeftArmEndFrame.Size = New System.Drawing.Size(91, 20)
         Me.lblLeftArmEndFrame.TabIndex = 32
@@ -259,7 +227,8 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftArmStartFrame
         '
-        Me.txtLeftArmStartFrame.Location = New System.Drawing.Point(276, 256)
+        Me.txtLeftArmStartFrame.Enabled = False
+        Me.txtLeftArmStartFrame.Location = New System.Drawing.Point(275, 232)
         Me.txtLeftArmStartFrame.Name = "txtLeftArmStartFrame"
         Me.txtLeftArmStartFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtLeftArmStartFrame.TabIndex = 31
@@ -268,7 +237,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblLeftArmStartFrame.AutoSize = True
         Me.lblLeftArmStartFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLeftArmStartFrame.Location = New System.Drawing.Point(16, 259)
+        Me.lblLeftArmStartFrame.Location = New System.Drawing.Point(15, 235)
         Me.lblLeftArmStartFrame.Name = "lblLeftArmStartFrame"
         Me.lblLeftArmStartFrame.Size = New System.Drawing.Size(98, 20)
         Me.lblLeftArmStartFrame.TabIndex = 30
@@ -276,7 +245,8 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftArmPeakFrame
         '
-        Me.txtLeftArmPeakFrame.Location = New System.Drawing.Point(276, 284)
+        Me.txtLeftArmPeakFrame.Enabled = False
+        Me.txtLeftArmPeakFrame.Location = New System.Drawing.Point(275, 260)
         Me.txtLeftArmPeakFrame.Name = "txtLeftArmPeakFrame"
         Me.txtLeftArmPeakFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtLeftArmPeakFrame.TabIndex = 29
@@ -285,7 +255,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblLeftArmPeakFrame.AutoSize = True
         Me.lblLeftArmPeakFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblLeftArmPeakFrame.Location = New System.Drawing.Point(16, 287)
+        Me.lblLeftArmPeakFrame.Location = New System.Drawing.Point(15, 263)
         Me.lblLeftArmPeakFrame.Name = "lblLeftArmPeakFrame"
         Me.lblLeftArmPeakFrame.Size = New System.Drawing.Size(99, 20)
         Me.lblLeftArmPeakFrame.TabIndex = 28
@@ -293,7 +263,8 @@ Partial Class frmViewOutputVariables
         '
         'txtRightArmArea
         '
-        Me.txtRightArmArea.Location = New System.Drawing.Point(727, 342)
+        Me.txtRightArmArea.Enabled = False
+        Me.txtRightArmArea.Location = New System.Drawing.Point(726, 318)
         Me.txtRightArmArea.Name = "txtRightArmArea"
         Me.txtRightArmArea.Size = New System.Drawing.Size(152, 22)
         Me.txtRightArmArea.TabIndex = 47
@@ -302,7 +273,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblRightArmArea.AutoSize = True
         Me.lblRightArmArea.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRightArmArea.Location = New System.Drawing.Point(467, 345)
+        Me.lblRightArmArea.Location = New System.Drawing.Point(466, 321)
         Me.lblRightArmArea.Name = "lblRightArmArea"
         Me.lblRightArmArea.Size = New System.Drawing.Size(44, 20)
         Me.lblRightArmArea.TabIndex = 46
@@ -312,7 +283,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblRightArm.AutoSize = True
         Me.lblRightArm.Font = New System.Drawing.Font("Microsoft Sans Serif", 16.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRightArm.Location = New System.Drawing.Point(460, 224)
+        Me.lblRightArm.Location = New System.Drawing.Point(459, 203)
         Me.lblRightArm.Name = "lblRightArm"
         Me.lblRightArm.Size = New System.Drawing.Size(140, 32)
         Me.lblRightArm.TabIndex = 45
@@ -320,7 +291,8 @@ Partial Class frmViewOutputVariables
         '
         'txtRightArmEndFrame
         '
-        Me.txtRightArmEndFrame.Location = New System.Drawing.Point(727, 314)
+        Me.txtRightArmEndFrame.Enabled = False
+        Me.txtRightArmEndFrame.Location = New System.Drawing.Point(726, 290)
         Me.txtRightArmEndFrame.Name = "txtRightArmEndFrame"
         Me.txtRightArmEndFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtRightArmEndFrame.TabIndex = 44
@@ -329,7 +301,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblRightArmEndFrame.AutoSize = True
         Me.lblRightArmEndFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRightArmEndFrame.Location = New System.Drawing.Point(467, 317)
+        Me.lblRightArmEndFrame.Location = New System.Drawing.Point(466, 293)
         Me.lblRightArmEndFrame.Name = "lblRightArmEndFrame"
         Me.lblRightArmEndFrame.Size = New System.Drawing.Size(91, 20)
         Me.lblRightArmEndFrame.TabIndex = 43
@@ -337,7 +309,8 @@ Partial Class frmViewOutputVariables
         '
         'txtRightArmStartFrame
         '
-        Me.txtRightArmStartFrame.Location = New System.Drawing.Point(727, 258)
+        Me.txtRightArmStartFrame.Enabled = False
+        Me.txtRightArmStartFrame.Location = New System.Drawing.Point(726, 234)
         Me.txtRightArmStartFrame.Name = "txtRightArmStartFrame"
         Me.txtRightArmStartFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtRightArmStartFrame.TabIndex = 42
@@ -346,7 +319,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblRightArmStartFrame.AutoSize = True
         Me.lblRightArmStartFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRightArmStartFrame.Location = New System.Drawing.Point(467, 261)
+        Me.lblRightArmStartFrame.Location = New System.Drawing.Point(466, 237)
         Me.lblRightArmStartFrame.Name = "lblRightArmStartFrame"
         Me.lblRightArmStartFrame.Size = New System.Drawing.Size(98, 20)
         Me.lblRightArmStartFrame.TabIndex = 41
@@ -354,7 +327,8 @@ Partial Class frmViewOutputVariables
         '
         'txtRightArmPeakFrame
         '
-        Me.txtRightArmPeakFrame.Location = New System.Drawing.Point(727, 286)
+        Me.txtRightArmPeakFrame.Enabled = False
+        Me.txtRightArmPeakFrame.Location = New System.Drawing.Point(726, 262)
         Me.txtRightArmPeakFrame.Name = "txtRightArmPeakFrame"
         Me.txtRightArmPeakFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtRightArmPeakFrame.TabIndex = 40
@@ -363,7 +337,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblRightArmPeakFrame.AutoSize = True
         Me.lblRightArmPeakFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblRightArmPeakFrame.Location = New System.Drawing.Point(467, 289)
+        Me.lblRightArmPeakFrame.Location = New System.Drawing.Point(466, 265)
         Me.lblRightArmPeakFrame.Name = "lblRightArmPeakFrame"
         Me.lblRightArmPeakFrame.Size = New System.Drawing.Size(99, 20)
         Me.lblRightArmPeakFrame.TabIndex = 39
@@ -381,6 +355,7 @@ Partial Class frmViewOutputVariables
         '
         'txtRightLegFirstMinima
         '
+        Me.txtRightLegFirstMinima.Enabled = False
         Me.txtRightLegFirstMinima.Location = New System.Drawing.Point(725, 44)
         Me.txtRightLegFirstMinima.Name = "txtRightLegFirstMinima"
         Me.txtRightLegFirstMinima.Size = New System.Drawing.Size(152, 22)
@@ -398,6 +373,7 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftLegFirstMinima
         '
+        Me.txtLeftLegFirstMinima.Enabled = False
         Me.txtLeftLegFirstMinima.Location = New System.Drawing.Point(277, 44)
         Me.txtLeftLegFirstMinima.Name = "txtLeftLegFirstMinima"
         Me.txtLeftLegFirstMinima.Size = New System.Drawing.Size(152, 22)
@@ -415,6 +391,7 @@ Partial Class frmViewOutputVariables
         '
         'txtRightLegSecondMinima
         '
+        Me.txtRightLegSecondMinima.Enabled = False
         Me.txtRightLegSecondMinima.Location = New System.Drawing.Point(725, 102)
         Me.txtRightLegSecondMinima.Name = "txtRightLegSecondMinima"
         Me.txtRightLegSecondMinima.Size = New System.Drawing.Size(152, 22)
@@ -432,6 +409,7 @@ Partial Class frmViewOutputVariables
         '
         'txtLeftLegSecondMinima
         '
+        Me.txtLeftLegSecondMinima.Enabled = False
         Me.txtLeftLegSecondMinima.Location = New System.Drawing.Point(277, 102)
         Me.txtLeftLegSecondMinima.Name = "txtLeftLegSecondMinima"
         Me.txtLeftLegSecondMinima.Size = New System.Drawing.Size(152, 22)
@@ -449,7 +427,8 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsSecondMinima
         '
-        Me.txtBilateralLegsSecondMinima.Location = New System.Drawing.Point(279, 503)
+        Me.txtBilateralLegsSecondMinima.Enabled = False
+        Me.txtBilateralLegsSecondMinima.Location = New System.Drawing.Point(279, 501)
         Me.txtBilateralLegsSecondMinima.Name = "txtBilateralLegsSecondMinima"
         Me.txtBilateralLegsSecondMinima.Size = New System.Drawing.Size(152, 22)
         Me.txtBilateralLegsSecondMinima.TabIndex = 80
@@ -458,7 +437,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblBilateralLegsSecondMinima.AutoSize = True
         Me.lblBilateralLegsSecondMinima.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblBilateralLegsSecondMinima.Location = New System.Drawing.Point(19, 506)
+        Me.lblBilateralLegsSecondMinima.Location = New System.Drawing.Point(19, 504)
         Me.lblBilateralLegsSecondMinima.Name = "lblBilateralLegsSecondMinima"
         Me.lblBilateralLegsSecondMinima.Size = New System.Drawing.Size(124, 20)
         Me.lblBilateralLegsSecondMinima.TabIndex = 79
@@ -466,6 +445,7 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsFirstMinima
         '
+        Me.txtBilateralLegsFirstMinima.Enabled = False
         Me.txtBilateralLegsFirstMinima.Location = New System.Drawing.Point(279, 445)
         Me.txtBilateralLegsFirstMinima.Name = "txtBilateralLegsFirstMinima"
         Me.txtBilateralLegsFirstMinima.Size = New System.Drawing.Size(152, 22)
@@ -483,6 +463,7 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsAreaSeatOffToEndOfSTS
         '
+        Me.txtBilateralLegsAreaSeatOffToEndOfSTS.Enabled = False
         Me.txtBilateralLegsAreaSeatOffToEndOfSTS.Location = New System.Drawing.Point(727, 473)
         Me.txtBilateralLegsAreaSeatOffToEndOfSTS.Name = "txtBilateralLegsAreaSeatOffToEndOfSTS"
         Me.txtBilateralLegsAreaSeatOffToEndOfSTS.Size = New System.Drawing.Size(152, 22)
@@ -500,6 +481,7 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsAvgForceSeatOffToEndOfSTS
         '
+        Me.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Enabled = False
         Me.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Location = New System.Drawing.Point(727, 501)
         Me.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Name = "txtBilateralLegsAvgForceSeatOffToEndOfSTS"
         Me.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Size = New System.Drawing.Size(152, 22)
@@ -517,7 +499,8 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsEndFrame
         '
-        Me.txtBilateralLegsEndFrame.Location = New System.Drawing.Point(279, 531)
+        Me.txtBilateralLegsEndFrame.Enabled = False
+        Me.txtBilateralLegsEndFrame.Location = New System.Drawing.Point(279, 529)
         Me.txtBilateralLegsEndFrame.Name = "txtBilateralLegsEndFrame"
         Me.txtBilateralLegsEndFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtBilateralLegsEndFrame.TabIndex = 72
@@ -526,7 +509,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblBilateralLegsEndFrame.AutoSize = True
         Me.lblBilateralLegsEndFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblBilateralLegsEndFrame.Location = New System.Drawing.Point(19, 534)
+        Me.lblBilateralLegsEndFrame.Location = New System.Drawing.Point(19, 532)
         Me.lblBilateralLegsEndFrame.Name = "lblBilateralLegsEndFrame"
         Me.lblBilateralLegsEndFrame.Size = New System.Drawing.Size(91, 20)
         Me.lblBilateralLegsEndFrame.TabIndex = 71
@@ -534,6 +517,7 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsStartFrame
         '
+        Me.txtBilateralLegsStartFrame.Enabled = False
         Me.txtBilateralLegsStartFrame.Location = New System.Drawing.Point(279, 417)
         Me.txtBilateralLegsStartFrame.Name = "txtBilateralLegsStartFrame"
         Me.txtBilateralLegsStartFrame.Size = New System.Drawing.Size(152, 22)
@@ -551,7 +535,8 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsPeakFrame
         '
-        Me.txtBilateralLegsPeakFrame.Location = New System.Drawing.Point(279, 475)
+        Me.txtBilateralLegsPeakFrame.Enabled = False
+        Me.txtBilateralLegsPeakFrame.Location = New System.Drawing.Point(279, 473)
         Me.txtBilateralLegsPeakFrame.Name = "txtBilateralLegsPeakFrame"
         Me.txtBilateralLegsPeakFrame.Size = New System.Drawing.Size(152, 22)
         Me.txtBilateralLegsPeakFrame.TabIndex = 68
@@ -560,7 +545,7 @@ Partial Class frmViewOutputVariables
         '
         Me.lblBilateralLegsPeakFrame.AutoSize = True
         Me.lblBilateralLegsPeakFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblBilateralLegsPeakFrame.Location = New System.Drawing.Point(19, 478)
+        Me.lblBilateralLegsPeakFrame.Location = New System.Drawing.Point(19, 476)
         Me.lblBilateralLegsPeakFrame.Name = "lblBilateralLegsPeakFrame"
         Me.lblBilateralLegsPeakFrame.Size = New System.Drawing.Size(99, 20)
         Me.lblBilateralLegsPeakFrame.TabIndex = 67
@@ -568,6 +553,7 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegs25_50Slope
         '
+        Me.txtBilateralLegs25_50Slope.Enabled = False
         Me.txtBilateralLegs25_50Slope.Location = New System.Drawing.Point(727, 417)
         Me.txtBilateralLegs25_50Slope.Name = "txtBilateralLegs25_50Slope"
         Me.txtBilateralLegs25_50Slope.Size = New System.Drawing.Size(152, 22)
@@ -585,6 +571,7 @@ Partial Class frmViewOutputVariables
         '
         'txtBilateralLegsSlope
         '
+        Me.txtBilateralLegsSlope.Enabled = False
         Me.txtBilateralLegsSlope.Location = New System.Drawing.Point(727, 445)
         Me.txtBilateralLegsSlope.Name = "txtBilateralLegsSlope"
         Me.txtBilateralLegsSlope.Size = New System.Drawing.Size(152, 22)
@@ -612,33 +599,38 @@ Partial Class frmViewOutputVariables
         '
         'RectangleShape5
         '
-        Me.RectangleShape5.Location = New System.Drawing.Point(461, 245)
+        Me.RectangleShape5.Location = New System.Drawing.Point(461, 228)
         Me.RectangleShape5.Name = "RectangleShape5"
-        Me.RectangleShape5.Size = New System.Drawing.Size(429, 129)
+        Me.RectangleShape5.Size = New System.Drawing.Size(430, 130)
         '
         'RectangleShape4
         '
-        Me.RectangleShape4.Location = New System.Drawing.Point(461, 33)
+        Me.RectangleShape4.Location = New System.Drawing.Point(461, 37)
         Me.RectangleShape4.Name = "RectangleShape4"
-        Me.RectangleShape4.Size = New System.Drawing.Size(430, 168)
+        Me.RectangleShape4.Size = New System.Drawing.Size(430, 132)
         '
         'RectangleShape3
         '
-        Me.RectangleShape3.Location = New System.Drawing.Point(12, 34)
+        Me.RectangleShape3.Location = New System.Drawing.Point(12, 37)
         Me.RectangleShape3.Name = "RectangleShape3"
-        Me.RectangleShape3.Size = New System.Drawing.Size(430, 167)
+        Me.RectangleShape3.Size = New System.Drawing.Size(430, 132)
         '
         'RectangleShape2
         '
-        Me.RectangleShape2.Location = New System.Drawing.Point(12, 244)
+        Me.RectangleShape2.Location = New System.Drawing.Point(12, 227)
         Me.RectangleShape2.Name = "RectangleShape2"
-        Me.RectangleShape2.Size = New System.Drawing.Size(430, 129)
+        Me.RectangleShape2.Size = New System.Drawing.Size(430, 130)
         '
         'RectangleShape1
         '
-        Me.RectangleShape1.Location = New System.Drawing.Point(13, 408)
+        Me.RectangleShape1.Location = New System.Drawing.Point(13, 411)
         Me.RectangleShape1.Name = "RectangleShape1"
-        Me.RectangleShape1.Size = New System.Drawing.Size(876, 154)
+        Me.RectangleShape1.Size = New System.Drawing.Size(876, 155)
+        '
+        'frmSaveTest
+        '
+        Me.frmSaveTest.DefaultExt = "csv"
+        Me.frmSaveTest.FileName = "sts_variables"
         '
         'btnSaveVariables
         '
@@ -701,15 +693,11 @@ Partial Class frmViewOutputVariables
         Me.Controls.Add(Me.lblLeftArmStartFrame)
         Me.Controls.Add(Me.txtLeftArmPeakFrame)
         Me.Controls.Add(Me.lblLeftArmPeakFrame)
-        Me.Controls.Add(Me.txtRightLegAreaSeatOffToEndOfSTS)
-        Me.Controls.Add(Me.lblRightLegAreaSeatOffToEndOfSTS)
         Me.Controls.Add(Me.lblRightLeg)
         Me.Controls.Add(Me.txtRightLegAvgForceSeatOffToEndOfSTS)
         Me.Controls.Add(Me.lblRightLegAvgForceSeatOffToEndOfSTS)
         Me.Controls.Add(Me.txtRightLegPeakFrame)
         Me.Controls.Add(Me.lblRightLegPeakFrame)
-        Me.Controls.Add(Me.txtLeftLegAreaSeatOffToEndOfSTS)
-        Me.Controls.Add(Me.lblLeftLegAreaSeatOffToEndOfSTS)
         Me.Controls.Add(Me.lblLeftLeg)
         Me.Controls.Add(Me.txtLeftLegAvgForceSeatOffToEndOfSTS)
         Me.Controls.Add(Me.lblLeftLegAvgForceSeatOffToEndOfSTS)
@@ -717,7 +705,9 @@ Partial Class frmViewOutputVariables
         Me.Controls.Add(Me.lblLeftLegPeakFrame)
         Me.Controls.Add(Me.ShapeContainer1)
         Me.Name = "frmViewOutputVariables"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Output Variables"
+        Me.TopMost = True
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -727,10 +717,6 @@ Partial Class frmViewOutputVariables
     Friend WithEvents txtLeftLegAvgForceSeatOffToEndOfSTS As System.Windows.Forms.TextBox
     Friend WithEvents lblLeftLegAvgForceSeatOffToEndOfSTS As System.Windows.Forms.Label
     Friend WithEvents lblLeftLeg As System.Windows.Forms.Label
-    Friend WithEvents txtLeftLegAreaSeatOffToEndOfSTS As System.Windows.Forms.TextBox
-    Friend WithEvents lblLeftLegAreaSeatOffToEndOfSTS As System.Windows.Forms.Label
-    Friend WithEvents txtRightLegAreaSeatOffToEndOfSTS As System.Windows.Forms.TextBox
-    Friend WithEvents lblRightLegAreaSeatOffToEndOfSTS As System.Windows.Forms.Label
     Friend WithEvents lblRightLeg As System.Windows.Forms.Label
     Friend WithEvents txtRightLegAvgForceSeatOffToEndOfSTS As System.Windows.Forms.TextBox
     Friend WithEvents lblRightLegAvgForceSeatOffToEndOfSTS As System.Windows.Forms.Label

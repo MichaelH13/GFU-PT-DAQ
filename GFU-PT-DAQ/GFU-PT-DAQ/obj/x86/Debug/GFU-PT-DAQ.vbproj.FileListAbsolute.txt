@@ -6,7 +6,6 @@ C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\bin\Debug\GFU-P
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.exe
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.xml
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.pdb
-C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU_PT_DAQ.Form2.resources
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ-2\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.exe
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ-2\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.xml
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ-2\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.pdb
@@ -18,3 +17,4 @@ C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ-2\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ-2\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.vbproj.GenerateResource.Cache
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\bin\Debug\GFU-PT-DAQ.exe.config
 C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU_PT_DAQ.frmViewOutputVariables.resources
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ\GFU-PT-DAQ\obj\x86\Debug\GFU_PT_DAQ.frmMain.resources

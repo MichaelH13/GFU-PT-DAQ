@@ -2,7 +2,7 @@
 Imports System.Runtime.InteropServices
 Imports System.IO
 
-Public Class Form2
+Public Class frmMain
 
     Public Enum FORM_STATE As Integer
         NEW_TEST
@@ -38,19 +38,22 @@ Public Class Form2
     Public xchartcoord As Integer
     Public ychartcoord As Integer
 
-    Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Dim myDAQ As New MccDaq.MccBoard(0)
+    Dim voltageRange As MccDaq.Range = MccDaq.Range.Bip10Volts
+
+    ''' <summary>
+    ''' Initializes the form state, draws the chart, sets the sampling rate, 
+    ''' hides the progress bar, and gets the total samples in the test.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
+    Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         frmState = FORM_STATE.NEW_TEST
         drawChart()
         samplingRate = 1000 / Me.clkSamplingRate.Interval
         Me.pgbTestStatus.Visible = False
-        totalSamples = getTotalSamplesInTest()
     End Sub
-
-    Dim myDAQ As New MccDaq.MccBoard(0)
-    Dim voltageRange As MccDaq.Range = MccDaq.Range.Bip10Volts
-
-    Dim timeCounter As Double
-    Dim totalSamples As Double
 
     ''' <summary>
     ''' Sub that is to be called to draw the chart when the data is updated.
@@ -139,7 +142,7 @@ Public Class Form2
             STSChart.Series.Add(listOfSeries(lst))
 
             ' Format the data in our chart.
-            With STSChart.Series(lst)                                             ' Select the current Series to format.
+            With STSChart.Series(lst)                                           ' Select the current Series to format.
                 .ChartType = DataVisualization.Charting.SeriesChartType.Line    ' Set the format for the series.
                 .Color = colors(lst)                                            ' Set the color for the line.
                 .BorderWidth = 3                                                ' Set the Line width.
@@ -272,19 +275,109 @@ Public Class Form2
                     If (confirmPoint("Seat Off")) Then
                         seatOffFrame = xchartcoord
                         frmState = FORM_STATE.SHOW_POINTS
+
+                        viewOutput()
+
+                        frmState = FORM_STATE.SAVE_TEST
                     End If
             End Select
         End If
     End Sub
 
+    ''' <summary>
+    ''' Displays form to view program variable output from the 
+    ''' last complete STS test.
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub viewOutput()
+
+        '******************************************************
+        ' Now that we are ready to show the points, calculate
+        ' them and then display them to the user.
+        '******************************************************
+        Dim bilateral25To50Slope As Double
+        Dim bilateralSlope As Double
+        Dim rightArmArea As Double
+        Dim leftArmArea As Double
+        Dim bilateralAreaSeatOffToEnd As Double
+        Dim bilateralLegsAverageSeatOffToEnd As Double
+
+        ' Then get averages, areas, and slopes.
+        rightLegAvgForce = getRightLegAvgForce()
+        leftLegAvgForce = getLeftLegAvgForce()
+        bilateral25To50Slope = getBilateral25To50Slope()
+        bilateralSlope = getBilateralSlope()
+        rightArmArea = getRightArmArea()
+        leftArmArea = getLeftArmArea()
+        bilateralAreaSeatOffToEnd = getBilateralAreaSeatOffToEnd()
+        bilateralLegsAverageSeatOffToEnd = getBilateralLegsAverageSeatOffToEnd()
+
+        Dim viewOutput As New frmViewOutputVariables
+
+        ' Write Left Leg Variables out to the viewing form.
+        viewOutput.txtLeftLegFirstMinima.Text = leftLegFirstMinimaFrame
+        viewOutput.txtLeftLegPeakFrame.Text = leftLegPeakFrame
+        viewOutput.txtLeftLegSecondMinima.Text = leftLegSecondMinimaFrame
+        viewOutput.txtLeftLegAvgForceSeatOffToEndOfSTS.Text = leftLegAvgForce
+
+        ' Write Right Leg Variables out to the viewing form.
+        viewOutput.txtRightLegFirstMinima.Text = rightLegFirstMinimaFrame
+        viewOutput.txtRightLegPeakFrame.Text = rightLegPeakFrame
+        viewOutput.txtRightLegSecondMinima.Text = rightLegSecondMinimaFrame
+        viewOutput.txtRightLegAvgForceSeatOffToEndOfSTS.Text = rightLegAvgForce
+
+        ' Write Left Arm Variables out to the viewing form.
+        viewOutput.txtLeftArmStartFrame.Text = leftArmStartFrame
+        viewOutput.txtLeftArmPeakFrame.Text = leftArmPeakFrame
+        viewOutput.txtLeftArmEndFrame.Text = leftArmEndFrame
+        viewOutput.txtLeftArmArea.Text = leftArmArea
+
+        ' Write Right Arm Variables out to the viewing form.
+        viewOutput.txtRightArmStartFrame.Text = rightArmStartFrame
+        viewOutput.txtRightArmPeakFrame.Text = rightArmPeakFrame
+        viewOutput.txtRightArmEndFrame.Text = rightArmEndFrame
+        viewOutput.txtRightArmArea.Text = rightArmArea
+
+        ' Write Bilateral Leg Variables out to the viewing form.
+        viewOutput.txtBilateralLegsStartFrame.Text = startSTSFrame
+        viewOutput.txtBilateralLegsPeakFrame.Text = bilateralPeakFrame
+        viewOutput.txtBilateralLegsEndFrame.Text = endSTSFrame
+        viewOutput.txtBilateralLegsFirstMinima.Text = bilateralFirstMinimaFrame
+        viewOutput.txtBilateralLegsSecondMinima.Text = bilateralSecondMinimaFrame
+        viewOutput.txtBilateralLegs25_50Slope.Text = bilateral25To50Slope
+        viewOutput.txtBilateralLegsSlope.Text = bilateralSlope
+        viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = bilateralAreaSeatOffToEnd
+        viewOutput.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Text = bilateralLegsAverageSeatOffToEnd
+
+        ' Finally, show the form to the user.
+        viewOutput.Show()
+    End Sub
+
+    ''' <summary>
+    ''' Short function to confirm the user's point choice.
+    ''' </summary>
+    ''' <param name="pointName"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
     Private Function confirmPoint(ByVal pointName As String) As Boolean
         confirmPoint = MsgBox("Are you sure the point X=" & Me.xCoord.Text & " Y=" & Me.yCoord.Text & " is your desired " & pointName & " point?", vbYesNo + vbApplicationModal, getAppTitle()) = vbYes
     End Function
 
+    ''' <summary>
+    ''' Short function to create a general message box for selecting a point.
+    ''' </summary>
+    ''' <param name="pointName"></param>
+    ''' <remarks></remarks>
     Private Sub selectPoint(ByVal pointName As String)
         MsgBox("Select the " & pointName & " point for the test...", vbOKOnly + vbApplicationModal, getAppTitle())
     End Sub
 
+    ''' <summary>
+    ''' Triggered when the mouse moves on the chart.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
+    ''' <remarks></remarks>
     Private Sub STSChart_MouseMove(ByVal sender As System.Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles STSChart.MouseMove
         Dim result As HitTestResult = STSChart.HitTest(e.X, e.Y)
         Dim dp As DataPoint
@@ -296,114 +389,18 @@ Public Class Form2
             If result.PointIndex > 0 Then
 
                 dp = STSChart.Series(0).Points(result.PointIndex)
-                ToolTip1.SetToolTip(STSChart, "X:" & dp.XValue & " Y:" & dp.YValues(0))
+
+                ' Show both X and Y coordinates for the first series.
+                'ToolTip1.SetToolTip(STSChart, "X:" & dp.XValue & " Y:" & dp.YValues(0))
+
+                ' Show just the X coordinate for any given series.
+                chartSTSToolTip.SetToolTip(STSChart, "X: " & dp.XValue)
+
                 Me.xCoord.Text = dp.XValue
                 Me.yCoord.Text = dp.YValues(0)
                 xchartcoord = dp.XValue
                 ychartcoord = dp.YValues(0)
-
-                ' Now confirm the selection with the user.
-                Select Case (frmState)
-                    Case FORM_STATE.SELECT_START_FRAME
-                    Case FORM_STATE.SELECT_END_FRAME
-                    Case FORM_STATE.SELECT_BILATERAL_FIRST_MINIMA
-                    Case FORM_STATE.SELECT_BILATERAL_PEAK
-                    Case FORM_STATE.SELECT_BILATERAL_SECOND_MINIMA
-                    Case FORM_STATE.SELECT_LEFT_LEG_FIRST_MINIMA
-                    Case FORM_STATE.SELECT_LEFT_LEG_PEAK
-                    Case FORM_STATE.SELECT_LEFT_LEG_SECOND_MINIMA
-                    Case FORM_STATE.SELECT_RIGHT_LEG_FIRST_MINIMA
-                    Case FORM_STATE.SELECT_RIGHT_LEG_PEAK
-                    Case FORM_STATE.SELECT_RIGHT_LEG_SECOND_MINIMA
-                    Case FORM_STATE.SELECT_LEFT_ARM_START
-                    Case FORM_STATE.SELECT_LEFT_ARM_END
-                    Case FORM_STATE.SELECT_LEFT_ARM_PEAK
-                    Case FORM_STATE.SELECT_RIGHT_ARM_START
-                    Case FORM_STATE.SELECT_RIGHT_ARM_END
-                    Case FORM_STATE.SELECT_RIGHT_ARM_PEAK
-                    Case FORM_STATE.SELECT_SEAT_OFF
-                    Case FORM_STATE.SHOW_POINTS
-
-                        'Dim frmViewOutput As New frmViewOutputVariables()
-                        'frmViewOutputVariables.txtLeftLegStartFrame
-                        'Now clip the data and set the time to percent STS for plotting
-                        lengthSTS = endSTSFrame - startSTSFrame
-
-                        calculateLegDerivatives(startSTSFrame, endSTSFrame)
-                        'convertDataFromVoltagesToWeight()
-
-                        MsgBox("Left Leg Peak Frame: " & leftLegPeakFrame, vbInformation + vbSystemModal, getAppTitle())
-
-                        rightLegAvgForce = getRightLegAvgForce()
-                        MsgBox("Right Leg Avg Force: " & rightLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
-
-                        leftLegAvgForce = getLeftLegAvgForce()
-                        MsgBox("Left Leg Avg Force: " & leftLegAvgForce, vbInformation + vbSystemModal, getAppTitle())
-
-                        Dim bilateral25To50Slope As Double = getBilateral25To50Slope()
-                        MsgBox("getBilateral25To50Slope(): " & bilateral25To50Slope, vbInformation + vbSystemModal, getAppTitle())
-
-                        Dim bilateralSlope As Double = getBilateralSlope()
-                        MsgBox("getBilateralSlope(): " & bilateralSlope, vbInformation + vbSystemModal, getAppTitle())
-
-                        Dim rightArmArea As Double = getRightArmArea()
-                        MsgBox("getRightArmArea(): " & rightArmArea, vbInformation + vbSystemModal, getAppTitle())
-
-                        Dim leftArmArea As Double = getLeftArmArea()
-                        MsgBox("getLeftArmArea(): " & leftArmArea, vbInformation + vbSystemModal, getAppTitle())
-
-                        Dim bilateralAreaSeatOffToEnd As Double = getBilateralAreaSeatOffToEnd()
-                        MsgBox("getBilateralAreaSeatOffToEnd(): " & getBilateralAreaSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
-
-                        Dim bilateralLegsAverageSeatOffToEnd As Double = getBilateralLegsAverageSeatOffToEnd()
-                        MsgBox("getBilateralAverageSeatOffToEnd(): " & getBilateralLegsAverageSeatOffToEnd(), vbInformation + vbSystemModal, getAppTitle())
-
-
-                        Dim viewOutput As New frmViewOutputVariables
-
-                        ' Write Left Leg Variables out to file.
-                        viewOutput.txtLeftLegFirstMinima.Text = leftLegFirstMinimaFrame
-                        viewOutput.txtLeftLegPeakFrame.Text = leftLegPeakFrame
-                        viewOutput.txtLeftLegSecondMinima.Text = leftLegSecondMinimaFrame
-                        'viewOutput.txtLeftLegAreaSeatOffToEndOfSTS.Text =
-                        viewOutput.txtLeftLegAvgForceSeatOffToEndOfSTS.Text = leftLegAvgForce
-
-                        ' Write Right Leg Variables out to file.
-                        viewOutput.txtRightLegFirstMinima.Text = rightLegFirstMinimaFrame
-                        viewOutput.txtRightLegPeakFrame.Text = rightLegPeakFrame
-                        viewOutput.txtRightLegSecondMinima.Text = rightLegSecondMinimaFrame
-                        'viewOutput.txtRightLegAreaSeatOffToEndOfSTS.Text
-                        viewOutput.txtRightLegAvgForceSeatOffToEndOfSTS.Text = rightLegAvgForce
-
-                        ' Write Left Arm Variables out to file.
-                        viewOutput.txtLeftArmStartFrame.Text = leftArmStartFrame
-                        viewOutput.txtLeftArmPeakFrame.Text = leftArmPeakFrame
-                        viewOutput.txtLeftArmEndFrame.Text = leftArmEndFrame
-                        viewOutput.txtLeftArmArea.Text = leftArmArea
-
-                        ' Write Right Arm Variables out to file.
-                        viewOutput.txtRightArmStartFrame.Text = rightArmStartFrame
-                        viewOutput.txtRightArmPeakFrame.Text = rightArmPeakFrame
-                        viewOutput.txtRightArmEndFrame.Text = rightArmEndFrame
-                        viewOutput.txtRightArmArea.Text = rightArmArea
-
-                        ' Write Bilateral Leg Variables out to file.
-                        viewOutput.txtBilateralLegsStartFrame.Text = startSTSFrame
-                        viewOutput.txtBilateralLegsPeakFrame.Text = bilateralPeakFrame
-                        viewOutput.txtBilateralLegsEndFrame.Text = endSTSFrame
-                        viewOutput.txtBilateralLegsFirstMinima.Text = bilateralFirstMinimaFrame
-                        viewOutput.txtBilateralLegsSecondMinima.Text = bilateralSecondMinimaFrame
-                        viewOutput.txtBilateralLegs25_50Slope.Text = bilateral25To50Slope
-                        viewOutput.txtBilateralLegsSlope.Text = bilateralSlope
-                        viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = bilateralAreaSeatOffToEnd
-                        viewOutput.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Text = bilateralLegsAverageSeatOffToEnd
-                        viewOutput.Show()
-
-                        frmState = FORM_STATE.SAVE_TEST
-                End Select
             End If
-
-
         End If
     End Sub
 
@@ -465,8 +462,9 @@ Public Class Form2
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
 
         Dim listDataPoints As ArrayList = getDataPoints()
-        Dim listsToWriteToFile(listDataPoints(0).Count) As String
+        Dim listsToWriteToFile(listDataPoints(0).Count + 1) As String
         Dim idx As Integer = 0
+
 
         ' Iterate over the data points.
         For i As Integer = 0 To listDataPoints(0).Count - 1 Step 1
@@ -480,12 +478,10 @@ Public Class Form2
             idx += 1
         Next
 
-        ' Set the default extension for the file to be saved.
-        frmSaveTest.DefaultExt = "*.csv"
-
         ' Save the Test to file.
         If (frmSaveTest.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
-            IO.File.WriteAllLines(frmSaveTest.FileName, listsToWriteToFile)
+            IO.File.WriteAllLines(frmSaveTest.FileName, {"Milliseconds,Right Arm,Left Arm,Right Leg,Left Leg,Ground,Seat,Bilateral Legs"})
+            IO.File.AppendAllLines(frmSaveTest.FileName, listsToWriteToFile)
             MsgBox("Saved file!", vbOKOnly, getAppTitle())
         End If
 
@@ -673,10 +669,15 @@ Public Class Form2
         frmState = FORM_STATE.NEW_TEST
     End Sub
 
-    Private Sub btnResetPickoff_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetPickoff.Click
-        readInSTSTest(True, 60000, 6, "test.txt")
+    Private Sub btnReloadLastTestToPickoff_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnResetPickoff.Click
+        readInSTSTest(True, 10000, 6, "test.txt")
         drawChart()
         frmState = FORM_STATE.SELECT_START_FRAME
         selectPoint("Start of Test")
     End Sub
+
+    Private Sub btnViewVariables_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnViewVariables.Click
+        viewOutput()
+    End Sub
+
 End Class

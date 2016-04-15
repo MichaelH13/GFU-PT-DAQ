@@ -6,7 +6,7 @@ GFU-PT-DAQ
 </name>
 </assembly>
 <members>
-<member name="M:GFU_PT_DAQ.STSCode.convertDataFromVoltagesToWeight">
+<member name="M:GFU_PT_DAQ.ProgramVariableFunctions.convertDataFromVoltagesToWeight">
 	<summary>
  Conversions from Dr. Houck from 4/8/2016
  Right Wii Plate y=0.0544(signal) +3.3621
@@ -15,14 +15,7 @@ GFU-PT-DAQ
  Left Arm  y = 0.2222(signal)+32.94
  </summary>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.calculateLegDerivatives(System.Int32,System.Int32)">
-	<summary>
- Calculates the leg derivatives for the slope.
- </summary>
-	<param name="startSTSFrame"></param>
-	<param name="endSTSFrame"></param>
-	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getLeftLegAvgForce">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getLeftLegAvgForce">
 	<summary>
  Gets the average force for the left leg from the the seat off frame 
  to the end of the test.
@@ -30,7 +23,7 @@ GFU-PT-DAQ
 	<returns>Returns the average force for the left leg from the the seat off frame 
  to the end of the test as a Double. Units returned are Newtons.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getRightLegAvgForce">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getRightLegAvgForce">
 	<summary>
  Gets the average force for the right leg from the the seat off frame 
  to the end of the test.
@@ -38,7 +31,7 @@ GFU-PT-DAQ
 	<returns>Returns the average force for the right leg from the the seat off frame 
  to the end of the test as a Double. Units returned are Newtons.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getBilateralSlope">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getBilateralSlope">
 	<summary>
  Gets the bilateral legs slope from the first minima 
  to the bilateral peak.
@@ -46,7 +39,7 @@ GFU-PT-DAQ
 	<returns>Returns the bilateral legs slope from the first minima 
  to the bilateral peak as a Double. Units returned are Newtons/Second.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getBilateral25To50Slope">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getBilateral25To50Slope">
 	<summary>
  Gets the bilateral legs slope from 25% to 50% of the magnitude of the
  first minima to the bilateral peak.
@@ -54,21 +47,21 @@ GFU-PT-DAQ
 	<returns>Returns the bilateral legs slope from 25% to 50% of the magnitude of the
  first minima to the bilateral peak as a Double. Units returned are Newtons/Second.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getRightArmArea">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getRightArmArea">
 	<summary>
  Gets the right arm area from the start of the right arm movement 
  to the end of the right arm movement.
  </summary>
 	<returns>Returns the right arm area as a Double. Units returned are Newtons/Second.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getLeftArmArea">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getLeftArmArea">
 	<summary>
  Gets the left arm area from the start of the left arm movement 
  to the end of the left arm movement.
  </summary>
 	<returns>Returns the left arm area as a Double. Units returned are Newtons/Second.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getBilateralAreaSeatOffToEnd">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getBilateralAreaSeatOffToEnd">
 	<summary>
  Gets the bilateral legs area from the seat off point to the 
  end of the test.
@@ -76,7 +69,7 @@ GFU-PT-DAQ
 	<returns>Returns the bilateral legs area from the seat off 
  point to the end of the test as a Double. Units returned are Newtons/Second.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getBilateralLegsAverageSeatOffToEnd">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.getBilateralLegsAverageSeatOffToEnd">
 	<summary>
  Gets the bilateral legs average value from the seat off point to the 
  end of the test.
@@ -84,7 +77,13 @@ GFU-PT-DAQ
 	<returns>Returns the bilateral legs average value from the seat off 
  point to the end of the test as a Double. Units returned are Newtons.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getAreaForArray(System.Double[]@,System.Int32,System.Int32)">
+</member><member name="T:GFU_PT_DAQ.ProgramVariableFunctions">
+	<summary>
+ Functions are stored here that get various program variables as 
+ determined by the data provided.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.HelperFunctions.getAreaForArray(System.Double[]@,System.Int32,System.Int32)">
 	<summary>
  Gets the area of a range (specified by the fromIndex, inclusive, and the 
  toIndex, exclusive) of an array that is passed in the function by reference.
@@ -94,7 +93,7 @@ GFU-PT-DAQ
 	<param name="toIndex">The closing index of the range, exclusive.</param>
 	<returns>The area for the range specified in the array as a Double.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getAverageForArray(System.Double[]@,System.Int32,System.Int32)">
+</member><member name="M:GFU_PT_DAQ.HelperFunctions.getAverageForArray(System.Double[]@,System.Int32,System.Int32)">
 	<summary>
  Gets the average of a range (specified by the fromIndex, inclusive,
  and the toIndex, exclusive) of an array that is passed in the function 
@@ -105,7 +104,7 @@ GFU-PT-DAQ
 	<param name="toIndex">The closing index of the range, exclusive.</param>
 	<returns>Returns the average of the range in the list specified as a Double.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getAreaForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
+</member><member name="M:GFU_PT_DAQ.HelperFunctions.getAreaForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
 	<summary>
  Gets the area of a range (specified by the fromIndex, inclusive, and the 
  toIndex, exclusive) of a list that is passed in the function by reference.
@@ -115,7 +114,7 @@ GFU-PT-DAQ
 	<param name="toIndex">The closing index of the range, exclusive.</param>
 	<returns>The area for the range specified in the list as a Double.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getAverageForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
+</member><member name="M:GFU_PT_DAQ.HelperFunctions.getAverageForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
 	<summary>
  Gets the average of a range (specified by the fromIndex, inclusive,
  and the toIndex, exclusive) of a list that is passed in the function 
@@ -126,14 +125,14 @@ GFU-PT-DAQ
 	<param name="toIndex">The closing index of the range, exclusive.</param>
 	<returns>Returns the average of the range in the list specified as a Double.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getAverageForList(System.Collections.ArrayList@)">
+</member><member name="M:GFU_PT_DAQ.HelperFunctions.getAverageForList(System.Collections.ArrayList@)">
 	<summary>
  Gets the average of a list that is passed in the function by reference.
  </summary>
 	<param name="list">The list to get the average value of.</param>
 	<returns>The average value of the listas a Double.</returns>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.STSCode.getSlopeForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
+</member><member name="M:GFU_PT_DAQ.HelperFunctions.getSlopeForList(System.Collections.ArrayList@,System.Int32,System.Int32)">
 	<summary>
  Gets the slope of a range (specified by the fromIndex, inclusive, and the 
  toIndex, exclusive) of a list that is passed in the function by reference.
@@ -143,6 +142,24 @@ GFU-PT-DAQ
 	<param name="fromIndex">The starting index of the range, inclusive.</param>
 	<param name="toIndex">The closing index of the range, exclusive.</param>
 	<returns>Returns the slope (in Newtons/millisecond) of the range requested as a Double.</returns>
+	<remarks></remarks>
+</member><member name="T:GFU_PT_DAQ.HelperFunctions">
+	<summary>
+ Short, general helper functions to calculate areas, averages, and slopes.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.STSCode.calculateLegDerivatives(System.Int32,System.Int32)">
+	<summary>
+ Calculates the leg derivatives for the slope.
+ </summary>
+	<param name="startSTSFrame"></param>
+	<param name="endSTSFrame"></param>
+	<remarks></remarks>
+</member><member name="T:GFU_PT_DAQ.STSCode">
+	<summary>
+ Largely depreciated. Used to be how Dr. Houck's code worked(?).
+ Functions for finding points are included, could be used at a later time?
+ </summary>
 	<remarks></remarks>
 </member><member name="P:GFU_PT_DAQ.My.Resources.Resources.ResourceManager">
 	<summary>
@@ -157,7 +174,20 @@ GFU-PT-DAQ
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
-</member><member name="M:GFU_PT_DAQ.Form2.drawChart">
+</member><member name="T:GFU_PT_DAQ.modAppProperties">
+	<summary>
+ This module holds core variables and some utility functions.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.frmMain.frmMain_Load(System.Object,System.EventArgs)">
+	<summary>
+ Initializes the form state, draws the chart, sets the sampling rate, 
+ hides the progress bar, and gets the total samples in the test.
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.frmMain.drawChart">
 	<summary>
  Sub that is to be called to draw the chart when the data is updated.
  </summary>
@@ -166,7 +196,7 @@ GFU-PT-DAQ
  except for the listTimes list, which is created based on the 
  length of the aforementioned lists.
  </remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.STSChart_Click(System.Object,System.EventArgs)">
+</member><member name="M:GFU_PT_DAQ.frmMain.STSChart_Click(System.Object,System.EventArgs)">
 	<summary>
  Sub that is triggered by a click event on the chart.
  Used to input program variables to calculate various slopes and forces.
@@ -175,7 +205,33 @@ GFU-PT-DAQ
  @input xchartcoord
  This variable is set in the selection function "Chart1_MouseMove"
  </remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.btnCalibrateDevice_Click(System.Object,System.EventArgs)">
+</member><member name="M:GFU_PT_DAQ.frmMain.viewOutput">
+	<summary>
+ Displays form to view program variable output from the 
+ last complete STS test.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.frmMain.confirmPoint(System.String)">
+	<summary>
+ Short function to confirm the user's point choice.
+ </summary>
+	<param name="pointName"></param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.frmMain.selectPoint(System.String)">
+	<summary>
+ Short function to create a general message box for selecting a point.
+ </summary>
+	<param name="pointName"></param>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.frmMain.STSChart_MouseMove(System.Object,System.Windows.Forms.MouseEventArgs)">
+	<summary>
+ Triggered when the mouse moves on the chart.
+ </summary>
+	<param name="sender"></param>
+	<param name="e"></param>
+	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.frmMain.btnCalibrateDevice_Click(System.Object,System.EventArgs)">
 	<summary>
  Subroutine to handle when the user clicks the "Calibrate" button.
  We save off sets for each known channel to be applied when we 
@@ -184,21 +240,21 @@ GFU-PT-DAQ
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.btnRunTest_Click(System.Object,System.EventArgs)">
+</member><member name="M:GFU_PT_DAQ.frmMain.btnRunTest_Click(System.Object,System.EventArgs)">
 	<summary>
  Subroutine to run a new STS test.
  </summary>
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.btnSave_Click(System.Object,System.EventArgs)">
+</member><member name="M:GFU_PT_DAQ.frmMain.btnSave_Click(System.Object,System.EventArgs)">
 	<summary>
  Saves the most recent test to a file that the user specifies.
  </summary>
 	<param name="sender"></param>
 	<param name="e"></param>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.runScanAndPopulateLists(System.Boolean,System.Int32,System.Int32,System.String)">
+</member><member name="M:GFU_PT_DAQ.frmMain.runScanAndPopulateLists(System.Boolean,System.Int32,System.Int32,System.String)">
 	<summary>
  Runs a scan using the DAQ and populate the lists of values 
  for each channel.
@@ -218,14 +274,14 @@ GFU-PT-DAQ
  <param name="fileName"></param>
  The name of the file we need to read the data in from.
  <remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.readInSTSTest(System.Boolean,System.Int32,System.Int32,System.String)">
+</member><member name="M:GFU_PT_DAQ.frmMain.readInSTSTest(System.Boolean,System.Int32,System.Int32,System.String)">
 	<summary>
  
  This function reads in raw 16-bit data values as generated from 
- the <see cref="M:GFU_PT_DAQ.Form2.runScanAndPopulateLists(System.Boolean,System.Int32,System.Int32,System.String)"></see> function. If the 
+ the <see cref="M:GFU_PT_DAQ.frmMain.runScanAndPopulateLists(System.Boolean,System.Int32,System.Int32,System.String)"></see> function. If the 
  <paramref name="totalPoints"></paramref> is equal to 10000, then 
  this function will convert the voltages to Newtons as determined
- by the <see cref="M:GFU_PT_DAQ.STSCode.convertDataFromVoltagesToWeight"></see> function.
+ by the <see cref="M:GFU_PT_DAQ.ProgramVariableFunctions.convertDataFromVoltagesToWeight"></see> function.
  
  </summary>
 	<param name="isCalibrated"></param>
@@ -244,12 +300,12 @@ GFU-PT-DAQ
  The name of the file we need to read the data in from.
  
  <remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.clearLists">
+</member><member name="M:GFU_PT_DAQ.frmMain.clearLists">
 	<summary>
  Clears all arraylists we use to keep track of our datapoints.
  </summary>
 	<remarks></remarks>
-</member><member name="M:GFU_PT_DAQ.Form2.initializeProgressBar(System.Object)">
+</member><member name="M:GFU_PT_DAQ.frmMain.initializeProgressBar(System.Object)">
 	<summary>
  Function to initialize our progress bar to run a test.
  </summary>
