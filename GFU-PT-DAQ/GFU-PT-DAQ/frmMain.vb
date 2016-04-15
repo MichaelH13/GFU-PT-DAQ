@@ -180,21 +180,21 @@ Public Class frmMain
 
                 Case FORM_STATE.SELECT_BILATERAL_FIRST_MINIMA
                     If (confirmPoint("Bilateral First Minima")) Then
-                        bilateralFirstMinimaFrame = xchartcoord
+                        bilateralLegsFirstMinimaFrame = xchartcoord
                         frmState = FORM_STATE.SELECT_BILATERAL_PEAK
                         selectPoint("Bilateral Peak")
                     End If
 
                 Case FORM_STATE.SELECT_BILATERAL_PEAK
                     If (confirmPoint("Bilateral Peak")) Then
-                        bilateralPeakFrame = xchartcoord
+                        bilateralLegsPeakFrame = xchartcoord
                         frmState = FORM_STATE.SELECT_BILATERAL_SECOND_MINIMA
                         selectPoint("Second Minima")
                     End If
 
                 Case FORM_STATE.SELECT_BILATERAL_SECOND_MINIMA
                     If (confirmPoint("Bilateral Second Minima")) Then
-                        bilateralSecondMinimaFrame = xchartcoord
+                        bilateralLegsSecondMinimaFrame = xchartcoord
                         frmState = FORM_STATE.SELECT_LEFT_LEG_FIRST_MINIMA
                         selectPoint("Left Leg First Minima")
                     End If
@@ -295,21 +295,17 @@ Public Class frmMain
         ' Now that we are ready to show the points, calculate
         ' them and then display them to the user.
         '******************************************************
-        Dim bilateral25To50Slope As Double
-        Dim bilateralSlope As Double
-        Dim rightArmArea As Double
-        Dim leftArmArea As Double
-        Dim bilateralAreaSeatOffToEnd As Double
-        Dim bilateralLegsAverageSeatOffToEnd As Double
 
         ' Then get averages, areas, and slopes.
         rightLegAvgForce = getRightLegAvgForce()
+        rightLegAreaSeatOffToEnd = getRightLegAreaSeatOffToEnd()
         leftLegAvgForce = getLeftLegAvgForce()
-        bilateral25To50Slope = getBilateral25To50Slope()
-        bilateralSlope = getBilateralSlope()
+        leftLegAreaSeatOffToEnd = getLeftLegAreaSeatOffToEnd()
+        bilateralLegs25To50Slope = getBilateral25To50Slope()
+        bilateralLegsSlope = getBilateralSlope()
         rightArmArea = getRightArmArea()
         leftArmArea = getLeftArmArea()
-        bilateralAreaSeatOffToEnd = getBilateralAreaSeatOffToEnd()
+        bilateralLegsAreaSeatOffToEnd = getBilateralLegsAreaSeatOffToEnd()
         bilateralLegsAverageSeatOffToEnd = getBilateralLegsAverageSeatOffToEnd()
 
         Dim viewOutput As New frmViewOutputVariables
@@ -340,13 +336,13 @@ Public Class frmMain
 
         ' Write Bilateral Leg Variables out to the viewing form.
         viewOutput.txtBilateralLegsStartFrame.Text = startSTSFrame
-        viewOutput.txtBilateralLegsPeakFrame.Text = bilateralPeakFrame
+        viewOutput.txtBilateralLegsPeakFrame.Text = bilateralLegsPeakFrame
         viewOutput.txtBilateralLegsEndFrame.Text = endSTSFrame
-        viewOutput.txtBilateralLegsFirstMinima.Text = bilateralFirstMinimaFrame
-        viewOutput.txtBilateralLegsSecondMinima.Text = bilateralSecondMinimaFrame
-        viewOutput.txtBilateralLegs25_50Slope.Text = bilateral25To50Slope
-        viewOutput.txtBilateralLegsSlope.Text = bilateralSlope
-        viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = bilateralAreaSeatOffToEnd
+        viewOutput.txtBilateralLegsFirstMinima.Text = bilateralLegsFirstMinimaFrame
+        viewOutput.txtBilateralLegsSecondMinima.Text = bilateralLegsSecondMinimaFrame
+        viewOutput.txtBilateralLegs25_50Slope.Text = bilateralLegs25To50Slope
+        viewOutput.txtBilateralLegsSlope.Text = bilateralLegsSlope
+        viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = bilateralLegsAreaSeatOffToEnd
         viewOutput.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Text = bilateralLegsAverageSeatOffToEnd
 
         ' Finally, show the form to the user.
@@ -680,4 +676,10 @@ Public Class frmMain
         viewOutput()
     End Sub
 
+    'Private Sub btnClipData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClipData.Click
+    '    readInSTSTest(True, 10000, 6, "test.txt")
+    '    removeRangeFromLists(getDataPoints(), endSTSFrame, (10000 - endSTSFrame))
+    '    removeRangeFromLists(getDataPoints(), 0, startSTSFrame)
+    '    drawChart()
+    'End Sub
 End Class

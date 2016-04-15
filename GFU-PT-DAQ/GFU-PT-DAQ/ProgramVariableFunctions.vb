@@ -62,7 +62,7 @@ Module ProgramVariableFunctions
     ''' to the bilateral peak as a Double. Units returned are Newtons/Second.</returns>
     ''' <remarks></remarks>
     Public Function getBilateralSlope() As Double
-        getBilateralSlope = getSlopeForList(listBilateralLegs, bilateralFirstMinimaFrame, bilateralPeakFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+        getBilateralSlope = getSlopeForList(listBilateralLegs, bilateralLegsFirstMinimaFrame, bilateralLegsPeakFrame) * 1000 ' Multiply by 1000 to convert to seconds.
     End Function
 
     ''' <summary>
@@ -74,20 +74,20 @@ Module ProgramVariableFunctions
     ''' <remarks></remarks>
     Public Function getBilateral25To50Slope() As Double
         ' Subtract the bilateral peak from the bilateral first minima to get the rise between the points.
-        Dim bilateralRise As Double = listBilateralLegs(bilateralPeakFrame) - listBilateralLegs(bilateralFirstMinimaFrame)
-        Dim twentyFivePercentValue As Double = (bilateralRise / 4) + listBilateralLegs(bilateralFirstMinimaFrame)
-        Dim fiftyPercentValue As Double = (bilateralRise / 2) + listBilateralLegs(bilateralFirstMinimaFrame)
+        Dim bilateralRise As Double = listBilateralLegs(bilateralLegsPeakFrame) - listBilateralLegs(bilateralLegsFirstMinimaFrame)
+        Dim twentyFivePercentValue As Double = (bilateralRise / 4) + listBilateralLegs(bilateralLegsFirstMinimaFrame)
+        Dim fiftyPercentValue As Double = (bilateralRise / 2) + listBilateralLegs(bilateralLegsFirstMinimaFrame)
         Dim twentyFivePercentFrame As Integer
         Dim fiftyPercentFrame As Integer
 
-        For i = bilateralFirstMinimaFrame To bilateralPeakFrame
+        For i = bilateralLegsFirstMinimaFrame To bilateralLegsPeakFrame
             If (listBilateralLegs(i) > twentyFivePercentValue) Then
                 twentyFivePercentFrame = i
                 Exit For
             End If
         Next
 
-        For i = bilateralFirstMinimaFrame To bilateralPeakFrame
+        For i = bilateralLegsFirstMinimaFrame To bilateralLegsPeakFrame
             If (listBilateralLegs(i) > fiftyPercentValue) Then
                 fiftyPercentFrame = i
                 Exit For
@@ -121,11 +121,36 @@ Module ProgramVariableFunctions
     ''' Gets the bilateral legs area from the seat off point to the 
     ''' end of the test.
     ''' </summary>
-    ''' <returns>Returns the bilateral legs area from the seat off 
+    ''' <returns>
+    ''' Returns the bilateral legs area from the seat off 
     ''' point to the end of the test as a Double. Units returned are Newtons/Second.</returns>
     ''' <remarks></remarks>
-    Public Function getBilateralAreaSeatOffToEnd() As Double
-        getBilateralAreaSeatOffToEnd = getAreaForList(listBilateralLegs, seatOffFrame, endSTSFrame) / 1000 ' Convert to seconds
+    Public Function getBilateralLegsAreaSeatOffToEnd() As Double
+        getBilateralLegsAreaSeatOffToEnd = getAreaForList(listBilateralLegs, seatOffFrame, endSTSFrame) / 1000 ' Convert to seconds
+    End Function
+
+    ''' <summary>
+    ''' Gets the right leg area from the seat off point to the 
+    ''' end of the test.
+    ''' </summary>
+    ''' <returns>
+    ''' Returns the right leg area from the seat off 
+    ''' point to the end of the test as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getRightLegAreaSeatOffToEnd() As Double
+        getRightLegAreaSeatOffToEnd = getAreaForList(listRightLeg, seatOffFrame, endSTSFrame) / 1000 ' Convert to seconds
+    End Function
+
+    ''' <summary>
+    ''' Gets the left leg area from the seat off point to the 
+    ''' end of the test.
+    ''' </summary>
+    ''' <returns>
+    ''' Returns left leg area from the seat off 
+    ''' point to the end of the test as a Double. Units returned are Newtons/Second.</returns>
+    ''' <remarks></remarks>
+    Public Function getLeftLegAreaSeatOffToEnd() As Double
+        getLeftLegAreaSeatOffToEnd = getAreaForList(listLeftLeg, seatOffFrame, endSTSFrame) / 1000 ' Convert to seconds
     End Function
 
     ''' <summary>

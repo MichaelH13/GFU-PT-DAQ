@@ -65,9 +65,9 @@ Module STSCode
         endSTSFrame = INVALID
 
         ' Selected/Calculated Peak variables.
-        bilateralFirstMinimaFrame = INVALID
-        bilateralPeakFrame = INVALID
-        bilateralSecondMinimaFrame = INVALID
+        bilateralLegsFirstMinimaFrame = INVALID
+        bilateralLegsPeakFrame = INVALID
+        bilateralLegsSecondMinimaFrame = INVALID
 
         ' Calculated Peak variables
         rightLegPeakFrame = INVALID

@@ -35,34 +35,59 @@ Module modAppProperties
     Public startSTSFrame As Integer = INVALID
     Public endSTSFrame As Integer = INVALID
 
-    ' Bilateral variables.
-    Public bilateralFirstMinimaFrame As Integer = INVALID
-    Public bilateralPeakFrame As Integer = INVALID
-    Public bilateralSecondMinimaFrame As Integer = INVALID
+    ' Bilateral legs variables.
+    Public bilateralLegsFirstMinimaFrame As Integer = INVALID
+    Public bilateralLegsPeakFrame As Integer = INVALID
+    Public bilateralLegsSecondMinimaFrame As Integer = INVALID
+    Public bilateralLegs25To50Slope As Double = INVALID
+    Public bilateralLegsSlope As Double = INVALID
+    Public bilateralLegsAreaSeatOffToEnd As Double = INVALID
+    Public bilateralLegsAverageSeatOffToEnd As Double = INVALID
+
+    Public bilateralLegsSeatOffForceValue As Double = INVALID
+    Public bilateralLegsPeakForce As Integer = INVALID
 
     ' Left leg variables.
     Public leftLegFirstMinimaFrame As Integer = INVALID
     Public leftLegPeakFrame As Integer = INVALID
     Public leftLegSecondMinimaFrame As Integer = INVALID
+    Public leftLegAvgForce As Integer = INVALID
+
+    Public leftLeg25To50Slope As Double = INVALID
+    Public leftLegSlope As Double = INVALID
+    Public leftLegAreaSeatOffToEnd As Double = INVALID
+    Public leftLegSeatOffForceValue As Double = INVALID
+    Public leftLegPeakForce As Integer = INVALID
 
     ' Right leg variables.
     Public rightLegFirstMinimaFrame As Integer = INVALID
     Public rightLegPeakFrame As Integer = INVALID
     Public rightLegSecondMinimaFrame As Integer = INVALID
+    Public rightLegAvgForce As Integer = INVALID
+
+    Public rightLeg25To50Slope As Double = INVALID
+    Public rightLegSlope As Double = INVALID
+    Public rightLegAreaSeatOffToEnd As Double = INVALID
+    Public rightLegSeatOffForceValue As Double = INVALID
+    Public rightLegPeakForce As Integer = INVALID
 
     ' Left arm variables.
     Public leftArmStartFrame As Integer = INVALID
     Public leftArmPeakFrame As Integer = INVALID
     Public leftArmEndFrame As Integer = INVALID
+    Public leftArmArea As Double = INVALID
+
+    Public leftArmSeatOffForceValue As Double = INVALID
+    Public leftArmPeakForce As Integer = INVALID
 
     ' Right arm variables.
     Public rightArmStartFrame As Integer = INVALID
     Public rightArmPeakFrame As Integer = INVALID
     Public rightArmEndFrame As Integer = INVALID
+    Public rightArmArea As Double = INVALID
 
-    ' Average Forces
-    Public leftLegAvgForce As Integer = INVALID
-    Public rightLegAvgForce As Integer = INVALID
+    Public rightArmSeatOffForceValue As Double = INVALID
+    Public rightArmPeakForce As Integer = INVALID
 
     ' Seat off variable.
     Public seatOffFrame As Integer = INVALID

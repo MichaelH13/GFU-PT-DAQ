@@ -23,9 +23,9 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend3 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series3 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.STSChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.btnRunTest = New System.Windows.Forms.Button()
         Me.clkSamplingRate = New System.Windows.Forms.Timer(Me.components)
@@ -41,28 +41,29 @@ Partial Class frmMain
         Me.xCoord = New System.Windows.Forms.Label()
         Me.yCoord = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.btnClipData = New System.Windows.Forms.Button()
         CType(Me.STSChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'STSChart
         '
-        ChartArea3.Name = "ChartArea1"
-        Me.STSChart.ChartAreas.Add(ChartArea3)
-        Legend3.Name = "Legend1"
-        Me.STSChart.Legends.Add(Legend3)
+        ChartArea2.Name = "ChartArea1"
+        Me.STSChart.ChartAreas.Add(ChartArea2)
+        Legend2.Name = "Legend1"
+        Me.STSChart.Legends.Add(Legend2)
         Me.STSChart.Location = New System.Drawing.Point(23, -1)
         Me.STSChart.Name = "STSChart"
-        Series3.ChartArea = "ChartArea1"
-        Series3.Legend = "Legend1"
-        Series3.Name = "Series1"
-        Me.STSChart.Series.Add(Series3)
+        Series2.ChartArea = "ChartArea1"
+        Series2.Legend = "Legend1"
+        Series2.Name = "Series1"
+        Me.STSChart.Series.Add(Series2)
         Me.STSChart.Size = New System.Drawing.Size(1055, 555)
         Me.STSChart.TabIndex = 1
         Me.STSChart.Text = "STS Chart"
         '
         'btnRunTest
         '
-        Me.btnRunTest.Location = New System.Drawing.Point(479, 589)
+        Me.btnRunTest.Location = New System.Drawing.Point(444, 596)
         Me.btnRunTest.Name = "btnRunTest"
         Me.btnRunTest.Size = New System.Drawing.Size(136, 34)
         Me.btnRunTest.TabIndex = 2
@@ -75,7 +76,7 @@ Partial Class frmMain
         '
         'btnSave
         '
-        Me.btnSave.Location = New System.Drawing.Point(695, 589)
+        Me.btnSave.Location = New System.Drawing.Point(660, 596)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(136, 34)
         Me.btnSave.TabIndex = 3
@@ -91,7 +92,7 @@ Partial Class frmMain
         '
         'btnCalibrateDevice
         '
-        Me.btnCalibrateDevice.Location = New System.Drawing.Point(259, 589)
+        Me.btnCalibrateDevice.Location = New System.Drawing.Point(224, 596)
         Me.btnCalibrateDevice.Name = "btnCalibrateDevice"
         Me.btnCalibrateDevice.Size = New System.Drawing.Size(136, 34)
         Me.btnCalibrateDevice.TabIndex = 7
@@ -100,7 +101,7 @@ Partial Class frmMain
         '
         'btnCancelTest
         '
-        Me.btnCancelTest.Location = New System.Drawing.Point(479, 654)
+        Me.btnCancelTest.Location = New System.Drawing.Point(444, 661)
         Me.btnCancelTest.Name = "btnCancelTest"
         Me.btnCancelTest.Size = New System.Drawing.Size(136, 34)
         Me.btnCancelTest.TabIndex = 8
@@ -109,7 +110,7 @@ Partial Class frmMain
         '
         'btnResetPickoff
         '
-        Me.btnResetPickoff.Location = New System.Drawing.Point(695, 654)
+        Me.btnResetPickoff.Location = New System.Drawing.Point(660, 661)
         Me.btnResetPickoff.Name = "btnResetPickoff"
         Me.btnResetPickoff.Size = New System.Drawing.Size(136, 34)
         Me.btnResetPickoff.TabIndex = 9
@@ -123,7 +124,7 @@ Partial Class frmMain
         '
         'btnViewVariables
         '
-        Me.btnViewVariables.Location = New System.Drawing.Point(259, 654)
+        Me.btnViewVariables.Location = New System.Drawing.Point(224, 661)
         Me.btnViewVariables.Name = "btnViewVariables"
         Me.btnViewVariables.Size = New System.Drawing.Size(136, 34)
         Me.btnViewVariables.TabIndex = 10
@@ -164,11 +165,22 @@ Partial Class frmMain
         Me.Label4.TabIndex = 13
         Me.Label4.Text = "Y"
         '
+        'btnClipData
+        '
+        Me.btnClipData.Location = New System.Drawing.Point(112, 596)
+        Me.btnClipData.Name = "btnClipData"
+        Me.btnClipData.Size = New System.Drawing.Size(136, 34)
+        Me.btnClipData.TabIndex = 15
+        Me.btnClipData.Text = "Clip Data"
+        Me.btnClipData.UseVisualStyleBackColor = True
+        Me.btnClipData.Visible = False
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1078, 739)
+        Me.Controls.Add(Me.btnClipData)
         Me.Controls.Add(Me.yCoord)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.xCoord)
@@ -205,4 +217,5 @@ Partial Class frmMain
     Friend WithEvents xCoord As System.Windows.Forms.Label
     Friend WithEvents yCoord As System.Windows.Forms.Label
     Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents btnClipData As System.Windows.Forms.Button
 End Class

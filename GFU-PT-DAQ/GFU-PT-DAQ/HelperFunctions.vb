@@ -106,4 +106,9 @@ Module HelperFunctions
         getSlopeForList = ((list(toIndex) - list(fromIndex)) / (toIndex - fromIndex))
     End Function
 
+    'Public Sub removeRangeFromLists(ByRef lists As ArrayList, ByVal fromIndex As Integer, ByVal countToRemove As Integer)
+    '    For i = 0 To lists.Count
+    '        lists(i).RemoveRange(fromIndex, countToRemove)
+    '    Next
+    'End Sub
 End Module
