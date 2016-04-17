@@ -16,11 +16,15 @@ Module HelperFunctions
     Public Function getAreaForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
         Dim area As Double = 0
 
-        For i = fromIndex To toIndex
-            area += array(i)
-        Next
+        If (toIndex > 0 And fromIndex >= 0) Then
+            For i = fromIndex To toIndex
+                area += array(i)
+            Next
+            getAreaForArray = area
+        Else
+            getAreaForArray = INVALID
+        End If
 
-        getAreaForArray = area
     End Function
 
     ''' <summary>
@@ -36,11 +40,15 @@ Module HelperFunctions
     Public Function getAverageForArray(ByRef array As Double(), ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
         Dim sum As Double = 0
 
-        For i = fromIndex To toIndex
-            sum += array(i)
-        Next
+        If (toIndex > 0 And fromIndex >= 0) Then
+            For i = fromIndex To toIndex - 1
+                sum += array(i)
+            Next
+            getAverageForArray = sum / (toIndex - fromIndex)
+        Else
+            getAverageForArray = INVALID
+        End If
 
-        getAverageForArray = sum / (toIndex - fromIndex)
     End Function
 
     ''' <summary>
@@ -55,11 +63,15 @@ Module HelperFunctions
     Public Function getAreaForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer)
         Dim area As Double = 0
 
-        For i = fromIndex To toIndex
-            area += list(i)
-        Next
+        If (toIndex > 0 And fromIndex >= 0) Then
+            For i = fromIndex To toIndex
+                area += list(i)
+            Next
+            getAreaForList = area
+        Else
+            getAreaForList = INVALID
+        End If
 
-        getAreaForList = area
     End Function
 
     ''' <summary>
@@ -75,11 +87,15 @@ Module HelperFunctions
     Public Function getAverageForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
         Dim sum As Double = 0
 
-        For i = fromIndex To toIndex - 1
-            sum += list(i)
-        Next
+        If (toIndex > 0 And fromIndex >= 0) Then
+            For i = fromIndex To toIndex - 1
+                sum += list(i)
+            Next
+            getAverageForList = sum / (toIndex - fromIndex)
+        Else
+            getAverageForList = INVALID
+        End If
 
-        getAverageForList = sum / (toIndex - fromIndex)
     End Function
 
     ''' <summary>
@@ -103,7 +119,11 @@ Module HelperFunctions
     ''' <returns>Returns the slope (in Newtons/millisecond) of the range requested as a Double.</returns>
     ''' <remarks></remarks>
     Public Function getSlopeForList(ByRef list As ArrayList, ByVal fromIndex As Integer, ByVal toIndex As Integer) As Double
-        getSlopeForList = ((list(toIndex) - list(fromIndex)) / (toIndex - fromIndex))
+        If (toIndex > 0 And fromIndex >= 0) Then
+            getSlopeForList = ((list(toIndex) - list(fromIndex)) / (toIndex - fromIndex))
+        Else
+            getSlopeForList = INVALID
+        End If
     End Function
 
     ''' <summary>
@@ -118,33 +138,37 @@ Module HelperFunctions
     ''' first minima to the peak as a Double. Units returned are Newtons/Second.</returns>
     ''' <remarks></remarks>
     Public Function get25_50Slope(ByRef list As ArrayList, ByVal peakFrame As Integer, ByVal firstMinimaFrame As Integer) As Double
-        ' Subtract the bilateral peak from the bilateral first minima to get the rise between the points.
-        Dim rise As Double = list(peakFrame) - list(firstMinimaFrame)
-        Dim twentyFivePercentValue As Double = (rise / 4) + list(firstMinimaFrame)
-        Dim fiftyPercentValue As Double = (rise / 2) + list(firstMinimaFrame)
-        Dim twentyFivePercentFrame As Integer
-        Dim fiftyPercentFrame As Integer
+        If (firstMinimaFrame <> INVALID And peakFrame <> INVALID And Not list Is Nothing And list.Count > 0) Then
+            ' Subtract the bilateral peak from the bilateral first minima to get the rise between the points.
+            Dim rise As Double = list(peakFrame) - list(firstMinimaFrame)
+            Dim twentyFivePercentValue As Double = (rise / 4) + list(firstMinimaFrame)
+            Dim fiftyPercentValue As Double = (rise / 2) + list(firstMinimaFrame)
+            Dim twentyFivePercentFrame As Integer
+            Dim fiftyPercentFrame As Integer
 
-        For i = firstMinimaFrame To peakFrame
-            If (list(i) > twentyFivePercentValue) Then
-                twentyFivePercentFrame = i
-                Exit For
-            End If
-        Next
+            For i = firstMinimaFrame To peakFrame
+                If (list(i) > twentyFivePercentValue) Then
+                    twentyFivePercentFrame = i
+                    Exit For
+                End If
+            Next
 
-        For i = firstMinimaFrame To peakFrame
-            If (list(i) > fiftyPercentValue) Then
-                fiftyPercentFrame = i
-                Exit For
-            End If
-        Next
+            For i = firstMinimaFrame To peakFrame
+                If (list(i) > fiftyPercentValue) Then
+                    fiftyPercentFrame = i
+                    Exit For
+                End If
+            Next
 
-        get25_50Slope = getSlopeForList(list, twentyFivePercentFrame, fiftyPercentFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+            get25_50Slope = getSlopeForList(list, twentyFivePercentFrame, fiftyPercentFrame) * 1000 ' Multiply by 1000 to convert to seconds.
+        Else
+            get25_50Slope = INVALID
+        End If
     End Function
 
-    'Public Sub removeRangeFromLists(ByRef lists As ArrayList, ByVal fromIndex As Integer, ByVal countToRemove As Integer)
-    '    For i = 0 To lists.Count
-    '        lists(i).RemoveRange(fromIndex, countToRemove)
-    '    Next
-    'End Sub
+    Public Sub removeRangeFromLists(ByRef lists As ArrayList, ByVal fromIndex As Integer, ByVal countToRemove As Integer)
+        For i = 0 To lists.Count - 1
+            lists(i).RemoveRange(fromIndex, countToRemove)
+        Next
+    End Sub
 End Module

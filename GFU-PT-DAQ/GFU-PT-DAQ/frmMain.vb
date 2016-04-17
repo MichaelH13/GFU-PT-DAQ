@@ -100,6 +100,10 @@ Public Class frmMain
         seriesGround.Name = "Ground"
         seriesBilateral.Name = "Bilateral"
 
+        ' Make sure we have cleared our timing list before
+        ' we refill it.
+        listTimes.Clear()
+
         ' Add in our timing information.
         For i As Integer = 1 To listOfDataPoints(0).Count Step 1
             listTimes.Add(i)
@@ -378,6 +382,8 @@ Public Class frmMain
         viewOutput.txtBilateralLegsEndFrame.Text = endSTSFrame
         viewOutput.txtBilateralLegsFirstMinima.Text = bilateralLegsFirstMinimaFrame
         viewOutput.txtBilateralLegsSecondMinima.Text = bilateralLegsSecondMinimaFrame
+        viewOutput.txtSeatOffFrame.Text = seatOffFrame
+
         viewOutput.txtBilateralLegs25_50Slope.Text = Math.Round(bilateralLegs25To50Slope, 2)
         viewOutput.txtBilateralLegsSlope.Text = Math.Round(bilateralLegsSlope, 2)
         viewOutput.txtBilateralLegsAreaSeatOffToEndOfSTS.Text = Math.Round(bilateralLegsAreaSeatOffToEnd, 2)
@@ -500,9 +506,14 @@ Public Class frmMain
     Private Sub btnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave.Click
 
         Dim listDataPoints As ArrayList = getDataPoints()
-        Dim listsToWriteToFile(listDataPoints(0).Count + 1) As String
+        Dim listsToWriteToFile(listDataPoints(1).Count + 1) As String
         Dim idx As Integer = 0
 
+        listDataPoints(0).clear()
+
+        For i = 0 To listDataPoints(1).Count - 1
+            listDataPoints(0).add(i)
+        Next
 
         ' Iterate over the data points.
         For i As Integer = 0 To listDataPoints(0).Count - 1 Step 1
@@ -718,10 +729,60 @@ Public Class frmMain
         viewOutput()
     End Sub
 
-    'Private Sub btnClipData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClipData.Click
-    '    readInSTSTest(True, 10000, 6, "test.txt")
-    '    removeRangeFromLists(getDataPoints(), endSTSFrame, (10000 - endSTSFrame))
-    '    removeRangeFromLists(getDataPoints(), 0, startSTSFrame)
-    '    drawChart()
-    'End Sub
+    Private Sub btnClipData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnClipData.Click
+        Dim listDataPoints As ArrayList = getDataPoints()
+
+
+        listDataPoints(0).clear()
+
+        For i = 0 To listDataPoints(1).Count - 1
+            listDataPoints(0).add(i)
+        Next
+
+        removeRangeFromLists(listDataPoints, endSTSFrame, (10000 - endSTSFrame))
+        removeRangeFromLists(listDataPoints, 0, startSTSFrame)
+        drawChart()
+    End Sub
+
+    Private Sub btnImportOld_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImportOld.Click
+
+        Dim fileContents() As String = Nothing
+        Dim currentLine() As String
+
+        ' If the user selects a file, then read the file in.
+        If (frmLoadOldTest.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
+
+            Try
+                fileContents = IO.File.ReadAllLines(frmLoadOldTest.FileName)
+            Catch ex As Exception
+                MsgBox("Error: File may be missing or corrupted. Please verify the file and try again.", vbOKOnly, getAppTitle())
+            End Try
+
+            If (Not fileContents Is Nothing) Then
+                If (fileContents.Count = 10008) Then
+                    For i = 8 To 10007
+                        currentLine = fileContents(i).Split(",")
+
+                        listTimes.Add(currentLine(0))
+                        ' Skip index 1 (one) because its just Date/Time info.
+                        listRightArm.Add(CDbl(currentLine(2)))
+                        listLeftArm.Add(CDbl(currentLine(3)))
+                        listRightLeg.Add(CDbl(currentLine(4)))
+                        listLeftLeg.Add(CDbl(currentLine(5)))
+                        listGround.Add(CDbl(currentLine(6)))
+                        listSeat.Add(CDbl(currentLine(7)))
+                        listBilateralLegs.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
+                    Next
+                    drawChart()
+                    MsgBox("Test imported successfully!", vbOKOnly, getAppTitle())
+                    frmState = FORM_STATE.SELECT_START_FRAME
+                    selectPoint("Start of Test")
+                Else
+                    MsgBox("Error: File may be formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
+                End If
+            Else
+                MsgBox("Error: File may be missing, corrupted, or formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
+            End If
+        End If
+    End Sub
 End Class

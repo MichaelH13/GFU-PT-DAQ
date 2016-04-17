@@ -119,6 +119,8 @@ Partial Class frmViewOutputVariables
         Me.lblRightLegAvgForceSeatOffToEndOfSTS = New System.Windows.Forms.Label()
         Me.txtTotalFramesInTest = New System.Windows.Forms.TextBox()
         Me.lblTotalFramesInTest = New System.Windows.Forms.Label()
+        Me.txtSeatOffFrame = New System.Windows.Forms.TextBox()
+        Me.lblSeatOffFrame = New System.Windows.Forms.Label()
         Me.SuspendLayout()
         '
         'lblLeftLegPeakFrame
@@ -982,11 +984,31 @@ Partial Class frmViewOutputVariables
         Me.lblTotalFramesInTest.TabIndex = 121
         Me.lblTotalFramesInTest.Text = "Total Frames in Test"
         '
+        'txtSeatOffFrame
+        '
+        Me.txtSeatOffFrame.Enabled = False
+        Me.txtSeatOffFrame.Location = New System.Drawing.Point(277, 506)
+        Me.txtSeatOffFrame.Name = "txtSeatOffFrame"
+        Me.txtSeatOffFrame.Size = New System.Drawing.Size(154, 22)
+        Me.txtSeatOffFrame.TabIndex = 124
+        '
+        'lblSeatOffFrame
+        '
+        Me.lblSeatOffFrame.AutoSize = True
+        Me.lblSeatOffFrame.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.2!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblSeatOffFrame.Location = New System.Drawing.Point(19, 509)
+        Me.lblSeatOffFrame.Name = "lblSeatOffFrame"
+        Me.lblSeatOffFrame.Size = New System.Drawing.Size(124, 20)
+        Me.lblSeatOffFrame.TabIndex = 123
+        Me.lblSeatOffFrame.Text = "Seat Off Frame"
+        '
         'frmViewOutputVariables
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(907, 915)
+        Me.Controls.Add(Me.txtSeatOffFrame)
+        Me.Controls.Add(Me.lblSeatOffFrame)
         Me.Controls.Add(Me.txtTotalFramesInTest)
         Me.Controls.Add(Me.lblTotalFramesInTest)
         Me.Controls.Add(Me.txtRightLegPeakForce)
@@ -1183,4 +1205,6 @@ Partial Class frmViewOutputVariables
     Friend WithEvents RectangleShape2 As Microsoft.VisualBasic.PowerPacks.RectangleShape
     Friend WithEvents txtTotalFramesInTest As System.Windows.Forms.TextBox
     Friend WithEvents lblTotalFramesInTest As System.Windows.Forms.Label
+    Friend WithEvents txtSeatOffFrame As System.Windows.Forms.TextBox
+    Friend WithEvents lblSeatOffFrame As System.Windows.Forms.Label
 End Class

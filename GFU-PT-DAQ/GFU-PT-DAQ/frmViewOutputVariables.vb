@@ -32,6 +32,8 @@
         variablesToWriteToFile.Add("Bilateral Legs Peak Frame," & Me.txtBilateralLegsPeakFrame.Text)
         variablesToWriteToFile.Add("Bilateral Legs Second Minima Frame," & Me.txtBilateralLegsSecondMinima.Text)
         variablesToWriteToFile.Add("Bilateral Legs End Frame," & Me.txtBilateralLegsEndFrame.Text)
+        variablesToWriteToFile.Add("Seat Off Frame," & Me.txtSeatOffFrame.Text)
+
         variablesToWriteToFile.Add("Bilateral Legs Average Force Seat Off to End of STS Frame (N)," & Me.txtBilateralLegsAvgForceSeatOffToEndOfSTS.Text)
         variablesToWriteToFile.Add("Bilateral Legs Slope (N/S)," & Me.txtBilateralLegsSlope.Text)
         variablesToWriteToFile.Add("Bilateral Legs 25%-50% Slope (N/S)," & Me.txtBilateralLegs25_50Slope.Text)

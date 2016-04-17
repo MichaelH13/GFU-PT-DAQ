@@ -32,7 +32,7 @@ GFU-PT-DAQ
 	<summary>
   A strongly-typed resource class, for looking up localized strings, etc.
 </summary>
-</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.convertDataFromVoltagesToWeight">
+</member><member name="M:GFU_PT_DAQ.ProgramVariableFunctions.convertDataFromVoltagesToWeight(System.Boolean)">
 	<summary>
  Conversions from Dr. Houck from 4/8/2016
  Right Wii Plate y=0.0544(signal) +3.3621
@@ -272,7 +272,7 @@ GFU-PT-DAQ
  the <see cref="M:GFU_PT_DAQ.frmMain.runScanAndPopulateLists(System.Boolean,System.Int32,System.Int32,System.String)"></see> function. If the 
  <paramref name="totalPoints"></paramref> is equal to 10000, then 
  this function will convert the voltages to Newtons as determined
- by the <see cref="M:GFU_PT_DAQ.ProgramVariableFunctions.convertDataFromVoltagesToWeight"></see> function.
+ by the <see cref="M:GFU_PT_DAQ.ProgramVariableFunctions.convertDataFromVoltagesToWeight(System.Boolean)"></see> function.
  
  </summary>
 	<param name="isCalibrated"></param>

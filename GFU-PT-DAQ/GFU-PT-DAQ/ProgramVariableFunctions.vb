@@ -13,23 +13,29 @@ Module ProgramVariableFunctions
     ''' Left Arm  y = 0.2222(signal)+32.94
     ''' </summary>
     ''' <remarks></remarks>
-    Public Sub convertDataFromVoltagesToWeight()
-        ' Multiply data by regressions to convert voltage to force
-        For i = 0 To 10000 - 1
+    Public Sub convertDataFromVoltagesToWeight(Optional ByVal isOldTest As Boolean = False)
 
-            ' Convert the legs data
-            listRightLeg(i) = (0.0544 * listRightLeg(i)) + 3.3621
-            listLeftLeg(i) = (0.0574 * listLeftLeg(i)) - 0.2194
+        ' If we are converting values for a new test...
+        If (Not isOldTest) Then
+            ' Multiply data by regressions to convert voltage to force
+            For i = 0 To 10000 - 1
 
-            ' Vertical ground reaction force for legs and bilateral.
-            vGRFBilatArray(i) = listLeftLeg(i) + listRightLeg(i)
-            listBilateralLegs(i) = listLeftLeg(i) + listRightLeg(i)
+                ' Convert the legs data
+                listRightLeg(i) = (0.0544 * listRightLeg(i)) + 3.3621
+                listLeftLeg(i) = (0.0574 * listLeftLeg(i)) - 0.2194
 
-            ' Convert the arms data
-            listRightArm(i) = (0.01878 * listRightArm(i)) + 56.123
-            listLeftArm(i) = (0.02222 * listLeftArm(i)) + 32.94
-            ArmsBilatArray(i) = listLeftArm(i) + listRightArm(i)
-        Next
+                ' Vertical ground reaction force for legs and bilateral.
+                vGRFBilatArray(i) = listLeftLeg(i) + listRightLeg(i)
+                listBilateralLegs(i) = listLeftLeg(i) + listRightLeg(i)
+
+                ' Convert the arms data
+                listRightArm(i) = (0.01878 * listRightArm(i)) + 56.123
+                listLeftArm(i) = (0.02222 * listLeftArm(i)) + 32.94
+                ArmsBilatArray(i) = listLeftArm(i) + listRightArm(i)
+            Next
+        Else ' Else we are converting values from an imported test.
+
+        End If
     End Sub
 
     ''' <summary>

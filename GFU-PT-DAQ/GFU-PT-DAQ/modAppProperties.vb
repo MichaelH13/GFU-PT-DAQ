@@ -39,55 +39,55 @@ Module modAppProperties
     Public bilateralLegsFirstMinimaFrame As Integer = INVALID
     Public bilateralLegsPeakFrame As Integer = INVALID
     Public bilateralLegsSecondMinimaFrame As Integer = INVALID
+
     Public bilateralLegs25To50Slope As Double = INVALID
     Public bilateralLegsSlope As Double = INVALID
     Public bilateralLegsAreaSeatOffToEnd As Double = INVALID
     Public bilateralLegsAverageSeatOffToEnd As Double = INVALID
-
     Public bilateralLegsSeatOffForceValue As Double = INVALID
-    Public bilateralLegsPeakForceValue As Integer = INVALID
+    Public bilateralLegsPeakForceValue As Double = INVALID
 
     ' Left leg variables.
     Public leftLegFirstMinimaFrame As Integer = INVALID
     Public leftLegPeakFrame As Integer = INVALID
     Public leftLegSecondMinimaFrame As Integer = INVALID
-    Public leftLegAvgForce As Integer = INVALID
 
+    Public leftLegAvgForce As Double = INVALID
     Public leftLeg25To50Slope As Double = INVALID
     Public leftLegSlope As Double = INVALID
     Public leftLegAreaSeatOffToEnd As Double = INVALID
     Public leftLegSeatOffForceValue As Double = INVALID
-    Public leftLegPeakForceValue As Integer = INVALID
+    Public leftLegPeakForceValue As Double = INVALID
 
     ' Right leg variables.
     Public rightLegFirstMinimaFrame As Integer = INVALID
     Public rightLegPeakFrame As Integer = INVALID
     Public rightLegSecondMinimaFrame As Integer = INVALID
-    Public rightLegAvgForce As Integer = INVALID
 
+    Public rightLegAvgForce As Double = INVALID
     Public rightLeg25To50Slope As Double = INVALID
     Public rightLegSlope As Double = INVALID
     Public rightLegAreaSeatOffToEnd As Double = INVALID
     Public rightLegSeatOffForceValue As Double = INVALID
-    Public rightLegPeakForceValue As Integer = INVALID
+    Public rightLegPeakForceValue As Double = INVALID
 
     ' Left arm variables.
     Public leftArmStartFrame As Integer = INVALID
     Public leftArmPeakFrame As Integer = INVALID
     Public leftArmEndFrame As Integer = INVALID
-    Public leftArmArea As Double = INVALID
 
+    Public leftArmArea As Double = INVALID
     Public leftArmSeatOffForceValue As Double = INVALID
-    Public leftArmPeakForceValue As Integer = INVALID
+    Public leftArmPeakForceValue As Double = INVALID
 
     ' Right arm variables.
     Public rightArmStartFrame As Integer = INVALID
     Public rightArmPeakFrame As Integer = INVALID
     Public rightArmEndFrame As Integer = INVALID
-    Public rightArmArea As Double = INVALID
 
+    Public rightArmArea As Double = INVALID
     Public rightArmSeatOffForceValue As Double = INVALID
-    Public rightArmPeakForceValue As Integer = INVALID
+    Public rightArmPeakForceValue As Double = INVALID
 
     ' Seat off variable.
     Public seatOffFrame As Integer = INVALID
@@ -110,6 +110,7 @@ Module modAppProperties
 
     Public Function getDataPoints() As ArrayList
         Dim listDataPoints As New ArrayList
+
         listDataPoints.Add(listTimes)
         listDataPoints.Add(listRightArm)
         listDataPoints.Add(listLeftArm)
@@ -119,9 +120,9 @@ Module modAppProperties
         listDataPoints.Add(listSeat)
         listDataPoints.Add(listBilateralLegs)
 
-        For i = 0 To 10000 - 1
-            listDataPoints(0)(i) = i
-        Next
+        If (listTimes.Count = 0) Then
+
+        End If
 
         Return listDataPoints
     End Function
