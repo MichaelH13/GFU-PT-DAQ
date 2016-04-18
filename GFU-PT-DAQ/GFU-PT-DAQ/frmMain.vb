@@ -364,6 +364,7 @@ Public Class frmMain
         viewOutput.txtLeftArmStartFrame.Text = leftArmStartFrame
         viewOutput.txtLeftArmPeakFrame.Text = leftArmPeakFrame
         viewOutput.txtLeftArmEndFrame.Text = leftArmEndFrame
+
         viewOutput.txtLeftArmArea.Text = Math.Round(leftArmArea, 2)
         viewOutput.txtLeftArmPeakForce.Text = Math.Round(leftArmPeakForceValue, 2)
         viewOutput.txtLeftArmSeatOffForce.Text = Math.Round(leftArmSeatOffForceValue, 2)
@@ -372,6 +373,7 @@ Public Class frmMain
         viewOutput.txtRightArmStartFrame.Text = rightArmStartFrame
         viewOutput.txtRightArmPeakFrame.Text = rightArmPeakFrame
         viewOutput.txtRightArmEndFrame.Text = rightArmEndFrame
+
         viewOutput.txtRightArmArea.Text = Math.Round(rightArmArea, 2)
         viewOutput.txtRightArmPeakForce.Text = Math.Round(rightArmPeakForceValue, 2)
         viewOutput.txtRightArmSeatOffForce.Text = Math.Round(rightArmSeatOffForceValue, 2)
@@ -742,6 +744,8 @@ Public Class frmMain
         removeRangeFromLists(listDataPoints, endSTSFrame, (10000 - endSTSFrame))
         removeRangeFromLists(listDataPoints, 0, startSTSFrame)
         drawChart()
+        frmState = FORM_STATE.SELECT_START_FRAME
+        selectPoint("Start of Test")
     End Sub
 
     Private Sub btnImportOld_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImportOld.Click
@@ -760,6 +764,8 @@ Public Class frmMain
 
             If (Not fileContents Is Nothing) Then
                 If (fileContents.Count = 10008) Then
+                    clearLists()
+
                     For i = 8 To 10007
                         currentLine = fileContents(i).Split(",")
 
@@ -773,6 +779,7 @@ Public Class frmMain
                         listSeat.Add(CDbl(currentLine(7)))
                         listBilateralLegs.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
                     Next
+                    convertDataFromVoltagesToWeight(True)
                     drawChart()
                     MsgBox("Test imported successfully!", vbOKOnly, getAppTitle())
                     frmState = FORM_STATE.SELECT_START_FRAME
@@ -785,4 +792,5 @@ Public Class frmMain
             End If
         End If
     End Sub
+
 End Class

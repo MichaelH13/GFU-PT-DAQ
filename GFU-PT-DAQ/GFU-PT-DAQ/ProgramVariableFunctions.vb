@@ -25,16 +25,22 @@ Module ProgramVariableFunctions
                 listLeftLeg(i) = (0.0574 * listLeftLeg(i)) - 0.2194
 
                 ' Vertical ground reaction force for legs and bilateral.
-                vGRFBilatArray(i) = listLeftLeg(i) + listRightLeg(i)
                 listBilateralLegs(i) = listLeftLeg(i) + listRightLeg(i)
 
                 ' Convert the arms data
                 listRightArm(i) = (0.01878 * listRightArm(i)) + 56.123
                 listLeftArm(i) = (0.02222 * listLeftArm(i)) + 32.94
-                ArmsBilatArray(i) = listLeftArm(i) + listRightArm(i)
             Next
         Else ' Else we are converting values from an imported test.
+            For i = 0 To 10000 - 1
+                listRightLeg(i) = (165.45 * listRightLeg(i)) - 1.9287
+                listLeftLeg(i) = (169.18 * listLeftLeg(i)) + 13.799
+                listRightArm(i) = (112.72 * listRightArm(i)) + 19
+                listLeftArm(i) = (255.06 * listLeftArm(i)) - 150
+                listBilateralLegs(i) = listLeftLeg(i) + listRightLeg(i)
 
+                listSeat(i) = -(listSeat(i) * 60)
+            Next
         End If
     End Sub
 

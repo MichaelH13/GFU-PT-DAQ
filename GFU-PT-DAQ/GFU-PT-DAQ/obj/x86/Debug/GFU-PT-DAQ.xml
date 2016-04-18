@@ -373,6 +373,14 @@ GFU-PT-DAQ
  Returns the slope from 25% to 50% of the magnitude of the
  first minima to the peak as a Double. Units returned are Newtons/Second.</returns>
 	<remarks></remarks>
+</member><member name="M:GFU_PT_DAQ.HelperFunctions.removeRangeFromLists(System.Collections.ArrayList@,System.Int32,System.Int32)">
+	<summary>
+ Removes a range of indexes from a given ArrayList of Arraylists.
+ </summary>
+	<param name="lists">The list to remove the indexes from.</param>
+	<param name="fromIndex">The index to begin the index removing.</param>
+	<param name="countToRemove">The number of indexes to remove from the list (including the starting index).</param>
+	<remarks></remarks>
 </member><member name="T:GFU_PT_DAQ.HelperFunctions">
 	<summary>
  Short, general helper functions to calculate areas, averages, and slopes.

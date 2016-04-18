@@ -166,9 +166,17 @@ Module HelperFunctions
         End If
     End Function
 
+    ''' <summary>
+    ''' Removes a range of indexes from a given ArrayList of Arraylists.
+    ''' </summary>
+    ''' <param name="lists">The list to remove the indexes from.</param>
+    ''' <param name="fromIndex">The index to begin the index removing.</param>
+    ''' <param name="countToRemove">The number of indexes to remove from the list (including the starting index).</param>
+    ''' <remarks></remarks>
     Public Sub removeRangeFromLists(ByRef lists As ArrayList, ByVal fromIndex As Integer, ByVal countToRemove As Integer)
         For i = 0 To lists.Count - 1
             lists(i).RemoveRange(fromIndex, countToRemove)
         Next
     End Sub
+
 End Module
