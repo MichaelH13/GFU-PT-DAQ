@@ -23,9 +23,9 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea2 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Legend2 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
-        Dim Series2 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Legend1 As System.Windows.Forms.DataVisualization.Charting.Legend = New System.Windows.Forms.DataVisualization.Charting.Legend()
+        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
         Me.STSChart = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.btnRunTest = New System.Windows.Forms.Button()
         Me.clkSamplingRate = New System.Windows.Forms.Timer(Me.components)
@@ -44,28 +44,29 @@ Partial Class frmMain
         Me.btnClipData = New System.Windows.Forms.Button()
         Me.btnImportOld = New System.Windows.Forms.Button()
         Me.frmLoadOldTest = New System.Windows.Forms.OpenFileDialog()
+        Me.btnImportNew = New System.Windows.Forms.Button()
         CType(Me.STSChart, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'STSChart
         '
-        ChartArea2.Name = "ChartArea1"
-        Me.STSChart.ChartAreas.Add(ChartArea2)
-        Legend2.Name = "Legend1"
-        Me.STSChart.Legends.Add(Legend2)
+        ChartArea1.Name = "ChartArea1"
+        Me.STSChart.ChartAreas.Add(ChartArea1)
+        Legend1.Name = "Legend1"
+        Me.STSChart.Legends.Add(Legend1)
         Me.STSChart.Location = New System.Drawing.Point(12, -1)
         Me.STSChart.Name = "STSChart"
-        Series2.ChartArea = "ChartArea1"
-        Series2.Legend = "Legend1"
-        Series2.Name = "Series1"
-        Me.STSChart.Series.Add(Series2)
+        Series1.ChartArea = "ChartArea1"
+        Series1.Legend = "Legend1"
+        Series1.Name = "Series1"
+        Me.STSChart.Series.Add(Series1)
         Me.STSChart.Size = New System.Drawing.Size(1054, 555)
         Me.STSChart.TabIndex = 1
         Me.STSChart.Text = "STS Chart"
         '
         'btnRunTest
         '
-        Me.btnRunTest.Location = New System.Drawing.Point(543, 596)
+        Me.btnRunTest.Location = New System.Drawing.Point(688, 596)
         Me.btnRunTest.Name = "btnRunTest"
         Me.btnRunTest.Size = New System.Drawing.Size(136, 34)
         Me.btnRunTest.TabIndex = 2
@@ -78,7 +79,7 @@ Partial Class frmMain
         '
         'btnSave
         '
-        Me.btnSave.Location = New System.Drawing.Point(759, 596)
+        Me.btnSave.Location = New System.Drawing.Point(904, 596)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(136, 34)
         Me.btnSave.TabIndex = 3
@@ -94,7 +95,7 @@ Partial Class frmMain
         '
         'btnCalibrateDevice
         '
-        Me.btnCalibrateDevice.Location = New System.Drawing.Point(323, 596)
+        Me.btnCalibrateDevice.Location = New System.Drawing.Point(468, 596)
         Me.btnCalibrateDevice.Name = "btnCalibrateDevice"
         Me.btnCalibrateDevice.Size = New System.Drawing.Size(136, 34)
         Me.btnCalibrateDevice.TabIndex = 7
@@ -103,7 +104,7 @@ Partial Class frmMain
         '
         'btnCancelTest
         '
-        Me.btnCancelTest.Location = New System.Drawing.Point(543, 661)
+        Me.btnCancelTest.Location = New System.Drawing.Point(688, 661)
         Me.btnCancelTest.Name = "btnCancelTest"
         Me.btnCancelTest.Size = New System.Drawing.Size(136, 34)
         Me.btnCancelTest.TabIndex = 8
@@ -112,7 +113,7 @@ Partial Class frmMain
         '
         'btnResetPickoff
         '
-        Me.btnResetPickoff.Location = New System.Drawing.Point(759, 661)
+        Me.btnResetPickoff.Location = New System.Drawing.Point(904, 661)
         Me.btnResetPickoff.Name = "btnResetPickoff"
         Me.btnResetPickoff.Size = New System.Drawing.Size(136, 34)
         Me.btnResetPickoff.TabIndex = 9
@@ -126,7 +127,7 @@ Partial Class frmMain
         '
         'btnViewVariables
         '
-        Me.btnViewVariables.Location = New System.Drawing.Point(323, 661)
+        Me.btnViewVariables.Location = New System.Drawing.Point(468, 661)
         Me.btnViewVariables.Name = "btnViewVariables"
         Me.btnViewVariables.Size = New System.Drawing.Size(136, 34)
         Me.btnViewVariables.TabIndex = 10
@@ -169,7 +170,7 @@ Partial Class frmMain
         '
         'btnClipData
         '
-        Me.btnClipData.Location = New System.Drawing.Point(100, 596)
+        Me.btnClipData.Location = New System.Drawing.Point(245, 596)
         Me.btnClipData.Name = "btnClipData"
         Me.btnClipData.Size = New System.Drawing.Size(136, 34)
         Me.btnClipData.TabIndex = 15
@@ -178,22 +179,32 @@ Partial Class frmMain
         '
         'btnImportOld
         '
-        Me.btnImportOld.Location = New System.Drawing.Point(100, 661)
+        Me.btnImportOld.Location = New System.Drawing.Point(245, 661)
         Me.btnImportOld.Name = "btnImportOld"
         Me.btnImportOld.Size = New System.Drawing.Size(136, 34)
         Me.btnImportOld.TabIndex = 16
-        Me.btnImportOld.Text = "Import Old"
+        Me.btnImportOld.Text = "Import Old Test"
         Me.btnImportOld.UseVisualStyleBackColor = True
         '
         'frmLoadOldTest
         '
         Me.frmLoadOldTest.FileName = "CaseXXXNN-X"
         '
+        'btnImportNew
+        '
+        Me.btnImportNew.Location = New System.Drawing.Point(31, 596)
+        Me.btnImportNew.Name = "btnImportNew"
+        Me.btnImportNew.Size = New System.Drawing.Size(136, 34)
+        Me.btnImportNew.TabIndex = 17
+        Me.btnImportNew.Text = "Import New Test"
+        Me.btnImportNew.UseVisualStyleBackColor = True
+        '
         'frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1078, 739)
+        Me.Controls.Add(Me.btnImportNew)
         Me.Controls.Add(Me.btnImportOld)
         Me.Controls.Add(Me.btnClipData)
         Me.Controls.Add(Me.yCoord)
@@ -235,4 +246,5 @@ Partial Class frmMain
     Friend WithEvents btnClipData As System.Windows.Forms.Button
     Friend WithEvents btnImportOld As System.Windows.Forms.Button
     Friend WithEvents frmLoadOldTest As System.Windows.Forms.OpenFileDialog
+    Friend WithEvents btnImportNew As System.Windows.Forms.Button
 End Class

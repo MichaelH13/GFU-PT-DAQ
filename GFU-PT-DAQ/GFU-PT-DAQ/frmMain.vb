@@ -496,6 +496,8 @@ Public Class frmMain
             Else
                 frmState = FORM_STATE.NEW_TEST
             End If
+        Else
+            MsgBox("Please click 'Cancel Test' to reset the software and begin a new test.", vbApplicationModal + vbOKOnly, getAppTitle())
         End If
     End Sub
 
@@ -763,34 +765,83 @@ Public Class frmMain
             End Try
 
             If (Not fileContents Is Nothing) Then
-                If (fileContents.Count = 10008) Then
-                    clearLists()
+                clearLists()
 
-                    For i = 8 To 10007
-                        currentLine = fileContents(i).Split(",")
+                For i = 8 To fileContents.Count - 1
 
-                        listTimes.Add(currentLine(0))
-                        ' Skip index 1 (one) because its just Date/Time info.
-                        listRightArm.Add(CDbl(currentLine(2)))
-                        listLeftArm.Add(CDbl(currentLine(3)))
-                        listRightLeg.Add(CDbl(currentLine(4)))
-                        listLeftLeg.Add(CDbl(currentLine(5)))
-                        listGround.Add(CDbl(currentLine(6)))
-                        listSeat.Add(CDbl(currentLine(7)))
-                        listBilateralLegs.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
-                    Next
-                    convertDataFromVoltagesToWeight(True)
-                    drawChart()
-                    MsgBox("Test imported successfully!", vbOKOnly, getAppTitle())
-                    frmState = FORM_STATE.SELECT_START_FRAME
-                    selectPoint("Start of Test")
-                Else
-                    MsgBox("Error: File may be formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
-                End If
+                    currentLine = fileContents(i).Split(",")
+
+                    If (currentLine.Count <> 8) Then Exit For
+
+                    listTimes.Add(currentLine(0))
+                    ' Skip index 1 (one) because its just Date/Time info.
+                    listRightArm.Add(CDbl(currentLine(2)))
+                    listLeftArm.Add(CDbl(currentLine(3)))
+                    listRightLeg.Add(CDbl(currentLine(4)))
+                    listLeftLeg.Add(CDbl(currentLine(5)))
+                    listGround.Add(CDbl(currentLine(6)))
+                    listSeat.Add(CDbl(currentLine(7)))
+                    listBilateralLegs.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
+                Next
+                convertDataFromVoltagesToWeight(True)
+                drawChart()
+                MsgBox("Test imported successfully!", vbOKOnly, getAppTitle())
+                frmState = FORM_STATE.SELECT_START_FRAME
+                selectPoint("Start of Test")
             Else
-                MsgBox("Error: File may be missing, corrupted, or formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
+                MsgBox("Error: File may be formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
             End If
+        Else
+            MsgBox("Error: File may be missing, corrupted, or formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
         End If
     End Sub
 
+    Private Sub btnImportNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnImportNew.Click
+
+        Dim fileContents() As String = Nothing
+        Dim currentLine() As String
+
+        ' If the user selects a file, then read the file in.
+        If (frmLoadOldTest.ShowDialog() = System.Windows.Forms.DialogResult.OK) Then
+
+            Try
+                fileContents = IO.File.ReadAllLines(frmLoadOldTest.FileName)
+            Catch ex As Exception
+                MsgBox("Error: File may be missing or corrupted. Please verify the file and try again.", vbOKOnly, getAppTitle())
+            End Try
+
+            If (Not fileContents Is Nothing) Then
+                
+                clearLists()
+
+                For i = 1 To fileContents.Count - 1
+
+                    currentLine = fileContents(i).Split(",")
+
+                    If (currentLine.Count <> 7) Then Exit For
+
+                    listTimes.Add(currentLine(0))
+                    listRightArm.Add(CDbl(currentLine(1)))
+                    listLeftArm.Add(CDbl(currentLine(2)))
+                    listRightLeg.Add(CDbl(currentLine(3)))
+                    listLeftLeg.Add(CDbl(currentLine(4)))
+                    listGround.Add(CDbl(currentLine(5)))
+                    listSeat.Add(CDbl(currentLine(6)))
+
+                    listBilateralLegs.Add(listRightLeg(listRightLeg.Count - 1) + listLeftLeg(listLeftLeg.Count - 1))
+                Next
+
+                convertDataFromVoltagesToWeight()
+                drawChart()
+                MsgBox("Test imported successfully!", vbOKOnly, getAppTitle())
+                frmState = FORM_STATE.SELECT_START_FRAME
+                selectPoint("Start of Test")
+
+            Else
+                MsgBox("Error: File may be formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
+            End If
+        Else
+            MsgBox("Error: File may be missing, corrupted, or formatted incorrectly. Please verify the file and try again.", vbOKOnly, getAppTitle())
+        End If
+    End Sub
 End Class
