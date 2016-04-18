@@ -1,0 +1,10 @@
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\bin\Debug\GFU-PT-DAQ.exe
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\bin\Debug\GFU-PT-DAQ.pdb
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\bin\Debug\GFU-PT-DAQ.xml
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\obj\x86\Debug\GFU_PT_DAQ.frmMain.resources
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\obj\x86\Debug\GFU_PT_DAQ.frmViewOutputVariables.resources
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\obj\x86\Debug\GFU_PT_DAQ.Resources.resources
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.vbproj.GenerateResource.Cache
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.exe
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.xml
+C:\Users\GFUPT\AppData\Local\Temporary Projects\GFU-PT-DAQ\obj\x86\Debug\GFU-PT-DAQ.pdb

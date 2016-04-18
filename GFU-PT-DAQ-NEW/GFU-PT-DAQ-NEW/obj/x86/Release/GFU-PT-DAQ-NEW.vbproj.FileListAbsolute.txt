@@ -1,0 +1,14 @@
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\bin\Release\GFU-PT-DAQ-NEW.exe.manifest
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\bin\Release\GFU-PT-DAQ-NEW.application
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\bin\Release\GFU-PT-DAQ-NEW.exe
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\bin\Release\GFU-PT-DAQ-NEW.pdb
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\bin\Release\GFU-PT-DAQ-NEW.xml
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU_PT_DAQ.frmMain.resources
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU_PT_DAQ.frmViewOutputVariables.resources
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU_PT_DAQ.Resources.resources
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU-PT-DAQ-NEW.vbproj.GenerateResource.Cache
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU-PT-DAQ-NEW.exe.manifest
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU-PT-DAQ-NEW.application
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU-PT-DAQ-NEW.exe
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU-PT-DAQ-NEW.xml
+C:\Users\GFUPT\Documents\GitHub\GFU-PT-DAQ\GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW\obj\x86\Release\GFU-PT-DAQ-NEW.pdb
