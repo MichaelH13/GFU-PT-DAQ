@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Basic Express 2010
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GFU-PT-DAQ-NEW", "GFU-PT-DAQ-NEW\GFU-PT-DAQ-NEW.vbproj", "{003A307B-912A-47A3-A0E1-C60EEC0254E5}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GFU-PT-DAQ", "GFU-PT-DAQ-NEW\GFU-PT-DAQ.vbproj", "{003A307B-912A-47A3-A0E1-C60EEC0254E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
